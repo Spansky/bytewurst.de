@@ -56,6 +56,17 @@ abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
 - Negative Zahlen mit dem einfachen Bindestrich (`prozent()` in `lib/format.ts`), nicht
   mit U+2212.
 
+## Schriften
+
+- Anybody für Überschriften (`titel`, `schild`, `font-display`), schmal gestellt über
+  `font-stretch`. Rethink Sans für Fließtext, Martian Mono für Bons und Zahlen (Bons auf
+  75 % Breite, sonst 87,5 %, gesetzt in `index.css`).
+- Nicht Bricolage Grotesque und JetBrains Mono: die trägt jockjock.de, der Nutzer will sie
+  hier ausdrücklich nicht (2026-10-03). Vor einer neuen Schrift prüfen, ob ein anderes
+  `website-*` sie schon nutzt.
+- Nach einem Schriftwechsel `python3 scripts/wortmarke.py` und `npm run icons`, sonst
+  zeigt das Vorschaubild die alte Schrift.
+
 ## Farben und Fokus
 
 - `--color-wursti` (#c4532e) ist die Markenfarbe von Wursti und nur für ihn. Knöpfe und

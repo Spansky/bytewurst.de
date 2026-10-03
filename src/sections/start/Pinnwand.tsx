@@ -61,7 +61,7 @@ export default function Pinnwand() {
                       <span
                         className={`zettel-seite flex min-h-52 flex-col p-5 pt-7 [grid-area:1/1] ${FARBEN[z.farbe]} shadow-[0_10px_18px_-8px_rgb(0_0_0/0.45)]`}
                       >
-                        <span className="text-[1.375rem] leading-tight font-bold" style={{ fontStretch: '80%' }}>
+                        <span className="schild text-[1.375rem] leading-tight">
                           {z.vorne}
                         </span>
                         <span className="mt-2 text-tinte/70">{z.vorneKlein}</span>

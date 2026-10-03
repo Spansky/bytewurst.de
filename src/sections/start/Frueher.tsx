@@ -14,7 +14,7 @@ export default function Frueher() {
               alt="Altes Schwarzweißfoto einer Metzgerei: Männer in weißen Kitteln stehen hinter einer langen Theke mit Waage, rechts hängen Rinderhälften an Haken, an den Wänden Geweihe."
               className="h-auto w-full grayscale"
             />
-            <figcaption className="mt-3 px-1 text-[1.0625rem] font-semibold" style={{ fontStretch: '82%' }}>
+            <figcaption className="schild mt-3 px-1 text-[1.0625rem]">
               Damals: Der Chef weiß alles. Ist er krank, weiß es keiner.
             </figcaption>
           </div>

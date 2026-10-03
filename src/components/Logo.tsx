@@ -6,8 +6,8 @@ export default function Logo({ className = '', hell = false }: { className?: str
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <Wursti ohneBeine blinzeln className="h-[1.35em] w-auto" />
       <span
-        className={`text-[1.35em] leading-none font-extrabold tracking-tight ${hell ? 'text-papier' : 'text-tinte'}`}
-        style={{ fontStretch: '80%', fontVariationSettings: '"opsz" 60' }}
+        className={`font-display text-[1.35em] leading-none font-extrabold tracking-tight ${hell ? 'text-papier' : 'text-tinte'}`}
+        style={{ fontStretch: '78%' }}
       >
         Byte<span className={hell ? 'text-senf' : 'text-wurst'}>Wurst</span>
       </span>

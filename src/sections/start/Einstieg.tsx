@@ -53,7 +53,7 @@ export default function Einstieg() {
                 ))}
               </ul>
               <div className="bon-linie my-2.5" />
-              <p className="text-center text-[0.6875rem] text-grau">Beispiel, gedruckt um 04:00</p>
+              <p className="text-center text-[0.6875rem] text-grau">Beispiel, 04:00 Uhr</p>
             </div>
           </div>
 

@@ -129,7 +129,7 @@ function Szene({ m }: { m: number }) {
         <rect x="30" y="150" width="270" height="182" fill={mix('#efe7d8', '#2b2c31', dunkel * 0.85)} />
         <rect x="30" y="150" width="270" height="10" fill={mix('#c9bfae', '#22232a', dunkel)} />
         <rect x="70" y="164" width="190" height="34" rx="4" fill="var(--color-wurst)" />
-        <text x="165" y="188" textAnchor="middle" fill="#fffdf8" style={{ font: '800 20px var(--font-sans)', letterSpacing: '0.12em' }}>
+        <text x="165" y="188" textAnchor="middle" fill="#fffdf8" style={{ font: '800 20px var(--font-display)', letterSpacing: '0.12em' }}>
           METZGEREI
         </text>
         {/* Markise */}
@@ -306,7 +306,7 @@ export default function Nacht() {
 
           <div className="flex flex-col gap-6 lg:col-span-5">
             <div className="rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-7" aria-live={laeuft ? 'off' : 'polite'} aria-atomic="true">
-              <h3 className="text-2xl font-bold text-senf" style={{ fontStretch: '80%' }}>
+              <h3 className="schild text-2xl text-senf">
                 {station.titel}
               </h3>
               <p className="mt-2 text-xl leading-snug">{station.text}</p>

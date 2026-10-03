@@ -1,20 +1,28 @@
 @import "tailwindcss";
 
 /* Schriften liegen in public/fonts, Latein-Teilmenge (enthält ä, ö, ü, ß, €).
-   Bricolage Grotesque ist variabel in Gewicht, Breite und optischer Größe:
-   schmal und fett für Überschriften wie auf einem Thekenschild, normal breit
-   für Fließtext. JetBrains Mono nur für Bons, Zahlen und Uhrzeiten. */
+   Anybody ist variabel in Gewicht und Breite: schmal und fett für Überschriften
+   wie auf einem Thekenschild. Rethink Sans für Fließtext. Martian Mono, schmal
+   gestellt, für Bons, Zahlen und Uhrzeiten wie auf Thermopapier.
+   Bewusst nicht Bricolage Grotesque und JetBrains Mono: die trägt jockjock.de. */
 @font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("/fonts/bricolage.woff2") format("woff2");
-  font-weight: 200 800;
-  font-stretch: 75% 100%;
+  font-family: "Anybody";
+  src: url("/fonts/anybody.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
   font-display: swap;
 }
 @font-face {
-  font-family: "JetBrains Mono";
-  src: url("/fonts/jetbrains-mono.woff2") format("woff2");
+  font-family: "Rethink Sans";
+  src: url("/fonts/rethink-sans.woff2") format("woff2");
   font-weight: 400 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("/fonts/martian-mono.woff2") format("woff2");
+  font-weight: 100 800;
+  font-stretch: 75% 112.5%;
   font-display: swap;
 }
 
@@ -46,8 +54,9 @@
   --color-prognose: #2fd3b4;
   --color-kork: #b88a5a;
 
-  --font-sans: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Anybody", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Rethink Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --ease-weich: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-feder: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -68,13 +77,20 @@
 
 /* Überschriften: schmal und fett wie die Beschriftung über einer Theke */
 @utility titel {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-stretch: 78%;
-  font-variation-settings: "opsz" 96;
+  font-family: var(--font-display);
+  font-weight: 850;
+  font-stretch: 62%;
   line-height: 0.95;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+/* Kleinere Überschriften und Notizzettel in derselben Schrift, etwas breiter */
+@utility schild {
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-stretch: 85%;
+  letter-spacing: -0.005em;
 }
 
 /* Kleine Beschriftungen in Diagrammen, auf Bons und Preisschildern.
@@ -112,7 +128,6 @@
   padding: 0.8em 1.5em;
   border-radius: 999px;
   font-weight: 700;
-  font-stretch: 90%;
   font-size: 1.0625rem;
   line-height: 1.1;
   transition:
@@ -228,7 +243,16 @@
   body {
     font-size: 1.0625rem;
     line-height: 1.6;
-    font-variation-settings: "opsz" 14;
+  }
+  /* Martian Mono schmal stellen, sonst läuft jeder Bon in die Breite.
+     Bons ganz schmal wie Thermopapier, alles andere etwas breiter. */
+  .font-mono,
+  .etikett,
+  .preisschild {
+    font-stretch: 87.5%;
+  }
+  .bon {
+    font-stretch: 75%;
   }
   ::selection {
     background: var(--color-senf);

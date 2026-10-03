@@ -1,5 +1,5 @@
 """
-Wandelt die Texte des Vorschaubilds in SVG-Pfade um (Bricolage Grotesque) und
+Wandelt die Texte des Vorschaubilds in SVG-Pfade um (Anybody, Rethink Sans) und
 schreibt sie nach scripts/icons/: wortmarke.svg ("ByteWurst", fett, schmal)
 und zeile.svg (die Unterzeile). make-icons.mjs setzt daraus og-image.jpg.
 
@@ -15,11 +15,11 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 
 WURZEL = Path(__file__).resolve().parent.parent
-QUELLE = WURZEL / 'public' / 'fonts' / 'bricolage.woff2'
+SCHRIFTEN = WURZEL / 'public' / 'fonts'
 
 
-def setzen(teile, achsen, datei):
-    schrift = instantiateVariableFont(TTFont(QUELLE), achsen)
+def setzen(teile, quelle, achsen, datei):
+    schrift = instantiateVariableFont(TTFont(SCHRIFTEN / quelle), achsen)
     glyphen = schrift.getGlyphSet()
     zuordnung = schrift.getBestCmap()
     oben = schrift['hhea'].ascent
@@ -39,5 +39,5 @@ def setzen(teile, achsen, datei):
     print(f'{ziel.relative_to(WURZEL)}: {x} x {oben + unten}')
 
 
-setzen([('Byte', '#fffdf8'), ('Wurst', '#f1b92d')], {'wght': 800, 'wdth': 80, 'opsz': 96}, 'wortmarke.svg')
-setzen([('Umsatzprognose für Metzgereien', '#fffdf8')], {'wght': 600, 'wdth': 90, 'opsz': 48}, 'zeile.svg')
+setzen([('Byte', '#fffdf8'), ('Wurst', '#f1b92d')], 'anybody.woff2', {'wght': 850, 'wdth': 75}, 'wortmarke.svg')
+setzen([('Umsatzprognose für Metzgereien', '#fffdf8')], 'rethink-sans.woff2', {'wght': 600}, 'zeile.svg')

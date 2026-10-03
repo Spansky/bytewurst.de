@@ -89,7 +89,7 @@ export default function Impressum() {
       <section>
         <h2>Schriften</h2>
         <p>
-          Bricolage Grotesque und JetBrains Mono, beide unter der SIL Open Font License. Sie liegen auf unserem eigenen Server,
+          Anybody, Rethink Sans und Martian Mono, alle unter der SIL Open Font License. Sie liegen auf unserem eigenen Server,
           beim Laden der Seite wird kein fremder Dienst angefragt.
         </p>
       </section>
