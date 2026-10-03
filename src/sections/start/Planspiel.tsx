@@ -13,7 +13,7 @@ import { ganz } from '../../lib/format'
   Seite so gekennzeichnet (src/data/start.ts).
 */
 
-const RUNDEN_NAME = ['Erster Tag', 'Zweiter Tag', 'Letzter Tag']
+const RUNDEN_NAME = ['Tag eins von drei', 'Tag zwei von drei', 'Tag drei von drei']
 
 type Ergebnis = { plan: number; prognose: number; verkauft: number }
 
@@ -99,7 +99,7 @@ export default function Planspiel() {
   const daneben = Math.abs(plan - r.verkauft)
 
   return (
-    <section aria-labelledby="spiel-titel" className="relative bg-nacht py-20 text-kreide md:py-28">
+    <section aria-labelledby="spiel-titel" className="fokus-hell relative bg-nacht py-20 text-kreide md:py-28">
       <div className="rahmen">
         <div className="max-w-3xl">
           <h2 id="spiel-titel" className="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">
@@ -114,8 +114,8 @@ export default function Planspiel() {
         <div className="mt-12 grid gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Linke Karte: die Lage und der Regler */}
           <div className="rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-8 lg:col-span-5">
-            <p className="etikett text-senf">{RUNDEN_NAME[runde]}</p>
-            <h3 className="titel mt-2 text-4xl md:text-5xl">{r.tag}</h3>
+            <h3 className="titel text-4xl md:text-5xl">{r.tag}</h3>
+            <p className="mt-1 font-semibold text-senf">{RUNDEN_NAME[runde]}</p>
             <p className="mt-4 leading-relaxed text-kreide/85">{r.lage}</p>
             <p className="mt-3 font-mono text-sm text-nebel">
               Letzte Woche am selben Tag: <strong className="text-kreide">{r.vorwoche} Stück</strong>
@@ -163,7 +163,7 @@ export default function Planspiel() {
           </div>
 
           {/* Rechte Karte: Auflösung */}
-          <div className="flex flex-col rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-8 lg:col-span-7" aria-live="polite">
+          <div className="flex flex-col rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-8 lg:col-span-7">
             <div className="space-y-4">
               <Wurstbalken name="Dein Plan" wert={plan} verkauft={aufgedeckt ? r.verkauft : undefined} farbe="var(--color-senf)" sichtbar verzug={0} />
               <Wurstbalken name="ByteWurst" wert={r.prognose} verkauft={r.verkauft} farbe="var(--color-prognose)" sichtbar={aufgedeckt} verzug={150} />
@@ -178,7 +178,7 @@ export default function Planspiel() {
                 folgen
                 className="h-auto w-24 shrink-0 sm:w-28"
               />
-              <div className="min-w-0">
+              <div className="min-w-0" aria-live="polite" aria-atomic="true">
                 {!aufgedeckt ? (
                   <p className="text-lg leading-snug">
                     Meine Zahl steht schon. <span className="text-nebel">Du zuerst.</span>
@@ -196,25 +196,26 @@ export default function Planspiel() {
           </div>
         </div>
 
-        {fertig && (
-          <div className="mt-6 flex flex-col gap-6 rounded-3xl bg-senf p-6 text-tinte md:flex-row md:items-center md:justify-between md:p-8">
-            <div>
-              <p className="titel text-3xl md:text-4xl">
-                Drei Tage: Du lagst {ganz(summeDu)} Stück daneben, ByteWurst {ganz(summeBw)}.
-              </p>
-              <p className="mt-2 max-w-2xl">
-                {summeDu <= summeBw + 10
-                  ? 'Starkes Bauchgefühl. Und jetzt stell dir vor, das hätte jeder in deinem Team, auch wenn du im Urlaub bist.'
-                  : 'Kein Vorwurf, Bratwurst ist schwer. Genau dafür rechnet ByteWurst jede Nacht, für jede Warengruppe und jeden Tag.'}
-              </p>
+        <div aria-live="polite">
+          {fertig && (
+            <div className="fokus-dunkel mt-6 flex flex-col gap-6 rounded-3xl bg-senf p-6 text-tinte md:flex-row md:items-center md:justify-between md:p-8">
+              <div>
+                <p className="titel text-3xl md:text-4xl">
+                  Drei Tage: Du lagst {ganz(summeDu)} Stück daneben, ByteWurst {ganz(summeBw)}.
+                </p>
+                <p className="mt-2 max-w-2xl">
+                  {summeDu <= summeBw + 10
+                    ? 'Starkes Bauchgefühl. Und jetzt stell dir vor, das hätte jeder in deinem Team, auch wenn du im Urlaub bist.'
+                    : 'Kein Vorwurf, Bratwurst ist schwer. Genau dafür rechnet ByteWurst jede Nacht, für jede Warengruppe und jeden Tag.'}
+                </p>
+              </div>
+              <Knoepfe className="shrink-0" />
             </div>
-            <Knoepfe className="shrink-0" />
-          </div>
-        )}
+          )}
+        </div>
 
         <p className="mt-6 max-w-3xl text-sm text-nebel">
-          Die Zahlen im Spiel sind ausgedacht. Wie gut die Prognose bei dir trifft, zeigt dir die Demo mit deinen eigenen
-          Verkaufsdaten.
+          Die Zahlen im Spiel sind ausgedacht. Wie gut die Prognose bei dir trifft, zeigen erst deine eigenen Verkaufsdaten.
         </p>
       </div>
     </section>

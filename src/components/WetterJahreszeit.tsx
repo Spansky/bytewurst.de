@@ -11,7 +11,7 @@ import Fenster from './Fenster'
 */
 const B = 600
 const H = 240
-const RAND = { l: 12, r: 12, o: 14, u: 26 }
+const RAND = { l: 12, r: 12, o: 14, u: 32 }
 const MONATE = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
 
 const komma = (r: number) => r.toFixed(2).replace('.', ',')
@@ -32,7 +32,7 @@ export default function WetterJahreszeit({ className = '' }: { className?: strin
   const r = woche ? grill.rWoche : grill.rTag
 
   return (
-    <Fenster titel="Umsatzreport, Grillgut und Temperatur" fuss="Ein ausgedachtes Jahr. Die Korrelation ist echt ausgerechnet." className={className}>
+    <Fenster titel="Umsatzreport, Grillgut und Temperatur" fuss="0 = kein Zusammenhang, 1 = vollständiger. Ein ausgedachtes Jahr, der Wert ist echt ausgerechnet." className={className}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="inline-flex rounded-full border border-nacht-linie p-1" role="group" aria-label="Zeitraster">
           {[
@@ -50,14 +50,14 @@ export default function WetterJahreszeit({ className = '' }: { className?: strin
             </button>
           ))}
         </div>
-        <p className="ziffern font-mono text-sm" aria-live="polite">
-          Pearson-R <strong className="text-2xl text-senf">{komma(r)}</strong>
+        <p className="ziffern font-mono text-sm" aria-live="polite" aria-atomic="true">
+          Zusammenhang <span className="text-nebel">(Pearson-R)</span> <strong className="text-2xl text-senf">{komma(r)}</strong>
         </p>
       </div>
 
       <svg viewBox={`0 0 ${B} ${H}`} className="mt-4 h-auto w-full" role="img" aria-label={`Temperatur und Absatz über ein Jahr, ${woche ? 'je Woche' : 'je Tag'}`}>
         {MONATE.map((m, i) => (
-          <text key={m} x={RAND.l + ((B - RAND.l - RAND.r) / 12) * (i + 0.5)} y={H - 6} textAnchor="middle" className="fill-nebel font-mono text-[10px]">
+          <text key={m} x={RAND.l + ((B - RAND.l - RAND.r) / 12) * (i + 0.5)} y={H - 6} textAnchor="middle" className="fill-nebel font-mono text-[20px] md:text-[10px]">
             {m}
           </text>
         ))}
@@ -75,7 +75,7 @@ export default function WetterJahreszeit({ className = '' }: { className?: strin
       <p className="mt-4 rounded-lg bg-nacht-hell px-4 py-3 text-[0.9375rem] leading-relaxed text-kreide/90">
         {woche
           ? 'Zur Woche zusammengefasst sieht der Zusammenhang plötzlich stark aus. Aber Vorsicht: Was da gemeinsam steigt, ist vor allem die Jahreszeit. Der Sommer bringt Wärme und Grilllaune gleichzeitig.'
-          : 'Tag für Tag wirkt der Zusammenhang schwach. Ein Feiertag, eine Großbestellung, der starke Samstag: An einzelnen Tagen passiert viel, das mit dem Wetter nichts zu tun hat.'}
+          : 'Tag für Tag wirkt der Zusammenhang schwach. Ein Feiertag, eine Großbestellung, der starke Samstag: An einzelnen Tagen passiert viel, was mit dem Wetter nichts zu tun hat.'}
       </p>
     </Fenster>
   )

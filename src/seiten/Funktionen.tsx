@@ -8,6 +8,7 @@ import WetterJahreszeit from '../components/WetterJahreszeit'
 import Wochenvergleich from '../components/Wochenvergleich'
 import Wursti from '../components/Wursti'
 import { auslage, weg } from '../data/funktionen'
+import { GROESSEN } from '../data/seiten'
 import Schluss from '../sections/start/Schluss'
 
 /** Ein Abschnitt: Text auf der einen Seite, Diagramm auf der anderen */
@@ -27,7 +28,7 @@ function Abschnitt({
   dunkel?: boolean
 }) {
   return (
-    <section aria-labelledby={id} className={dunkel ? 'bg-nacht py-20 text-kreide md:py-28' : 'bg-papier py-20 md:py-28'}>
+    <section aria-labelledby={id} className={dunkel ? 'fokus-hell bg-nacht py-20 text-kreide md:py-28' : 'bg-papier py-20 md:py-28'}>
       <div className="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className={`lg:col-span-5 ${gespiegelt ? 'lg:order-2 lg:col-start-8' : ''}`}>
           <h2 id={id} className="titel text-[clamp(2.3rem,4.8vw,3.9rem)]">
@@ -51,8 +52,9 @@ export default function Funktionen() {
               Was die Wurst nachts so alles rechnet.
             </h1>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-tinte/85 md:text-xl">
-              Jede Nacht holt sich ByteWurst die Verkaufsdaten aus deinem Warenwirtschaftssystem. Morgens weißt du, was nächste
-              Woche gefragt ist, wann deine Kundschaft kommt und was deine letzte Aktion gebracht hat. Alle Diagramme auf dieser
+              Deine Kasse sammelt jeden Bon, aber für Auswertungen fehlt abends die Zeit. Deshalb holt sich ByteWurst die
+              Verkaufsdaten jede Nacht selbst aus deinem Warenwirtschaftssystem. Morgens weißt du, was nächste Woche gefragt ist.
+              Daneben steht, wann deine Kundschaft kommt und was deine letzte Aktion gebracht hat. Alle Diagramme auf dieser
               Seite kannst du anfassen.
             </p>
             <Knoepfe className="mt-9" />
@@ -62,8 +64,8 @@ export default function Funktionen() {
               <Bild
                 name="theke"
                 vorne
-                sizes="(min-width: 1024px) 46vw, 100vw"
-                alt="Lange Fleischtheke mit Glasaufsatz, dahinter weiße Wandfliesen und zwei Verkäufer in Lederschürzen. In der Auslage stecken kleine schwarze Preisschilder."
+                sizes={GROESSEN.theke}
+                alt="Lange Fleischtheke mit Glasaufsatz vor weißen Wandfliesen. Dahinter steht ein Verkäufer in Jeanshemd und Lederschürze, am rechten Rand ist der Arm eines zweiten zu sehen. In der Auslage stecken kleine schwarze Preisschilder."
                 className="aspect-[4/3] h-auto w-full object-cover"
               />
             </div>
@@ -74,20 +76,21 @@ export default function Funktionen() {
 
       <Abschnitt id="f-prognose" titel="Die Wochenprognose für deine Theke" bild={<Prognose />}>
         <p>
-          ByteWurst rechnet aus deinen eigenen Verkäufen der letzten Jahre aus, was in den kommenden sieben Tagen über die Theke
-          geht: je Warengruppe, je Wochentag. Sie erkennt Muster, die im Alltag untergehen, wie das erste Grillwochenende im Mai,
+          Mal landet zu viel in der Abschrift, mal ist das Grillsortiment am Samstagmittag aus. ByteWurst rechnet dir aus deinen
+          eigenen Verkäufen der letzten Jahre aus, was in den kommenden sieben Tagen über die Theke geht: je Warengruppe, je
+          Wochentag. Sie erkennt Muster, die im Alltag untergehen, wie das erste Grillwochenende im Mai,
           die Leberkäs-Spitze am Samstagvormittag oder das Ferienloch im August.
         </p>
         <p>
-          Damit plant dein Team das Sortiment mit Fakten statt Bauchgefühl, egal wer gerade hinter der Theke steht. Weniger
-          Abschriften am Montag, keine leere Theke am Samstag.
+          Damit plant dein Team das Sortiment nach Zahlen, egal wer gerade hinter der Theke steht. Weniger Abschriften am
+          Montag, keine leere Theke am Samstag.
         </p>
       </Abschnitt>
 
       <Abschnitt id="f-woche" titel="Diese Woche gegen letzte Woche" bild={<Wochenvergleich />} gespiegelt dunkel>
         <p>
-          Tipp auf einen Wochentag und sieh, wie die Woche gegen die Vorwoche läuft. Genau so einfach fühlt sich die ganze
-          Anwendung an.
+          Lief der Samstag jetzt gut oder nur gefühlt? Tipp auf einen Wochentag und sieh, wie die Woche gegen die Vorwoche
+          läuft. Genau so einfach fühlt sich die ganze Anwendung an.
         </p>
         <p>
           Im Umsatzreport wählst du, ob du Euro, Kilogramm oder Stück sehen willst, für einzelne Artikel oder ganze
@@ -98,8 +101,9 @@ export default function Funktionen() {
 
       <Abschnitt id="f-aktion" titel="Der Wahrheitstest für jede Aktion" bild={<Aktionswoche />}>
         <p>
-          Zeitungsannonce, Instagram, Sonderpreis aufs Hackfleisch: Nach jeder Aktion zeigt dir ByteWurst schwarz auf weiß, was
-          sie deinem Gesamtumsatz gebracht hat. Nicht nur dem Aktionsartikel.
+          Zeitungsannonce, Instagram, Sonderpreis aufs Hackfleisch: Der Laden war voll, aber ob unterm Strich mehr hängen
+          geblieben ist, weiß keiner. Nach jeder Aktion zeigt dir ByteWurst schwarz auf weiß, was sie dem Umsatz des ganzen
+          Ladens gebracht hat. Am Aktionsartikel allein siehst du das nicht.
         </p>
         <p>
           Du siehst Besucher, Umsatz und Bon-Höhe im Vorher-Nachher-Vergleich und ob deine Kunden zusätzlich gekauft haben oder
@@ -114,8 +118,8 @@ export default function Funktionen() {
         </p>
         <p>
           Dafür misst sie, wie eng Verkauf und Temperatur zusammenlaufen. Schalte im Diagramm zwischen Tagen und Wochen um und
-          sieh, wie aus einem schwachen Zusammenhang ein starker wird. Oft steckt dahinter nicht das Thermometer, sondern
-          schlicht der Kalender.
+          sieh, wie aus einem schwachen Zusammenhang ein starker wird. Oft steckt schlicht der Kalender dahinter, das
+          Thermometer läuft nur mit.
         </p>
         <p>
           Deshalb verlässt sich die Prognose nicht auf eine Faustregel. Sie wägt Wochentag, Jahreszeit, Feiertage und Wetter
@@ -127,7 +131,8 @@ export default function Funktionen() {
 
       <Abschnitt id="f-report" titel="Im Postfach und an der Pinnwand" bild={<Tagesreport className="mx-auto max-w-lg" />}>
         <p>
-          Jeden Morgen um 4 Uhr liegt dein Tagesreport im Postfach: Umsatz, Bon-Anzahl und Durchschnittsbon von gestern, die
+          Noch ein Programm, in das man sich einarbeiten muss? Musst du nicht. Jeden Morgen um 4 Uhr liegt dein Tagesreport im
+          Postfach: Umsatz, Bon-Anzahl und Durchschnittsbon von gestern, die
           Renner und Ladenhüter und wann deine Kundschaft kommt. Ohne Login, ohne App.
         </p>
         <p>
@@ -159,8 +164,7 @@ export default function Funktionen() {
               Von der Demo bis zum ersten Report.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-tinte/85">
-              Kein IT-Projekt, keine neue Kasse. Wir kommen gern zu dir in die Metzgerei, zeigen dir alles per Video oder am
-              Telefon.
+              Kein IT-Projekt, keine neue Kasse. So sieht der Weg aus, vom ersten Gespräch bis zur Mail um vier.
             </p>
           </div>
           <ol className="relative lg:col-span-7">

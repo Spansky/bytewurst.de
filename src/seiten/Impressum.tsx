@@ -1,6 +1,6 @@
 import Rechtsseite from '../components/Rechtsseite'
 import bildnachweis from '../data/bildnachweis.json'
-import { firma, KONZEPT } from '../data/betrieb'
+import { firma, KONZEPT, konzeptAnbieter as jj } from '../data/betrieb'
 
 export default function Impressum() {
   return (
@@ -9,6 +9,20 @@ export default function Impressum() {
         <h2>Angaben gemäß § 5 DDG</h2>
         {KONZEPT ? (
           <>
+            <p>
+              {jj.name}
+              <br />
+              {jj.inhaber}
+              <br />
+              {jj.strasse}
+              <br />
+              {jj.plz} {jj.ort}
+            </p>
+            <p>
+              Telefon: <a href={`tel:${jj.telefonRoh}`}>{jj.telefon}</a>
+              <br />
+              E-Mail: <a href={`mailto:${jj.email}`}>{jj.email}</a>
+            </p>
             <p>
               Diese Seite ist ein Konzeptentwurf von Jock&amp;Jock für ByteWurst. Sie ist kein offizieller Auftritt der{' '}
               {firma.name} und wurde von ihr weder beauftragt noch freigegeben.

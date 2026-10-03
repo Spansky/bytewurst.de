@@ -2,6 +2,7 @@ import Bild from '../../components/Bild'
 import Knoepfe from '../../components/Knoepfe'
 import WurstiBuehne from '../../components/WurstiBuehne'
 import { prognoseGruppen } from '../../data/beispiele'
+import { GROESSEN } from '../../data/seiten'
 import { euro } from '../../lib/format'
 
 /* Der erste Bildschirm: das Versprechen, das Schaufenster, Wursti zum Anstupsen. */
@@ -17,9 +18,9 @@ export default function Einstieg() {
             Dein Bauchgefühl ist gut. Deine Kasse weiß es besser.
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-relaxed text-tinte/85 md:text-xl">
-            ByteWurst rechnet jede Nacht aus deinen Verkaufsdaten aus, was nächste Woche über deine Theke geht. Um vier Uhr
-            früh liegt dein Report im Postfach: wie viel du produzieren solltest und ob sich die letzte Aktion wirklich
-            gerechnet hat.
+            ByteWurst rechnet jede Nacht aus deinen Verkaufsdaten aus, was nächste Woche über deine Theke geht und wie viel du
+            produzieren solltest. Um vier Uhr früh liegt dein Report im Postfach. Und nach jeder Aktion siehst du schwarz auf
+            weiß, ob sie sich gerechnet hat.
           </p>
           <Knoepfe className="mt-9" />
           <p className="mt-6 max-w-lg text-[0.9375rem] text-grau">
@@ -32,13 +33,13 @@ export default function Einstieg() {
             <Bild
               name="schaufenster"
               vorne
-              sizes="(min-width: 1024px) 46vw, (min-width: 576px) 576px, 100vw"
+              sizes={GROESSEN.schaufenster}
               alt="Schaufenster einer Metzgerei: Salami und Würste hängen an Schnüren, davor eine alte weiße Waage auf einem Holztisch, darüber eine Leuchtschrift."
               className="aspect-[4/3] h-auto w-full object-cover"
             />
           </div>
 
-          <div className="bon-schatten absolute -bottom-14 -left-2 w-44 -rotate-[5deg] sm:-bottom-10 sm:-left-8 sm:w-60">
+          <div className="bon-schatten absolute -top-10 -left-2 w-44 -rotate-[5deg] sm:top-auto sm:-bottom-10 sm:-left-8 sm:w-60">
             <div className="bon px-3 text-[0.6875rem] sm:px-4 sm:text-[0.8125rem]">
               <p className="text-center font-bold tracking-wide">BYTEWURST</p>
               <p className="text-center text-[0.75rem]">Prognose für Samstag</p>

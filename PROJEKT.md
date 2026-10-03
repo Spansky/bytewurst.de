@@ -6,7 +6,8 @@ Wird nicht automatisch geladen. Regeln stehen in CLAUDE.md.
 
 Konzeptentwurf mit Startseite, Funktionen, Preise, Impressum, Datenschutz und 404.
 Gebaut aus dem, was bytewurst.de, bytebutchers.de und die Websuche hergeben.
-Lokal gebaut und geprüft, noch nicht ausgeliefert.
+Abnahme mit allen fünf Prüfern durchlaufen, Blocker und wichtige Befunde behoben.
+Lokal gebaut und geprüft, noch nicht ausgeliefert (Repo fehlt auf GitHub).
 
 ## Recherche in Kürze
 
@@ -30,11 +31,19 @@ Muss ByteButchers bestätigen oder liefern, bevor `KONZEPT` auf `false` geht:
 
 - [ ] Grundsätzlich: Wollen sie diese Seite, und unter welcher Adresse? bytewurst.de ist
       heute die Anwendung selbst, die Seite bräuchte eine eigene Domain oder einen Pfad.
-- [ ] Impressum, Datenschutzerklärung und verantwortliche Stelle (Hoster, Logs).
+- [ ] Impressum, Datenschutzerklärung und verantwortliche Stelle (Hoster, Logs). Im
+      Konzeptmodus steht Jock&Jock als Anbieter drin, die Löschfrist der Server-Logs fehlt.
+- [ ] Datenimport: Muss für den nächtlichen Import etwas exportiert oder hochgeladen werden?
+      Die Preistabelle nennt "Daten-Upload", die Release Notes sprechen vom Hochladen ganzer
+      Jahre. Die Seite sagt deshalb nur "holt sich automatisch".
+- [ ] Läuft die Demo mit den eigenen Zahlen des Metzgers? Wäre ein starkes Argument, ist
+      aber nicht belegt und steht deshalb nicht auf der Seite.
 - [ ] Kundengeschichten so erzählbar? Hackfleisch-Aktion und die 4-Uhr-Mail stehen auf
-      bytewurst.de, hier sind sie nacherzählt.
-- [ ] "Besucher +28 %, Umsatz ±0 %, Ø Bon −22 %" im Wahrheitstest: Auf bytewurst.de als
-      Illustration gezeigt, hier als Beispielauswertung. Die −22 % sind daraus errechnet.
+      bytewurst.de, hier sind sie nacherzählt, ohne etwas hinzuzufügen.
+- [ ] Tagesreport: bytewurst.de zeigt 4.812 € bei 318 Bons und Ø 15,10 €, das wären
+      15,13 €. Hier steht der errechnete Wert.
+- [ ] "Besucher +28 %, Umsatz ±0 %, Ø Bon -22 %" im Wahrheitstest: Auf bytewurst.de als
+      Illustration gezeigt, hier als Beispielauswertung. Die -22 % sind daraus errechnet.
 - [ ] Planspiel: ByteWurst liegt dort 2 bis 9 Stück daneben. Ausgedacht und so
       beschriftet, wirkt aber wie eine Genauigkeitsaussage. Passt das?
 - [ ] Preisrechner: "konservativ 2 % Effizienzgewinn" ist die Annahme aus ihrem eigenen

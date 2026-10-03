@@ -132,20 +132,20 @@ export default function Wursti({
       {/* Linker Arm */}
       <g transform="rotate(-25 30 55)">
         <rect x="18" y="50" width="20" height="8" rx="4" fill="var(--color-wurst-bein)" />
-        <circle cx="17" cy="54" r="6" fill="var(--color-wurst)" />
+        <circle cx="17" cy="54" r="6" fill="var(--color-wursti)" />
       </g>
       {/* Rechter Arm: dreht sich zum Winken um die Schulter bei 164/60 */}
       <g transform="translate(164 60)">
         <g className="wursti-arm wursti-arm-rechts">
           <g transform="translate(-164 -60) rotate(15 170 60)">
             <rect x="162" y="56" width="20" height="8" rx="4" fill="var(--color-wurst-bein)" />
-            <circle cx="183" cy="60" r="6" fill="var(--color-wurst)" />
+            <circle cx="183" cy="60" r="6" fill="var(--color-wursti)" />
           </g>
         </g>
       </g>
 
       {/* Körper */}
-      <ellipse cx="100" cy="58" rx="75" ry="32" fill="var(--color-wurst)" />
+      <ellipse cx="100" cy="58" rx="75" ry="32" fill="var(--color-wursti)" />
       <ellipse cx="95" cy="42" rx="55" ry="12" fill="#fff" opacity="0.15" />
       <g stroke="#000" strokeOpacity="0.12" strokeWidth="2.5" fill="none" strokeLinecap="round">
         <path d="M55 48 Q60 58 55 68" />

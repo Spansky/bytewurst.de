@@ -56,7 +56,13 @@ const software = {
   url: `${SEITEN_URL}/`,
   image: `${SEITEN_URL}/og-image.jpg`,
   description: 'Umsatzprognose und Reporting für Metzgereien. Rechnet nachts aus den Kassendaten, was nächste Woche über die Theke geht.',
-  publisher: { '@type': 'Organization', name: firma.name, address: `${firma.strasse}, ${firma.plz} ${firma.ort}` },
+  publisher: {
+    '@type': 'Organization',
+    name: firma.name,
+    telephone: firma.telefonRoh,
+    email: firma.email,
+    address: { '@type': 'PostalAddress', streetAddress: firma.strasse, postalCode: firma.plz, addressLocality: firma.ort, addressCountry: 'DE' },
+  },
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Kostenlos mit einer Filiale und drei Produkten' },
 }
 
@@ -79,7 +85,7 @@ for (const seite of seiten) {
     `<meta property="og:image:alt" content="Wursti, das Maskottchen von ByteWurst, neben dem Schriftzug ByteWurst" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     seite.vorladen
-      ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${bildSatz(seite.vorladen.name, 'avif')}" imagesizes="${seite.vorladen.sizes}" fetchpriority="high" />`
+      ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${bildSatz(seite.vorladen.name, 'avif')}" imagesizes="${seite.vorladen.sizes}"${seite.vorladen.media ? ` media="${seite.vorladen.media}"` : ''} fetchpriority="high" />`
       : '',
     ...vorladen(seite.quelle).map((f) => `<link rel="modulepreload" crossorigin href="/${f}" />`),
     seite.schluessel === 'start' && !KONZEPT ? `<script type="application/ld+json">${JSON.stringify(software)}</script>` : '',

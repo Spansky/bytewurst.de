@@ -30,8 +30,9 @@ netcup-Server auf, antwortet aber nicht. Nach dem Einrichten in Coolify
 
 Die Seite ist ein Entwurf von Jock&Jock, von ByteButchers weder beauftragt noch
 freigegeben. `KONZEPT = true` in `src/data/betrieb.ts` schaltet: `noindex` auf allen
-Seiten, `robots.txt` sperrt alles, kein JSON-LD, Hinweis in der Fußzeile, Impressum und
-Datenschutz nennen den Entwurf statt der Firma. Erst auf `false`, wenn ByteButchers
+Seiten, `robots.txt` sperrt alles, kein JSON-LD, Hinweis in der Fußzeile. Impressum und
+Datenschutz nennen dann Jock&Jock als Anbieter (`konzeptAnbieter`), denn unter der
+stevejocks-Adresse betreiben wir die Seite. Erst auf `false`, wenn ByteButchers
 abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
 
 ## Tatsachen
@@ -45,7 +46,24 @@ abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
   schwach (0,37) und je Woche stark (0,83) herauskommt, wie im Blogartikel. Wer die
   Daten ändert, prüft beide Werte, sonst widerspricht das Diagramm seinem Text.
 - Kassensysteme, Datenschutz der Anwendung, Serverstandort, Kundennamen: unbekannt,
-  deshalb nirgends genannt.
+  deshalb nirgends genannt. Ebenso offen: ob für den nächtlichen Import etwas exportiert
+  oder hochgeladen werden muss (die Preistabelle nennt "Daten-Upload") und ob die Demo mit
+  den eigenen Zahlen des Metzgers läuft. Beides nicht behaupten.
+- Kundengeschichten nur so, wie sie auf bytewurst.de stehen. Die Hackfleisch-Aktion hatte
+  dort keine Zeitungsanzeige, die ist ein eigenes Beispiel (Abnahme 2026-10-03).
+- "Alle zwölf Funktionen" gibt es nur bei Early Adopter. Kostenlos heißt 1 Filiale,
+  3 Produkte, Basis-Reports. Wer etwas mit "0 €" verbindet, nennt diese Grenze mit.
+- Negative Zahlen mit dem einfachen Bindestrich (`prozent()` in `lib/format.ts`), nicht
+  mit U+2212.
+
+## Farben und Fokus
+
+- `--color-wursti` (#c4532e) ist die Markenfarbe von Wursti und nur für ihn. Knöpfe und
+  Flächen nehmen `--color-wurst` (#b94d29), damit weiße Schrift und Text auf Fliese 4,5:1
+  schaffen.
+- Der Fokusring liest `--fokus`. Abschnitte auf Rot, Senf oder Nacht bekommen `fokus-hell`,
+  `fokus-papier` oder `fokus-dunkel`, sonst verschwindet der Ring im Grund. Neuer farbiger
+  Abschnitt: Klasse mitgeben.
 
 ## Abweichungen vom Hausstandard
 
@@ -90,7 +108,7 @@ ausführen und mit committen.
 | Nacht-Uhr von 19 bis 7 Uhr | `sections/start/Nacht.tsx` |
 | Bon mit allen Funktionen | `sections/start/Kassenzettel.tsx` |
 | Preisrechner mit Wurst-Regler | `components/Preisrechner.tsx`, `.wurstregler` in `index.css` |
-| Diagramme zum Anfassen | `components/Prognose.tsx`, `Wochenvergleich.tsx`, `WetterJahreszeit.tsx`, `Aktionswoche.tsx`, `Tagesreport.tsx` |
+| Diagramme zum Anfassen (alle) | `components/Prognose.tsx`, `Wochenvergleich.tsx`, `WetterJahreszeit.tsx`, `Aktionswoche.tsx`, `Tagesreport.tsx` |
 | Tarife an Fleischerhaken | `seiten/Preise.tsx` |
 
 ## Fallstricke
@@ -108,6 +126,17 @@ ausführen und mit committen.
   verrät das Spiel die Lösung.
 - **Zufall** in Beispieldaten nur über `lib/zufall.ts` mit festem Startwert, nie
   `Math.random`: das vorgerenderte HTML muss zum ersten Render passen.
-- **Fotos**: Das Theken-Foto ist rechts beschnitten (Schild mit Pfundpreis), das
-  Kaffeefoto auf die Tasse (Handy mit russischer Beschriftung). Zuschnitte in
+- **Fotos**: Das Theken-Foto ist rechts beschnitten (großes Schild mit Pfundpreis), die
+  kleinen Preisschilder mit Pfund bleiben lesbar, bis eigene Fotos kommen. Das Kaffeefoto
+  ist auf die Tasse beschnitten (Handy mit russischer Beschriftung). Zuschnitte in
   `scripts/prepare-images.mjs`, nicht wieder hereinnehmen.
+- **Vorladen**: Die `sizes` der Bilder im ersten Bildschirm stehen in `GROESSEN`
+  (`src/data/seiten.ts`) und werden von Bild und Vorladen gemeinsam benutzt. Weichen sie
+  ab, lädt der Browser zwei Größen. Das Bild der Preisseite ist erst ab 1024 px zu sehen,
+  deshalb lädt es dort per `media` vor.
+- **Diagramme**: Die Schrift in den SVGs ist in viewBox-Einheiten gesetzt, auf dem Handy
+  `text-[20px]`, ab md klein. Sonst ist sie bei 375 px nur 5 bis 6 px groß.
+- **Mobiles Menü**: Solange es offen ist, sind `#inhalt` und die Fußzeile `inert`.
+- **Wahrheitstest**: Mit Antwort ist der Bon höher als das Foto, unter lg reserviert der
+  Container Platz (`min-h`). Wer den Bon verlängert, prüft bei 375 px, dass er nicht in
+  den nächsten Abschnitt ragt.

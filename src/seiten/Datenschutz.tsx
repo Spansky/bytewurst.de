@@ -1,5 +1,5 @@
 import Rechtsseite from '../components/Rechtsseite'
-import { firma, KONZEPT } from '../data/betrieb'
+import { firma, KONZEPT, konzeptAnbieter as jj } from '../data/betrieb'
 
 export default function Datenschutz() {
   return (
@@ -16,7 +16,8 @@ export default function Datenschutz() {
         <h2>Verantwortlich</h2>
         {KONZEPT ? (
           <p>
-            Diese Seite ist ein Konzeptentwurf. Die verantwortliche Stelle steht hier, bevor die Seite offiziell an den Start geht.
+            {jj.name}, {jj.inhaber}, {jj.strasse}, {jj.plz} {jj.ort}. E-Mail: <a href={`mailto:${jj.email}`}>{jj.email}</a>. Diese
+            Seite ist ein Konzeptentwurf von Jock&amp;Jock, kein Auftritt der {firma.name}.
           </p>
         ) : (
           <p>
@@ -45,8 +46,8 @@ export default function Datenschutz() {
       <section>
         <h2>Links zu anderen Diensten</h2>
         <p>
-          Der Knopf „Demo buchen“ führt zur Terminbuchung bei cal.eu, „Einloggen“ und „Kostenlos starten“ führen zur Anwendung auf
-          bytewurst.de. Erst wenn du einen dieser Links anklickst, verlässt du diese Seite. Dort gelten die
+          Der Knopf „Demo buchen“ führt zur Terminbuchung bei cal.eu. „Einloggen“, „Kostenlos starten“ und „Early Adopter werden“
+          führen zur Anwendung auf bytewurst.de. Erst wenn du einen dieser Links anklickst, verlässt du diese Seite. Dort gelten die
           Datenschutzhinweise des jeweiligen Anbieters.
         </p>
       </section>

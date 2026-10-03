@@ -10,7 +10,7 @@ import Fenster from './Fenster'
 */
 const B = 600
 const H = 260
-const RAND = { l: 44, r: 16, o: 16, u: 34 }
+const RAND = { l: 52, r: 16, o: 16, u: 38 }
 const MAX = 7000
 
 export default function Wochenvergleich({ className = '' }: { className?: string }) {
@@ -31,7 +31,7 @@ export default function Wochenvergleich({ className = '' }: { className?: string
         {[0, 2000, 4000, 6000].map((v) => (
           <g key={v}>
             <line x1={RAND.l} x2={B - RAND.r} y1={y(v)} y2={y(v)} stroke="var(--color-nacht-linie)" strokeDasharray={v ? '3 5' : undefined} />
-            <text x={RAND.l - 8} y={y(v) + 4} textAnchor="end" className="fill-nebel font-mono text-[11px]">
+            <text x={RAND.l - 8} y={y(v)} dominantBaseline="middle" textAnchor="end" className="fill-nebel font-mono text-[20px] md:text-[11px]">
               {v ? `${v / 1000} k` : '0'}
             </text>
           </g>
@@ -43,7 +43,7 @@ export default function Wochenvergleich({ className = '' }: { className?: string
           <g key={i}>
             <circle cx={vorige[i][0]} cy={vorige[i][1]} r={i === tag ? 6 : 4} fill="var(--color-nacht)" stroke="var(--color-prognose)" strokeOpacity="0.6" strokeWidth="2" />
             <circle cx={px} cy={py} r={i === tag ? 7.5 : 5} fill="var(--color-prognose)" />
-            <text x={px} y={H - 10} textAnchor="middle" className={`font-mono text-[12px] ${i === tag ? 'fill-kreide' : 'fill-nebel'}`}>
+            <text x={px} y={H - 10} textAnchor="middle" className={`font-mono text-[20px] md:text-[12px] ${i === tag ? 'fill-kreide' : 'fill-nebel'}`}>
               {TAGE_KURZ[i]}
             </text>
           </g>
@@ -64,7 +64,7 @@ export default function Wochenvergleich({ className = '' }: { className?: string
           </button>
         ))}
       </div>
-      <p className="ziffern mt-3 rounded-lg border border-nacht-linie px-3 py-2.5 text-center font-mono text-sm" aria-live="polite">
+      <p className="ziffern mt-3 rounded-lg border border-nacht-linie px-3 py-2.5 text-center font-mono text-sm" aria-live="polite" aria-atomic="true">
         <strong className="text-kreide">{TAGE_LANG[tag]}:</strong> {euro(w.diese[tag])}
         <span className="text-nebel"> gegen {euro(w.vorige[tag])} </span>
         <strong className={unterschied >= 0 ? 'text-prognose' : 'text-senf'}>{prozent(unterschied)}</strong>

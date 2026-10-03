@@ -12,14 +12,14 @@ const SEITEN = [
 
 export default function Fusszeile() {
   return (
-    <footer className="bg-nacht pb-[env(safe-area-inset-bottom)] text-kreide">
+    <footer className="fokus-hell bg-nacht pb-[env(safe-area-inset-bottom)] text-kreide">
       <div className="rahmen grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
           <a href="/" aria-label="ByteWurst, zur Startseite" className="inline-block text-2xl">
             <Logo hell />
           </a>
           <p className="mt-5 max-w-sm text-nebel">
-            Umsatzprognose und Reporting für Metzgereien. Gemeinsam mit Metzgern entwickelt, rechnet nachts in der Cloud.
+            Umsatzprognose und Reporting für Metzgereien, gemeinsam mit Metzgern entwickelt. Gerechnet wird nachts in der Cloud.
           </p>
           <p className="mt-6 text-sm text-nebel">
             Auch von ByteButchers:{' '}
@@ -32,19 +32,19 @@ export default function Fusszeile() {
 
         <div className="md:col-span-4">
           <h2 className="etikett text-nebel">Reden wir über Wurst</h2>
-          <ul className="mt-4 space-y-2.5">
+          <ul className="mt-3">
             <li>
-              <a href={`tel:${firma.telefonRoh}`} className="text-xl font-bold hover:text-senf">
+              <a href={`tel:${firma.telefonRoh}`} className="inline-flex min-h-11 items-center text-xl font-bold hover:text-senf">
                 {firma.telefon}
               </a>
             </li>
             <li>
-              <a href={`mailto:${firma.email}`} className="hover:text-senf">
+              <a href={`mailto:${firma.email}`} className="inline-flex min-h-11 items-center hover:text-senf">
                 {firma.email}
               </a>
             </li>
             <li>
-              <a href={firma.demo} target="_blank" rel="noopener" className="font-semibold text-senf underline underline-offset-4 hover:text-senf-hell">
+              <a href={firma.demo} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center font-semibold text-senf underline underline-offset-4 hover:text-senf-hell">
                 Demo-Termin aussuchen
               </a>
             </li>
@@ -58,10 +58,10 @@ export default function Fusszeile() {
 
         <nav aria-label="Seiten" className="md:col-span-3">
           <h2 className="etikett text-nebel">Seiten</h2>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-3">
             {SEITEN.map((s) => (
               <li key={s.pfad}>
-                <a href={s.pfad} className="text-kreide/90 underline-offset-4 transition-colors hover:text-senf hover:underline">
+                <a href={s.pfad} className="inline-flex min-h-11 items-center text-kreide/90 underline-offset-4 transition-colors hover:text-senf hover:underline">
                   {s.name}
                 </a>
               </li>

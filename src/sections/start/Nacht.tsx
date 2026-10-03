@@ -237,7 +237,7 @@ export default function Nacht() {
   }
 
   return (
-    <section aria-labelledby="nacht-titel" className="bg-nacht py-20 text-kreide md:py-28">
+    <section aria-labelledby="nacht-titel" className="fokus-hell bg-nacht py-20 text-kreide md:py-28">
       <div className="rahmen">
         <div className="max-w-3xl">
           <h2 id="nacht-titel" className="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">
@@ -305,8 +305,10 @@ export default function Nacht() {
           </div>
 
           <div className="flex flex-col gap-6 lg:col-span-5">
-            <div className="rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-7" aria-live="polite">
-              <p className="etikett text-senf">{station.titel}</p>
+            <div className="rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-7" aria-live={laeuft ? 'off' : 'polite'} aria-atomic="true">
+              <h3 className="text-2xl font-bold text-senf" style={{ fontStretch: '80%' }}>
+                {station.titel}
+              </h3>
               <p className="mt-2 text-xl leading-snug">{station.text}</p>
             </div>
             {/* Mail und leeres Postfach liegen übereinander, damit die Höhe beim Eintreffen nicht springt */}

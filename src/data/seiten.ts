@@ -1,3 +1,13 @@
+/**
+ * sizes der Bilder im ersten Bildschirm. Bild und Vorladen im Kopf müssen exakt
+ * dieselbe Angabe haben, sonst lädt der Browser zwei Größen (Abnahme 2026-10-03).
+ */
+export const GROESSEN = {
+  schaufenster: '(min-width: 1024px) 46vw, (min-width: 576px) 576px, 100vw',
+  theke: '(min-width: 1024px) 46vw, 100vw',
+  wurstSenf: '(min-width: 1024px) 30vw, 1px',
+} as const
+
 /*
   Alle Routen mit Titel und Beschreibung. Daraus bauen main.tsx (welche Seite
   laden), entry-server.tsx (vorrendern) und scripts/prerender.mjs (Kopfbereich,
@@ -18,8 +28,8 @@ export type Seite = {
   quelle: string
   /** In sitemap.xml aufnehmen */
   sitemap: boolean
-  /** Bild im ersten Bildschirm, wird im Kopf vorgeladen */
-  vorladen?: { name: string; sizes: string }
+  /** Bild im ersten Bildschirm, wird im Kopf vorgeladen. media: nur dort, wo es sichtbar ist */
+  vorladen?: { name: string; sizes: string; media?: string }
 }
 
 export const seiten: Seite[] = [
@@ -32,7 +42,7 @@ export const seiten: Seite[] = [
       'ByteWurst rechnet nachts aus deinen Kassendaten aus, was nächste Woche über deine Theke geht. Um 4 Uhr früh liegt der Report im Postfach. Ohne neue Kasse.',
     datei: 'index.html',
     sitemap: true,
-    vorladen: { name: 'schaufenster', sizes: '(min-width: 1024px) 46vw, 100vw' },
+    vorladen: { name: 'schaufenster', sizes: GROESSEN.schaufenster },
   },
   {
     schluessel: 'funktionen',
@@ -43,7 +53,7 @@ export const seiten: Seite[] = [
       'Wochenprognose je Warengruppe, Aktions-Auswertung, Stoßzeiten, Bon-Kennzahlen und Filialvergleich. Was ByteWurst jede Nacht aus deiner Kasse rechnet.',
     datei: 'funktionen/index.html',
     sitemap: true,
-    vorladen: { name: 'theke', sizes: '(min-width: 1024px) 46vw, 100vw' },
+    vorladen: { name: 'theke', sizes: GROESSEN.theke },
   },
   {
     schluessel: 'preise',
@@ -51,16 +61,17 @@ export const seiten: Seite[] = [
     pfad: '/preise/',
     titel: 'Preise - ByteWurst für Metzgereien',
     beschreibung:
-      'Kostenlos starten mit einer Filiale. Danach 5 Euro je 100.000 Euro Jahresumsatz im Monat. Die Landmetzgerei zahlt nicht wie die Kette.',
+      'Kostenlos starten mit einer Filiale und drei Produkten. Danach 5 Euro im Monat je 100.000 Euro Vorjahresumsatz. Die Landmetzgerei zahlt nicht wie die Kette.',
     datei: 'preise/index.html',
     sitemap: true,
+    vorladen: { name: 'wurst-senf', sizes: GROESSEN.wurstSenf, media: '(min-width: 1024px)' },
   },
   {
     schluessel: 'impressum',
     quelle: 'src/seiten/Impressum.tsx',
     pfad: '/impressum/',
     titel: 'Impressum - ByteWurst',
-    beschreibung: 'Impressum und Bildnachweis von ByteWurst.',
+    beschreibung: 'Impressum der Seite über ByteWurst, die Umsatzprognose für Metzgereien: wer sie betreibt, wer sie gestaltet hat und von wem die Fotos stammen.',
     datei: 'impressum/index.html',
     sitemap: true,
   },
@@ -69,7 +80,7 @@ export const seiten: Seite[] = [
     quelle: 'src/seiten/Datenschutz.tsx',
     pfad: '/datenschutz/',
     titel: 'Datenschutz - ByteWurst',
-    beschreibung: 'Datenschutzerklärung: keine Cookies, kein Tracking, Schriften und Bilder vom eigenen Server.',
+    beschreibung: 'Datenschutz auf einen Blick: keine Cookies, kein Tracking, Schriften und Bilder vom eigenen Server. Spiele und Diagramme laufen nur in deinem Browser.',
     datei: 'datenschutz/index.html',
     sitemap: true,
   },
@@ -78,7 +89,7 @@ export const seiten: Seite[] = [
     quelle: 'src/seiten/NichtGefunden.tsx',
     pfad: '/404',
     titel: 'Nicht gefunden - ByteWurst',
-    beschreibung: 'Diese Seite ist leider aus.',
+    beschreibung: 'Diese Seite ist leider aus. Hätten wir mal eine Prognose gemacht. Zur Startseite, zu den Funktionen oder zu den Preisen von ByteWurst geht es hier weiter.',
     datei: '404.html',
     sitemap: false,
   },

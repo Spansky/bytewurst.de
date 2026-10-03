@@ -1,7 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
 import Wursti from '../../components/Wursti'
+import { tarife } from '../../data/preise'
 import { posten } from '../../data/start'
+
+const kostenlos = tarife[0]
 
 /*
   Alles, was in ByteWurst steckt, als Kassenbon. Er druckt sich, sobald er
@@ -9,14 +12,15 @@ import { posten } from '../../data/start'
 */
 export default function Kassenzettel() {
   return (
-    <section aria-labelledby="posten-titel" className="relative bg-wurst py-20 text-papier md:py-28">
+    <section aria-labelledby="posten-titel" className="fokus-papier relative bg-wurst py-20 text-papier md:py-28">
       <div className="rahmen grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <h2 id="posten-titel" className="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">
             Alles, was in der Wurst steckt.
           </h2>
-          <p className="mt-6 text-lg leading-relaxed text-papier/90">
-            Zwölf Posten auf einem Bon, und alle sind inklusive. Nur die Summe richtet sich nach deinem Umsatz.
+          <p className="mt-6 text-lg leading-relaxed text-papier">
+            Zwölf Posten auf einem Bon. Bei Early Adopter sind alle inklusive, nur die Summe richtet sich nach deinem Umsatz.
+            Zum Ausprobieren gibt es {kostenlos.leistungen.join(', ').replace(/, ([^,]*)$/, ' und $1')} kostenlos.
           </p>
           <a
             href="/funktionen/"
@@ -60,7 +64,9 @@ export default function Kassenzettel() {
                 <span>SUMME</span>
                 <span>je nach Umsatz</span>
               </div>
-              <p className="mt-1 text-right text-[0.8125rem] text-grau">Zum Ausprobieren: 0,00 €</p>
+              <p className="mt-1 text-right text-[0.8125rem] text-grau">
+                Zum Ausprobieren: {kostenlos.preis} ({kostenlos.leistungen.slice(0, 2).join(', ')})
+              </p>
               <div className="bon-linie my-4" />
               <div
                 aria-hidden="true"

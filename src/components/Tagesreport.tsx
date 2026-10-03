@@ -46,11 +46,11 @@ export default function Tagesreport({ className = '' }: { className?: string }) 
         </dl>
 
         <div>
-          <h3 className="etikett text-grau">Top 5 Produkte</h3>
+          <h3 className="etikett text-grau">Top-5-Produkte</h3>
           <ol className="mt-2 divide-y divide-fuge">
             {tagesreport.top.map((p, i) => (
               <li key={p} className="flex items-baseline gap-3 py-1.5">
-                <span className="ziffern w-4 font-mono text-sm text-wurst">{i + 1}</span>
+                <span className="ziffern w-4 font-mono text-sm text-wurst-tief">{i + 1}</span>
                 <span className="font-semibold">{p}</span>
               </li>
             ))}
@@ -60,7 +60,7 @@ export default function Tagesreport({ className = '' }: { className?: string }) 
         <div>
           <div className="flex items-baseline justify-between gap-3">
             <h3 className="etikett text-grau">Stoßzeiten</h3>
-            <p className="ziffern font-mono text-sm" aria-live="polite">
+            <p className="ziffern font-mono text-sm" aria-live="polite" aria-atomic="true">
               {stunde.uhr} Uhr: <strong>{stunde.bons} Bons</strong>
             </p>
           </div>
@@ -77,7 +77,7 @@ export default function Tagesreport({ className = '' }: { className?: string }) 
                 className="group flex h-full flex-1 items-end"
               >
                 <span
-                  className="block w-full rounded-t-[3px] bg-wurst/35 transition-colors group-aria-pressed:bg-wurst"
+                  className="block w-full rounded-t-[3px] bg-wurst/75 transition-colors group-aria-pressed:bg-wurst-tief"
                   style={{ height: `${(s.bons / max) * 100}%` }}
                 />
               </button>

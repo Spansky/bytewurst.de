@@ -15,11 +15,11 @@ export const ganz = (wert: number) => zahl.format(wert)
 /** 0,7 */
 export const einsNachKomma = (wert: number) => zahl1.format(wert)
 
-/** +8 %, −12 %, ±0 %. Das Minus ist U+2212, kein Bindestrich. */
+/** +8 %, -12 %, ±0 %. Auch das Minus ist der einfache Bindestrich (Hausstandard). */
 export function prozent(wert: number): string {
   const r = Math.round(wert)
   if (r === 0) return '±0 %'
-  return `${r > 0 ? '+' : '−'}${Math.abs(r)} %`
+  return `${r > 0 ? '+' : '-'}${Math.abs(r)} %`
 }
 
 /** Umsatz kurz: 500.000 € -> "500.000 €", 2.400.000 € -> "2,4 Mio. €" */

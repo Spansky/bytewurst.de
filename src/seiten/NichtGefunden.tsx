@@ -5,7 +5,7 @@ export default function NichtGefunden() {
     <section aria-labelledby="fehlt-titel" className="fliesen">
       <div className="rahmen grid min-h-[70svh] items-center gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-7">
-          <p className="ziffern font-mono text-lg font-bold text-wurst">Fehler 404</p>
+          <p className="ziffern font-mono text-lg font-bold text-wurst-tief">Fehler 404</p>
           <h1 id="fehlt-titel" className="titel mt-3 text-[clamp(3rem,9vw,7rem)]">
             Diese Seite ist leider aus.
           </h1>

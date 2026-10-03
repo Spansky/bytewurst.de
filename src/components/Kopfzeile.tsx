@@ -9,7 +9,8 @@ import Logo from './Logo'
 /*
   Klebende Kopfzeile mit eigener Hintergrundfarbe, auch ganz oben: Safari
   nimmt sie als Farbe der oberen Leiste (hausstandard/ios-leisten.md).
-  Das Menü auf dem Handy wird nur eingehängt, solange es offen ist.
+  Das Menü auf dem Handy wird nur eingehängt, solange es offen ist. Solange
+  es offen ist, sind Inhalt und Fußzeile inert.
   Jeder Menüpunkt ist eine eigene Seite, keine Sprungmarke.
 */
 
@@ -27,6 +28,9 @@ export default function Kopfzeile({ pfad }: { pfad: string }) {
     if (!offen) return
     const html = document.documentElement
     html.style.overflow = 'hidden'
+    // Alles unter dem Menü ist solange nicht erreichbar, sonst läuft Tab hinter das Overlay
+    const darunter = [document.getElementById('inhalt'), document.querySelector('body > #root > footer, #root footer')]
+    darunter.forEach((el) => el?.setAttribute('inert', ''))
     ersterLink.current?.focus()
     const taste = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -37,6 +41,7 @@ export default function Kopfzeile({ pfad }: { pfad: string }) {
     window.addEventListener('keydown', taste)
     return () => {
       html.style.overflow = ''
+      darunter.forEach((el) => el?.removeAttribute('inert'))
       window.removeEventListener('keydown', taste)
     }
   }, [offen])
@@ -59,7 +64,7 @@ export default function Kopfzeile({ pfad }: { pfad: string }) {
               {p.name}
             </a>
           ))}
-          <a href={firma.anmelden} className="py-2 font-semibold text-tinte/60 transition-colors hover:text-tinte">
+          <a href={firma.anmelden} className="py-2 font-semibold text-tinte/75 transition-colors hover:text-tinte">
             Einloggen
           </a>
           <a href={firma.demo} target="_blank" rel="noopener" className="knopf knopf-wurst min-h-11 px-5 py-2 text-base">

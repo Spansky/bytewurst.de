@@ -52,6 +52,7 @@ export default function Pinnwand() {
                   <button
                     type="button"
                     aria-pressed={umgedreht[i]}
+                    aria-label={`Zettel umdrehen: ${z.vorne}`}
                     onClick={() => umdrehen(i)}
                     className="zettel group relative block w-full text-left [perspective:900px]"
                   >
@@ -59,7 +60,6 @@ export default function Pinnwand() {
                     <span className="zettel-innen grid">
                       <span
                         className={`zettel-seite flex min-h-52 flex-col p-5 pt-7 [grid-area:1/1] ${FARBEN[z.farbe]} shadow-[0_10px_18px_-8px_rgb(0_0_0/0.45)]`}
-                        aria-hidden={umgedreht[i]}
                       >
                         <span className="text-[1.375rem] leading-tight font-bold" style={{ fontStretch: '80%' }}>
                           {z.vorne}
@@ -72,7 +72,6 @@ export default function Pinnwand() {
                       </span>
                       <span
                         className="zettel-seite zettel-rueck flex min-h-52 flex-col bg-nacht p-5 pt-7 text-kreide [grid-area:1/1] shadow-[0_10px_18px_-8px_rgb(0_0_0/0.45)]"
-                        aria-hidden={!umgedreht[i]}
                       >
                         <span className="flex items-center gap-2">
                           <Wursti ohneBeine blinzeln={false} className="h-5 w-auto" />
@@ -82,6 +81,10 @@ export default function Pinnwand() {
                       </span>
                     </span>
                   </button>
+                  {/* Die Rückseite für Screenreader ansagen, der Knopfname bleibt fest */}
+                  <p className="sr-only" aria-live="polite">
+                    {umgedreht[i] ? z.hinten : ''}
+                  </p>
                 </li>
               ))}
             </ul>

@@ -16,7 +16,7 @@ const LANG: Record<string, string> = { Mo: 'Montag', Di: 'Dienstag', Mi: 'Mittwo
 function prognoseTags(i: number) {
   return `${LANG[prognoseTage[i]]}${i > 5 ? ' nächste Woche' : ''}`
 }
-const RAND = { l: 16, r: 16, o: 26, u: 30 }
+const RAND = { l: 16, r: 16, o: 30, u: 36 }
 
 export default function Prognose({ className = '' }: { className?: string }) {
   const [gruppe, setGruppe] = useState(0)
@@ -50,7 +50,7 @@ export default function Prognose({ className = '' }: { className?: string }) {
       <svg viewBox={`0 0 ${B} ${H}`} className="mt-4 h-auto w-full" role="img" aria-label={`Umsatz ${g.name}: fünf Tage bisher, sieben Tage Prognose`}>
         <rect x={x(heute)} y={RAND.o - 10} width={B - RAND.r - x(heute)} height={H - RAND.u - RAND.o + 10} fill="var(--color-prognose)" fillOpacity="0.07" />
         <line x1={x(heute)} x2={x(heute)} y1={RAND.o - 10} y2={H - RAND.u} stroke="var(--color-nebel)" strokeOpacity="0.5" strokeDasharray="3 4" />
-        <text x={x(heute) + 6} y={RAND.o} className="fill-nebel font-mono text-[11px]">
+        <text x={x(heute) + 6} y={RAND.o} className="fill-nebel font-mono text-[20px] md:text-[11px]">
           HEUTE
         </text>
         <line x1={RAND.l} x2={B - RAND.r} y1={H - RAND.u} y2={H - RAND.u} stroke="var(--color-nacht-linie)" />
@@ -67,7 +67,7 @@ export default function Prognose({ className = '' }: { className?: string }) {
               stroke="var(--color-prognose)"
               strokeWidth="2.5"
             />
-            <text x={x(i)} y={H - 10} textAnchor="middle" className={`font-mono text-[11px] ${i === tag ? 'fill-kreide' : 'fill-nebel'}`}>
+            <text x={x(i)} y={H - 10} textAnchor="middle" className={`font-mono text-[20px] md:text-[11px] ${i === tag ? 'fill-kreide' : 'fill-nebel'}`}>
               {prognoseTage[i]}
             </text>
           </g>
@@ -87,8 +87,8 @@ export default function Prognose({ className = '' }: { className?: string }) {
         />
       </label>
 
-      <p className="ziffern mt-3 rounded-lg border border-nacht-linie px-3 py-2.5 text-center font-mono text-sm" aria-live="polite">
-        <strong className="text-kreide">{prognoseTage[tag]}</strong>
+      <p className="ziffern mt-3 rounded-lg border border-nacht-linie px-3 py-2.5 text-center font-mono text-sm" aria-live="polite" aria-atomic="true">
+        <strong className="text-kreide">{prognoseTags(tag)}</strong>
         <span className="text-nebel">{istVoraus ? ' erwartet: ' : ' verkauft: '}</span>
         <strong className="text-prognose">{euro(werte[tag])}</strong>
         <span className="text-nebel"> {g.name}</span>

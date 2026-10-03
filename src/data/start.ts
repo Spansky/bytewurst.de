@@ -42,7 +42,7 @@ export const zettel = [
   {
     vorne: 'Die Neue plant nach Gefühl.',
     vorneKlein: 'Das alte Gefühl ist in Rente gegangen.',
-    hinten: 'Mit ByteWurst plant jeder im Team mit denselben Zahlen. Egal, wer gerade hinter der Theke steht.',
+    hinten: 'Die Prognose hängt jeden Morgen als A4 an der Pinnwand. Die Neue liest dieselben Zahlen wie der Chef.',
     farbe: 'rosa',
   },
   {
@@ -106,12 +106,12 @@ export const nachtStationen = [
   {
     ab: 300,
     titel: 'Nachts',
-    text: 'ByteWurst holt sich die Verkaufsdaten aus deinem Warenwirtschaftssystem. Automatisch, niemand muss etwas exportieren oder hochladen.',
+    text: 'ByteWurst holt sich die Verkaufsdaten des Tages automatisch aus deinem Warenwirtschaftssystem.',
   },
   {
     ab: 390,
     titel: 'Rechnen',
-    text: 'Sie legt den Tag neben deine letzten Jahre und wägt ab: Wochentag, Jahreszeit, Feiertage, Wetter. Welcher Einfluss bei welchem Artikel wirklich zählt, lernt sie aus deinen eigenen Verkäufen.',
+    text: 'ByteWurst legt den Tag neben deine letzten Jahre und wägt ab: Wochentag, Jahreszeit, Feiertage, Wetter. Welcher Einfluss bei welchem Artikel wirklich zählt, lernt sie aus deinen eigenen Verkäufen.',
   },
   {
     ab: 480,

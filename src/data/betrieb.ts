@@ -40,5 +40,18 @@ export const firma = {
   schwester: { name: 'wurstpad.com', url: 'https://wurstpad.com' },
 } as const
 
-/** Uhrzeit, zu der der Tagesreport im Postfach liegt (bytewurst.de) */
-export const REPORT_UHRZEIT = '04:00'
+/**
+ * Solange KONZEPT gilt, betreibt Jock&Jock die Seite unter der stevejocks-Adresse
+ * und ist damit Anbieter und verantwortlich. Daten wie im Impressum von
+ * jockjock.de (website-jockjock/src/data/kontakt.ts).
+ */
+export const konzeptAnbieter = {
+  name: 'Jock&Jock',
+  inhaber: 'Dominik Jock',
+  strasse: 'Ruhesteinstr. 7',
+  plz: '76327',
+  ort: 'Pfinztal',
+  email: 'hallo@jockjock.de',
+  telefon: '0152 578 095 60',
+  telefonRoh: '+4915257809560',
+} as const

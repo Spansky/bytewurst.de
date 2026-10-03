@@ -5,11 +5,11 @@ import WurstiBuehne from '../../components/WurstiBuehne'
 /* Der letzte Abschnitt vor der Fußzeile: reden wir. */
 export default function Schluss({ titel = 'Lass uns über Wurst reden.' }: { titel?: string }) {
   return (
-    <section aria-labelledby="schluss-titel" className="relative overflow-hidden bg-tinte text-papier">
+    <section aria-labelledby="schluss-titel" className="fokus-hell relative overflow-hidden bg-tinte text-papier">
       <div className="absolute inset-0">
         <Bild
           name="ueber-die-theke"
-          sizes="100vw"
+          sizes="(min-width: 1024px) 100vw, (min-width: 640px) 160vw, 320vw"
           alt=""
           className="h-full w-full object-cover opacity-35"
         />
@@ -21,8 +21,8 @@ export default function Schluss({ titel = 'Lass uns über Wurst reden.' }: { tit
             {titel}
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-papier/90">
-            Am besten zeigen wir dir ByteWurst mit deinen eigenen Zahlen. Gern bei dir in der Metzgerei, per Video oder am
-            Telefon. Eingerichtet ist sie in etwa zehn Minuten.
+            Wir zeigen dir ByteWurst gern bei dir in der Metzgerei, per Video oder am Telefon. Eingerichtet ist sie in etwa
+            zehn Minuten, deine ersten Umsatzdiagramme mit deinen eigenen Zahlen siehst du noch am selben Tag.
           </p>
           <Knoepfe dunkel className="mt-9" />
           <p className="mt-6 text-papier/75">Wir sprechen Metzger, nicht IT. Versprochen.</p>

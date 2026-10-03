@@ -25,13 +25,12 @@ export default function Frueher() {
             Früher hatte der Chef alles im Kopf.
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-tinte/85">
-            Heute kommen Inhaber von Metzgereien zu ByteWurst, weil ihre Planung am Gefühl einzelner Leute hängt. Das Personal
-            wechselt, gute Fachkräfte kommen längst nicht mehr nur aus der Region, und alles selbst zu kontrollieren ist keine
-            Lösung.
+            Hängt deine Planung am Gefühl von ein, zwei Leuten? Genau deshalb kommen Inhaber von Metzgereien zu ByteWurst. Das
+            Personal wechselt, gute Fachkräfte kommen längst nicht mehr nur aus der Region, und alles selbst zu kontrollieren
+            ist keine Lösung.
           </p>
           <p className="mt-4 text-lg leading-relaxed text-tinte/85">
-            Mit ByteWurst plant jeder im Team mit denselben Zahlen. Egal, wer gerade hinter der Theke steht, und egal, ob du im
-            Urlaub bist.
+            Mit ByteWurst plant jeder im Team mit denselben Zahlen, egal wer gerade hinter der Theke steht.
           </p>
         </div>
       </div>

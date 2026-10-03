@@ -18,8 +18,6 @@ const AUS = path.join(ROOT, 'public', 'bilder')
 
 /** Querformat, höchstens halbe Seitenbreite oder ein breites Band */
 const QUER = [480, 800, 1200, 1600]
-/** Hochformat oder fast quadratisch in einer Spalte */
-const HOCH = [400, 700, 1000]
 
 /**
  * zuschnitt: Anteile, die links, oben, rechts, unten wegfallen.
@@ -33,7 +31,6 @@ const MOTIVE = [
   { name: 'ueber-die-theke', breiten: QUER },
   { name: 'frueher', breiten: QUER },
   { name: 'wurst-senf', breiten: QUER },
-  { name: 'grill', breiten: HOCH },
   { name: 'kaffee', breiten: [400, 700, 960], zuschnitt: [0, 0.38, 0.6, 0] },
   { name: 'bon', breiten: QUER },
 ]

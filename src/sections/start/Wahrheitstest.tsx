@@ -27,14 +27,14 @@ export default function Wahrheitstest() {
   ]
 
   return (
-    <section aria-labelledby="test-titel" className="bg-senf py-20 md:py-28">
+    <section aria-labelledby="test-titel" className="fokus-dunkel bg-senf py-20 md:py-28">
       <div className="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-6">
           <h2 id="test-titel" className="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">
             Volle Theke heißt nicht volle Kasse.
           </h2>
           <p className="mt-6 text-lg leading-relaxed">
-            Hackfleisch zum Aktionspreis, Anzeige in der Zeitung, der Laden war voll. Hat sich das gerechnet? Rate mal.
+            Hackfleisch zum Aktionspreis, der Laden war voll. Hat sich das gerechnet? Rate mal.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row" role="group" aria-label="Deine Antwort">
@@ -52,7 +52,7 @@ export default function Wahrheitstest() {
               onClick={() => setAntwort('nein')}
               className="knopf border-2 border-tinte bg-papier text-tinte hover:bg-white aria-pressed:bg-tinte aria-pressed:text-papier"
             >
-              Ich hab da so ein Gefühl
+              Ich hab da so ein Gefühl: eher nicht
             </button>
           </div>
 
@@ -63,10 +63,10 @@ export default function Wahrheitstest() {
                   {antwort === 'ja' ? 'Leider nein.' : 'Gutes Gefühl. Jetzt hast du es schwarz auf weiß.'}
                 </p>
                 <p className="mt-3 leading-relaxed">
-                  So war es bei einem Kunden von ByteWurst: Es kamen tatsächlich mehr Leute. Aber sie kauften kaum etwas dazu,
-                  sondern vor allem das ohnehin margenstarke Hackfleisch zum Spottpreis. Nachproduziert werden musste auch noch,
-                  und zwar teurer. Diese Aktion macht er heute nicht mehr. Das Geld steckt er in die, die nachweislich
-                  funktionieren.
+                  So war es bei einem Kunden von ByteWurst: Es kamen tatsächlich mehr Leute. Aber sie kauften kaum etwas dazu.
+                  In der Tüte landete vor allem das Hackfleisch zum Spottpreis, ausgerechnet ein Artikel mit ohnehin guter
+                  Marge. Nachproduziert werden musste auch noch, und zwar teurer. Diese Aktion macht er heute nicht mehr. Das
+                  Geld steckt er in die, die nachweislich funktionieren.
                 </p>
               </div>
             )}
@@ -79,7 +79,8 @@ export default function Wahrheitstest() {
           </p>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md lg:col-span-6 lg:max-w-none">
+        {/* Mit Antwort ist der Bon höher als das Foto. Unter lg Platz reservieren, sonst ragt er in den nächsten Abschnitt */}
+        <div className={`relative mx-auto w-full max-w-md lg:col-span-6 lg:max-w-none ${antwort ? 'min-h-[25rem] lg:min-h-0' : ''}`}>
           <div className="overflow-hidden rounded-3xl shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5)]">
             <Bild
               name="bon"

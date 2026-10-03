@@ -13,7 +13,8 @@ export const TAGE_LANG = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freit
 export const tagesreport = {
   umsatz: 4812,
   bons: 318,
-  durchschnitt: 15.1,
+  /** bytewurst.de zeigt 15,10 €, aus Umsatz und Bons ergeben sich 15,13 € */
+  durchschnitt: 4812 / 318,
   top: ['Leberkäse', 'Wiener', 'Rindergulasch', 'Bratwurst', 'Krustenbraten'],
   /** Bons je Stunde von 7 bis 18 Uhr, ausgedacht */
   stunden: [

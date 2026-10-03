@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Schriften liegen in public/fonts, Latein-Teilmenge (enthält ä, ö, ü, ß, €, −).
+/* Schriften liegen in public/fonts, Latein-Teilmenge (enthält ä, ö, ü, ß, €).
    Bricolage Grotesque ist variabel in Gewicht, Breite und optischer Größe:
    schmal und fett für Überschriften wie auf einem Thekenschild, normal breit
    für Fließtext. JetBrains Mono nur für Bons, Zahlen und Uhrzeiten. */
@@ -28,8 +28,11 @@
   --color-papier: #fffdf8;
   --color-tinte: #1d1a17;
   --color-grau: #615a52;
-  --color-wurst: #c4532e;
-  --color-wurst-hell: #dc6a43;
+  /* Wursti behält die Markenfarbe von bytewurst.de. Knöpfe und Flächen nehmen
+     einen Hauch dunkleres Rot, damit weiße Schrift und Fokus 4,5:1 schaffen. */
+  --color-wursti: #c4532e;
+  --color-wurst: #b94d29;
+  --color-wurst-dunkel: #a3421f;
   --color-wurst-tief: #8f3719;
   --color-wurst-bein: #a3461f;
   --color-schuh: #5c3310;
@@ -85,6 +88,17 @@
   text-transform: uppercase;
 }
 
+/* Fokusring auf dunklem oder rotem Grund hell, auf Senf dunkel */
+@utility fokus-hell {
+  --fokus: var(--color-senf);
+}
+@utility fokus-papier {
+  --fokus: var(--color-papier);
+}
+@utility fokus-dunkel {
+  --fokus: var(--color-tinte);
+}
+
 @utility ziffern {
   font-variant-numeric: tabular-nums;
 }
@@ -114,7 +128,7 @@
   color: #fff;
   box-shadow: 0 3px 0 var(--color-wurst-tief);
   &:hover {
-    background-color: var(--color-wurst-hell);
+    background-color: var(--color-wurst-dunkel);
     translate: 0 -2px;
     box-shadow: 0 5px 0 var(--color-wurst-tief);
   }
@@ -220,8 +234,10 @@
     background: var(--color-senf);
     color: var(--color-tinte);
   }
+  /* Die Ringfarbe kommt aus --fokus. Abschnitte auf Rot, Senf oder Nacht setzen
+     sie um (fokus-hell, fokus-dunkel), sonst verschwindet der Ring im Grund. */
   :focus-visible {
-    outline: 3px solid var(--color-wurst);
+    outline: 3px solid var(--fokus, var(--color-wurst-tief));
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -420,12 +436,12 @@
 .wurstregler::-webkit-slider-runnable-track {
   height: 0.5rem;
   border-radius: 999px;
-  background: var(--color-fuge);
+  background: #958b7e;
 }
 .wurstregler::-moz-range-track {
   height: 0.5rem;
   border-radius: 999px;
-  background: var(--color-fuge);
+  background: #958b7e;
 }
 .wurstregler::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -436,7 +452,7 @@
   border-radius: 999px;
   background:
     radial-gradient(ellipse 40% 28% at 45% 30%, rgb(255 255 255 / 0.35), transparent 70%),
-    var(--color-wurst);
+    var(--color-wursti);
   box-shadow:
     inset -3px -3px 0 rgb(0 0 0 / 0.12),
     0 3px 0 var(--color-wurst-tief);
@@ -447,7 +463,7 @@
   height: 1.6rem;
   border: 0;
   border-radius: 999px;
-  background: var(--color-wurst);
+  background: var(--color-wursti);
   box-shadow: 0 3px 0 var(--color-wurst-tief);
 }
 .wurstregler:active::-webkit-slider-thumb {
@@ -465,10 +481,10 @@
   outline-offset: 3px;
 }
 .wurstregler-dunkel::-webkit-slider-runnable-track {
-  background: var(--color-nacht-linie);
+  background: #5d636b;
 }
 .wurstregler-dunkel::-moz-range-track {
-  background: var(--color-nacht-linie);
+  background: #5d636b;
 }
 .wurstregler-dunkel:focus-visible::-webkit-slider-thumb {
   outline-color: var(--color-senf);

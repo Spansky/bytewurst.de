@@ -48,9 +48,9 @@ export const tarife: Tarif[] = [
   },
   {
     name: 'Early Adopter',
-    satz: 'Alle Funktionen, und du redest mit, was als Nächstes kommt.',
+    satz: 'Alle Funktionen. Und du redest mit, wenn neue dazukommen.',
     preis: `${EURO_JE_100K} €`,
-    einheit: 'je 100.000 € Jahresumsatz, im Monat',
+    einheit: 'je 100.000 € Vorjahresumsatz, im Monat, jährlich abgerechnet',
     leistungen: [
       'Beliebig viele Filialen',
       'Beliebig viele Produkte',

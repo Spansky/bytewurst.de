@@ -4,7 +4,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
 import Bild from '../components/Bild'
 import Preisrechner from '../components/Preisrechner'
 import Wursti from '../components/Wursti'
-import { fragen, tarife, vergleich } from '../data/preise'
+import { EURO_JE_100K, fragen, tarife, vergleich } from '../data/preise'
+import { GROESSEN } from '../data/seiten'
 import Schluss from '../sections/start/Schluss'
 
 /** S-Haken, an dem das Preisschild hängt */
@@ -31,19 +32,20 @@ export default function Preise() {
           <div className="grid items-end gap-10 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <h1 id="preise-titel" className="titel text-[clamp(2.8rem,7vw,5.4rem)]">
-                Ehrliche Preise. Wie auf dem Bon.
+                {EURO_JE_100K} € je 100.000 € Umsatz. Mehr steht nicht auf dem Bon.
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-tinte/85 md:text-xl">
-                Starte kostenlos und steig um, wenn du so weit bist. Danach richtet sich der Preis nach deinem Umsatz. Keine
-                versteckten Gebühren, keine Überraschungen.
+                Starte kostenlos mit einer Filiale und drei Produkten. Steigst du um, zahlst du im Monat {EURO_JE_100K} € je
+                100.000 € Vorjahresumsatz. Abgerechnet wird jährlich, kündigen kannst du jederzeit.
               </p>
             </div>
             <div className="hidden lg:col-span-4 lg:col-start-9 lg:block">
               <div className="rotate-2 overflow-hidden rounded-[1.5rem] border-8 border-papier shadow-[0_30px_50px_-30px_rgb(0_0_0/0.55)]">
                 <Bild
                   name="wurst-senf"
-                  sizes="(min-width: 1024px) 30vw, 1px"
-                  alt="Zwei gegrillte Bratwürste auf einem grauen Teller, daneben ein Schälchen Senf und eine Gewürzgurke."
+                  vorne
+                  sizes={GROESSEN.wurstSenf}
+                  alt="Zwei gegrillte Bratwürste auf einem grauen Teller, eine davon angeschnitten, daneben Senf in einem Papierförmchen und eine Gurkenscheibe."
                   className="aspect-[4/3] h-auto w-full object-cover"
                 />
               </div>
@@ -101,7 +103,7 @@ export default function Preise() {
         </div>
       </section>
 
-      <section aria-labelledby="rechner-titel" className="bg-nacht py-20 text-kreide md:py-28">
+      <section aria-labelledby="rechner-titel" className="fokus-hell bg-nacht py-20 text-kreide md:py-28">
         <div className="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <h2 id="rechner-titel" className="titel text-[clamp(2.3rem,4.8vw,3.9rem)]">
@@ -124,7 +126,7 @@ export default function Preise() {
           <h2 id="vergleich-titel" className="titel text-[clamp(2.3rem,4.8vw,3.9rem)]">
             Was drin ist, auf einen Blick.
           </h2>
-          <div className="mt-10 overflow-x-auto rounded-2xl ring-1 ring-fuge">
+          <div tabIndex={0} role="region" aria-label="Funktionsvergleich, seitlich scrollbar" className="mt-10 overflow-x-auto rounded-2xl ring-1 ring-fuge">
             <table className="w-full min-w-[36rem] border-collapse text-left">
               <caption className="sr-only">Funktionsvergleich der drei Tarife</caption>
               <thead>
