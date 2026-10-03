@@ -1,0 +1,80 @@
+{
+  "schaufenster": {
+    "breite": 2400,
+    "hoehe": 1727,
+    "breiten": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "theke": {
+    "breite": 1656,
+    "hoehe": 1270,
+    "breiten": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "ueber-die-theke": {
+    "breite": 2400,
+    "hoehe": 1350,
+    "breiten": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "frueher": {
+    "breite": 2400,
+    "hoehe": 1219,
+    "breiten": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "wurst-senf": {
+    "breite": 2400,
+    "hoehe": 1600,
+    "breiten": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  },
+  "grill": {
+    "breite": 2400,
+    "hoehe": 3601,
+    "breiten": [
+      400,
+      700,
+      1000
+    ]
+  },
+  "kaffee": {
+    "breite": 960,
+    "hoehe": 992,
+    "breiten": [
+      400,
+      700,
+      960
+    ]
+  },
+  "bon": {
+    "breite": 2400,
+    "hoehe": 1601,
+    "breiten": [
+      480,
+      800,
+      1200,
+      1600
+    ]
+  }
+}

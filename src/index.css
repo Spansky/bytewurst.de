@@ -1,0 +1,475 @@
+@import "tailwindcss";
+
+/* Schriften liegen in public/fonts, Latein-Teilmenge (enthält ä, ö, ü, ß, €, −).
+   Bricolage Grotesque ist variabel in Gewicht, Breite und optischer Größe:
+   schmal und fett für Überschriften wie auf einem Thekenschild, normal breit
+   für Fließtext. JetBrains Mono nur für Bons, Zahlen und Uhrzeiten. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/bricolage.woff2") format("woff2");
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono.woff2") format("woff2");
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+@theme {
+  /* Fliese ist der Grund wie die weißen Wandfliesen hinter jeder Theke.
+     Wurst ist die Farbe von Wursti und trägt die Knöpfe. Senf ist der zweite
+     Akzent, sparsam. Nacht ist die Farbe der Anwendung und der Fußzeile,
+     Prognose das Türkis der Linien in den ByteWurst-Diagrammen. */
+  --color-fliese: #f7f3ea;
+  --color-fuge: #e7e0d2;
+  --color-papier: #fffdf8;
+  --color-tinte: #1d1a17;
+  --color-grau: #615a52;
+  --color-wurst: #c4532e;
+  --color-wurst-hell: #dc6a43;
+  --color-wurst-tief: #8f3719;
+  --color-wurst-bein: #a3461f;
+  --color-schuh: #5c3310;
+  --color-senf: #f1b92d;
+  --color-senf-hell: #f9da7d;
+  --color-nacht: #141619;
+  --color-nacht-hell: #1e2125;
+  --color-nacht-linie: #2f343a;
+  --color-nebel: #a8a39b;
+  --color-kreide: #ece7dd;
+  --color-prognose: #2fd3b4;
+  --color-kork: #b88a5a;
+
+  --font-sans: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ease-weich: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-feder: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@utility rahmen {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Überschriften: schmal und fett wie die Beschriftung über einer Theke */
+@utility titel {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-stretch: 78%;
+  font-variation-settings: "opsz" 96;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+/* Kleine Beschriftungen in Diagrammen, auf Bons und Preisschildern.
+   Nie als Dachzeile über einer Überschrift. */
+@utility etikett {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@utility ziffern {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility knopf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 3.25rem;
+  padding: 0.8em 1.5em;
+  border-radius: 999px;
+  font-weight: 700;
+  font-stretch: 90%;
+  font-size: 1.0625rem;
+  line-height: 1.1;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.3s,
+    translate 0.25s var(--ease-feder);
+}
+
+@utility knopf-wurst {
+  background-color: var(--color-wurst);
+  color: #fff;
+  box-shadow: 0 3px 0 var(--color-wurst-tief);
+  &:hover {
+    background-color: var(--color-wurst-hell);
+    translate: 0 -2px;
+    box-shadow: 0 5px 0 var(--color-wurst-tief);
+  }
+  &:active {
+    translate: 0 2px;
+    box-shadow: 0 1px 0 var(--color-wurst-tief);
+  }
+}
+
+@utility knopf-senf {
+  background-color: var(--color-senf);
+  color: var(--color-tinte);
+  box-shadow: 0 3px 0 #b8861a;
+  &:hover {
+    background-color: var(--color-senf-hell);
+    translate: 0 -2px;
+    box-shadow: 0 5px 0 #b8861a;
+  }
+  &:active {
+    translate: 0 2px;
+    box-shadow: 0 1px 0 #b8861a;
+  }
+}
+
+@utility knopf-linie {
+  border: 2px solid currentColor;
+  &:hover {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+}
+
+/* Wandfliesen im Halbverband, wie hinter jeder Theke. Fugen sehr zart. */
+@utility fliesen {
+  background-color: var(--color-fliese);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M0 .5H72M0 36.5H72M.5 0V36M36.5 36V72' stroke='%23e7e0d2' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-size: 72px 72px;
+}
+
+/* Kassenbon: Thermopapier mit gezackter Abrisskante oben und unten.
+   Schatten über filter am Elternelement, weil mask box-shadow abschneidet. */
+@utility bon {
+  --zacke: 7px;
+  background-color: var(--color-papier);
+  color: var(--color-tinte);
+  font-family: var(--font-mono);
+  mask:
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(2 * var(--zacke)) 51% repeat-x,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(2 * var(--zacke)) 51% repeat-x;
+  padding-block: calc(var(--zacke) + 1.25rem);
+}
+
+@utility bon-schatten {
+  filter: drop-shadow(0 18px 24px rgb(29 26 23 / 0.18)) drop-shadow(0 2px 3px rgb(29 26 23 / 0.12));
+}
+
+/* Gestrichelte Trennlinie wie auf dem Bon */
+@utility bon-linie {
+  border-top: 1px dashed color-mix(in srgb, currentColor 45%, transparent);
+}
+
+/* Preisschild: schwarzes Täfelchen mit Kreideschrift, wie in der Auslage */
+@utility preisschild {
+  background-color: var(--color-tinte);
+  color: var(--color-kreide);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  box-shadow:
+    inset 0 0 0 2px #2c2824,
+    0 6px 14px -6px rgb(0 0 0 / 0.45);
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-fliese);
+  }
+  /* iOS-Leisten nach hausstandard/ios-leisten.md: ab halber Seite übernehmen
+     html, body und der Farbstreifen die Farbe der Fußzeile */
+  html[data-grund="unten"],
+  html[data-grund="unten"] body {
+    background-color: var(--color-nacht);
+  }
+  .leiste-unten {
+    background-color: var(--color-fliese);
+  }
+  html[data-grund="unten"] .leiste-unten {
+    background-color: var(--color-nacht);
+  }
+  html {
+    color: var(--color-tinte);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(5.5rem + env(safe-area-inset-top));
+  }
+  body {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-variation-settings: "opsz" 14;
+  }
+  ::selection {
+    background: var(--color-senf);
+    color: var(--color-tinte);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-wurst);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  /* Schieberegler in Wurstfarbe, Daumen groß genug für den Finger */
+  input[type="range"] {
+    accent-color: var(--color-wurst);
+  }
+}
+
+/* ===========================================================================
+   Einblenden beim Scrollen, gesteuert von components/Einblenden.tsx. Ohne
+   JavaScript fehlt die Klasse js, dann bleibt alles sichtbar.
+   =========================================================================== */
+@layer utilities {
+  .js [data-einblenden] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.8s var(--ease-weich) var(--verzug, 0ms),
+      transform 0.8s var(--ease-weich) var(--verzug, 0ms);
+  }
+  .js [data-einblenden="kippen"] {
+    transform: translateY(30px) rotate(var(--kipp, -3deg));
+  }
+  .js [data-einblenden][data-sichtbar] {
+    opacity: 1;
+    transform: rotate(var(--ruhe, 0deg));
+  }
+  /* Linien zeichnen sich selbst: jeder Pfad mit pathLength=1 */
+  .js [data-zeichnen] .strich {
+    stroke-dasharray: 1 1.02;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.6s var(--ease-weich) var(--strich-verzug, 0s);
+  }
+  .js [data-zeichnen][data-sichtbar] .strich {
+    stroke-dashoffset: 0;
+  }
+  /* Bon druckt sich: wird von oben nach unten freigelegt */
+  .js [data-drucken] {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.8s steps(18, end) var(--verzug, 0ms);
+  }
+  .js [data-drucken][data-sichtbar] {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-einblenden],
+  .js [data-einblenden="kippen"] {
+    opacity: 1;
+    transform: rotate(var(--ruhe, 0deg));
+    transition: none;
+  }
+  .js [data-zeichnen] .strich {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .js [data-drucken] {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* ===========================================================================
+   Wursti: blinzeln, wackeln, hüpfen. Die Augen folgen der Maus per Skript.
+   =========================================================================== */
+.wursti-augen {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.wursti-augen[data-zu] {
+  transform: scaleY(0.1);
+  transition: transform 0.08s;
+}
+/* Der Arm dreht sich um seinen Ursprung, den der Elternknoten auf die
+   Schulter verschiebt (Wursti.tsx). Deshalb kein transform-box hier. */
+.wursti-winkt .wursti-arm-rechts {
+  animation: winken 0.5s ease-in-out 3;
+}
+@keyframes winken {
+  50% {
+    transform: rotate(-38deg);
+  }
+}
+.wursti-huepft {
+  animation: huepfen 0.6s var(--ease-feder);
+}
+@keyframes huepfen {
+  30% {
+    transform: translateY(-14%) scale(1.04, 0.96);
+  }
+  60% {
+    transform: translateY(0) scale(0.96, 1.05);
+  }
+}
+.wursti-schaukelt {
+  animation: schaukeln 3.2s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+@keyframes schaukeln {
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+/* Notizzettel an der Pinnwand drehen sich beim Umdrehen um die senkrechte Achse */
+.zettel-innen {
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease-weich);
+}
+.zettel[aria-pressed="true"] .zettel-innen {
+  transform: rotateY(180deg);
+}
+.zettel-seite {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.zettel-rueck {
+  transform: rotateY(180deg);
+}
+
+/* Preisschilder an Fleischerhaken pendeln leicht, wenn man drüberfährt */
+.haken-schild {
+  transform-origin: 50% 0;
+  transition: transform 0.6s var(--ease-feder);
+}
+@media (hover: hover) {
+  .haken-schild:hover {
+    animation: pendeln 1.4s ease-in-out;
+  }
+}
+@keyframes pendeln {
+  20% {
+    transform: rotate(3deg);
+  }
+  45% {
+    transform: rotate(-2deg);
+  }
+  70% {
+    transform: rotate(1deg);
+  }
+}
+
+/* Sterne in der Nacht-Szene funkeln leise */
+.funkeln {
+  animation: funkeln 3s ease-in-out infinite;
+  animation-delay: var(--verzug, 0s);
+}
+@keyframes funkeln {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Die Report-Mail fliegt ein */
+.einfliegen {
+  animation: einfliegen 0.7s var(--ease-feder) both;
+}
+@keyframes einfliegen {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wursti-winkt .wursti-arm-rechts,
+  .wursti-huepft,
+  .wursti-schaukelt,
+  .haken-schild:hover,
+  .funkeln,
+  .einfliegen {
+    animation: none;
+  }
+  .zettel-innen {
+    transition: none;
+  }
+}
+
+/* ===========================================================================
+   Schieberegler mit einer kleinen Wurst als Griff
+   =========================================================================== */
+.wurstregler {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 2.75rem;
+  background: transparent;
+  cursor: pointer;
+}
+.wurstregler::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-fuge);
+}
+.wurstregler::-moz-range-track {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-fuge);
+}
+.wurstregler::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 3.25rem;
+  height: 1.6rem;
+  margin-top: -0.55rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse 40% 28% at 45% 30%, rgb(255 255 255 / 0.35), transparent 70%),
+    var(--color-wurst);
+  box-shadow:
+    inset -3px -3px 0 rgb(0 0 0 / 0.12),
+    0 3px 0 var(--color-wurst-tief);
+  transition: transform 0.2s var(--ease-feder);
+}
+.wurstregler::-moz-range-thumb {
+  width: 3.25rem;
+  height: 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-wurst);
+  box-shadow: 0 3px 0 var(--color-wurst-tief);
+}
+.wurstregler:active::-webkit-slider-thumb {
+  transform: scale(1.08, 0.92);
+}
+.wurstregler:focus-visible {
+  outline: none;
+}
+.wurstregler:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid var(--color-tinte);
+  outline-offset: 3px;
+}
+.wurstregler:focus-visible::-moz-range-thumb {
+  outline: 3px solid var(--color-tinte);
+  outline-offset: 3px;
+}
+.wurstregler-dunkel::-webkit-slider-runnable-track {
+  background: var(--color-nacht-linie);
+}
+.wurstregler-dunkel::-moz-range-track {
+  background: var(--color-nacht-linie);
+}
+.wurstregler-dunkel:focus-visible::-webkit-slider-thumb {
+  outline-color: var(--color-senf);
+}

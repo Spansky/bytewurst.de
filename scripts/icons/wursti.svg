@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="4 22 192 92">
+  <!-- Wursti ganz, wie in src/components/Wursti.tsx, mit festen Farben für librsvg -->
+  <rect x="62" y="82" width="8" height="20" rx="4" fill="#a3461f"/>
+  <ellipse cx="66" cy="104" rx="7" ry="4" fill="#5c3310"/>
+  <rect x="130" y="82" width="8" height="20" rx="4" fill="#a3461f"/>
+  <ellipse cx="134" cy="104" rx="7" ry="4" fill="#5c3310"/>
+  <g transform="rotate(-25 30 55)"><rect x="18" y="50" width="20" height="8" rx="4" fill="#a3461f"/><circle cx="17" cy="54" r="6" fill="#c4532e"/></g>
+  <g transform="rotate(-40 164 60)"><rect x="162" y="56" width="20" height="8" rx="4" fill="#a3461f"/><circle cx="183" cy="60" r="6" fill="#c4532e"/></g>
+  <ellipse cx="100" cy="58" rx="75" ry="32" fill="#c4532e"/>
+  <ellipse cx="95" cy="42" rx="55" ry="12" fill="#fff" fill-opacity="0.15"/>
+  <path d="M55 48 Q60 58 55 68 M145 48 Q150 58 145 68" stroke="#000" stroke-opacity="0.12" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="70" cy="66" rx="8" ry="5" fill="#ff9696" fill-opacity="0.4"/>
+  <ellipse cx="130" cy="66" rx="8" ry="5" fill="#ff9696" fill-opacity="0.4"/>
+  <ellipse cx="80" cy="52" rx="12" ry="14" fill="#fff"/>
+  <ellipse cx="120" cy="52" rx="12" ry="14" fill="#fff"/>
+  <ellipse cx="82" cy="54" rx="6" ry="7" fill="#2d2d2d"/>
+  <ellipse cx="122" cy="54" rx="6" ry="7" fill="#2d2d2d"/>
+  <circle cx="85" cy="50" r="2.6" fill="#fff"/>
+  <circle cx="125" cy="50" r="2.6" fill="#fff"/>
+  <path d="M88 67 Q100 86 112 67 Z" fill="#6b1d0c" stroke="#2d2d2d" stroke-width="2.2" stroke-linejoin="round"/>
+</svg>
