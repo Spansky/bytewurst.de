@@ -91,6 +91,7 @@ npm run preview   # gebaute Seite auf Port 4173
 npm run images    # reference/bilder -> public/bilder (AVIF, WebP) + src/data/bilder.json + bildnachweis.json
 npm run icons     # scripts/icons -> Favicons, App-Icons, og-image.jpg
 python3 scripts/wortmarke.py   # Wortmarke und Unterzeile fürs Vorschaubild als Pfade (fonttools)
+python3 flyer/bauen.py         # Flyer A5: flyer.html -> PDFs und Vorschau in flyer/ausgabe
 ```
 
 Die Ergebnisse von `images`, `icons` und `wortmarke.py` sind eingecheckt. Coolify baut
@@ -107,6 +108,23 @@ ausführen und mit committen.
 - Wursti ist das Maskottchen von ByteWurst (Formen nach ihrem Favicon) und lebt in
   `components/Wursti.tsx`. Für die Icon-Skripte gibt es ihn als festes SVG in
   `scripts/icons/wursti.svg`, ohne CSS-Variablen, weil librsvg die nicht kennt.
+
+## Flyer
+
+- `flyer/flyer.html` ist die Druckvorlage für den A5-Flyer (vorne Senf, hinten Fliese mit
+  Nacht-Band), `flyer/bauen.py` macht daraus PDF/X-3 in CMYK (ISO Coated v2, FOGRA39) mit
+  3 mm Beschnitt, eine RGB-Fassung und eine Ansicht im Endformat. Ausgaben sind eingecheckt.
+- Es gelten dieselben Tatsachen-Regeln wie für die Seite. Jeder Satz auf dem Flyer steht so
+  oder sinngemäß schon auf der Seite, Zahlen in der Mail sind als Beispiel beschriftet.
+- In der Vorlage keine CSS-Masken, Filter, Transparenzen oder Hintergrundbilder: Chromium
+  rastert sie im PDF, Text darin würde zum Bild, und PDF/X-3 verbietet Transparenz. Wursti
+  steht dort deshalb mit ausgemischten Farben statt `opacity`.
+- Inhalt mindestens 6 mm vom Endformat weg, also 9 mm von der Seitenkante (`#linien` am
+  Dateinamen zeigt Endformat und Sicherheitsabstand im Browser).
+- Die Schriften liegen als feste Schnitte in `flyer/schriften/` (`python3 flyer/schriften.py`),
+  weil Chromium variable Schriften unzuverlässig einbettet. Neuer Schnitt: dort eintragen.
+- `bauen.py` setzt dunkle, neutrale Schrift auf reines Schwarz mit Überdrucken. Wer im
+  Flyer eine neue dunkle Textfarbe einführt, prüft das CMYK-Ergebnis (siehe Docstring).
 
 ## Spielereien und wo sie wohnen
 

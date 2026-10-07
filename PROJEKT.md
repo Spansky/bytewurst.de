@@ -57,6 +57,23 @@ Muss ByteButchers bestätigen oder liefern, bevor `KONZEPT` auf `false` geht:
       Foto über der Theke tschechische.
 - [ ] Echte Kundenstimmen oder Logos, falls Kunden genannt werden dürfen.
 
+## Flyer A5, Stand 2026-10-07
+
+Druckfertiger Flyer zum Verschicken an Metzgereien in `flyer/ausgabe/`. Vorne der Bon des
+Bauchgefühls ("Bauchgefühl ist teuer."), hinten Nacht, Morgenmail, Nutzen, Preis und Aufruf
+mit QR-Code zum Demo-Termin. Für ByteButchers noch zu bestätigen:
+
+- [ ] Druckerei und Papier: Das PDF ist auf gestrichenes Papier (FOGRA39) gerechnet. Für
+      Naturpapier wäre PSO Uncoated das richtige Profil, dann neu bauen.
+- [ ] "Wir zeigen dir ByteWurst gern bei dir in der Metzgerei": dieselbe Frage wie auf der
+      Seite, gilt das überall?
+- [ ] Leberkäsweckle als Preisvergleich (25 € gleich zehn Stück) ist unser Spaß, wie im
+      Preisrechner der Seite.
+- [ ] Metzgerei "Pi mal Daumen, seit 1987" auf dem Bon ist ausgedacht und soll niemanden
+      treffen. Falls es eine echte Metzgerei dieses Namens gibt, umbenennen.
+- [ ] Rückseite ohne Adressfeld, gedacht für den Versand im C5-Umschlag. Als Postkarte
+      bräuchte es ein Adressfeld.
+
 ## Offene Punkte für uns
 
 - [ ] GitHub-Repo `stevejocks/website-bytewurst` anlegen, dann `git push -u origin main`.
