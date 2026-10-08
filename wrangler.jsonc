@@ -1,0 +1,25 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "bytewurst",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	// Inhalte von EmDash. Lokal legt Wrangler die Datenbank unter .wrangler/ an.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "bytewurst",
+		},
+	],
+	// Hochgeladene Medien aus der Verwaltung
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "bytewurst-media",
+		},
+	],
+	// Wartung und geplante Veröffentlichungen von EmDash (src/worker.ts)
+	"triggers": {
+		"crons": ["* * * * *"],
+	},
+}

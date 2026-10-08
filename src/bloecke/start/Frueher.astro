@@ -1,0 +1,31 @@
+---
+import Bild from '../../components/Bild.astro'
+import { absaetze, einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/* Personal wechselt, die Zahlen bleiben. Mit einem Foto aus der Zeit, als der Chef noch alles im Kopf hatte. */
+type Props = BlockProps<'frueher'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="frueher-titel" class="fliesen py-20 md:py-28">
+  <div class="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+    <figure class="lg:col-span-7" data-einblenden="kippen" style="--kipp: -4deg; --ruhe: -1.2deg">
+      <div class="bg-papier p-3 pb-4 shadow-[0_30px_50px_-30px_rgb(0_0_0/0.6)] sm:p-4 sm:pb-5">
+        <Bild
+          name="frueher"
+          sizes="(min-width: 1024px) 55vw, 100vw"
+          alt="Altes Schwarzweißfoto einer Metzgerei: Männer in weißen Kitteln stehen hinter einer langen Theke mit Waage, rechts hängen Rinderhälften an Haken, an den Wänden Geweihe."
+          class="h-auto w-full grayscale"
+        />
+        {value.bildunterschrift && <figcaption class="schild mt-3 px-1 text-[1.0625rem]">{einsetzen(value.bildunterschrift)}</figcaption>}
+      </div>
+    </figure>
+
+    <div class="lg:col-span-5">
+      <h2 id="frueher-titel" class="titel text-[clamp(2.5rem,5.2vw,4.2rem)]">{value.titel}</h2>
+      {absaetze(value.text).map((a, i) => <p class:list={['text-lg leading-relaxed text-tinte/85', i ? 'mt-4' : 'mt-6']}>{a}</p>)}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,62 @@
+---
+import Bild from '../../components/Bild.astro'
+import Knoepfe from '../../components/Knoepfe.astro'
+import WurstiBuehne from '../../components/WurstiBuehne.astro'
+import { prognoseGruppen } from '../../data/beispiele'
+import { GROESSEN } from '../../data/seiten'
+import { euro } from '../../lib/format'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/* Der erste Bildschirm: das Versprechen, das Schaufenster, Wursti zum Anstupsen. */
+type Props = BlockProps<'einstieg'>
+
+const { value } = Astro.props
+// Samstag ist der erste Prognosetag in den Beispieldaten
+const samstag = prognoseGruppen.map((g) => ({ name: g.name, wert: g.voraus[0] }))
+---
+
+<section aria-labelledby="einstieg-titel" class="fliesen relative">
+  <div class="rahmen grid items-center gap-x-12 gap-y-16 pt-10 pb-20 md:pt-16 lg:grid-cols-12 lg:pb-28">
+    <div class="lg:col-span-6">
+      <h1 id="einstieg-titel" class="titel text-[clamp(2.9rem,7.4vw,5.75rem)]">{value.titel}</h1>
+      {value.text && <p class="mt-7 max-w-xl text-lg leading-relaxed text-tinte/85 md:text-xl">{einsetzen(value.text)}</p>}
+      <Knoepfe class="mt-9" />
+      {value.hinweis && <p class="mt-6 max-w-lg text-[0.9375rem] text-grau">{einsetzen(value.hinweis)}</p>}
+    </div>
+
+    <div class="relative mx-auto w-full max-w-xl lg:col-span-6 lg:max-w-none">
+      <div class="rotate-[1.5deg] overflow-hidden rounded-[1.75rem] border-[10px] border-papier bg-papier shadow-[0_40px_70px_-35px_rgb(0_0_0/0.55)]">
+        <Bild
+          name="schaufenster"
+          vorne
+          sizes={GROESSEN.schaufenster}
+          alt="Schaufenster einer Metzgerei: Salami und Würste hängen an Schnüren, davor eine alte weiße Waage auf einem Holztisch, darüber eine Leuchtschrift."
+          class="aspect-[4/3] h-auto w-full object-cover"
+        />
+      </div>
+
+      <div class="bon-schatten absolute -top-10 -left-2 w-44 -rotate-[5deg] sm:top-auto sm:-bottom-10 sm:-left-8 sm:w-60">
+        <div class="bon px-3 text-[0.6875rem] sm:px-4 sm:text-[0.8125rem]">
+          <p class="text-center font-bold tracking-wide">BYTEWURST</p>
+          <p class="text-center text-[0.75rem]">Prognose für Samstag</p>
+          <div class="bon-linie my-2.5"></div>
+          <ul class="space-y-1">
+            {
+              samstag.map((z) => (
+                <li class="ziffern flex justify-between gap-2">
+                  <span>{z.name}</span>
+                  <span class="font-bold">{euro(z.wert)}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="bon-linie my-2.5"></div>
+          <p class="text-center text-[0.6875rem] text-grau">Beispiel, 04:00 Uhr</p>
+        </div>
+      </div>
+
+      <WurstiBuehne blase="links" class="absolute -right-1 -bottom-12 w-32 sm:-right-4 sm:w-40 lg:-right-6 lg:w-52" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,66 @@
+---
+import Wursti from './Wursti.astro'
+
+/*
+  Wursti zum Anstupsen: Die Augen folgen der Maus, ein Tipp lässt ihn hüpfen,
+  winken und den nächsten Spruch sagen. Die Sprüche kommen reihum aus
+  src/data/start.ts.
+
+  Setzt keine eigene Position. Wer die Bühne platziert, gibt absolute von
+  außen, die Sprechblase hängt an einem inneren relative.
+*/
+interface Props {
+  class?: string
+  /** Wohin die Sprechblase ragt. "links" für Wursti am rechten Rand, sonst läuft sie aus dem Bild. */
+  blase?: 'mitte' | 'links'
+}
+
+const { class: klasse, blase = 'mitte' } = Astro.props
+---
+
+<div class={klasse} data-wursti-buehne>
+  <div class="relative">
+    <p
+      aria-live="polite"
+      data-spruch
+      class:list={[
+        'absolute bottom-[calc(100%+0.25rem)] w-max max-w-[15rem] rounded-2xl bg-papier px-4 py-2.5 text-center text-[0.9375rem] leading-snug font-semibold text-tinte shadow-[0_10px_30px_-12px_rgb(0_0_0/0.4)] after:absolute after:top-full after:border-[9px] after:border-transparent after:border-t-papier',
+        blase === 'links'
+          ? 'right-2 max-w-[13rem] after:right-[22%] sm:max-w-[15rem]'
+          : 'left-1/2 -translate-x-1/2 after:left-1/2 after:-translate-x-1/2',
+      ]}
+    >
+      Hallo, ich bin Wursti. Stups mich an!
+    </p>
+    <button type="button" aria-label="Wursti anstupsen" class="block w-full cursor-pointer rounded-3xl transition-transform hover:-rotate-2">
+      <Wursti folgen class="h-auto w-full drop-shadow-[0_14px_14px_rgb(0_0_0/0.22)]" />
+    </button>
+  </div>
+</div>
+
+<script>
+  import { wurstiSprueche } from '../data/start'
+  import { stimmungSetzen } from '../lib/wursti'
+
+  document.querySelectorAll('[data-wursti-buehne]').forEach((buehne) => {
+    const knopf = buehne.querySelector('button')!
+    const spruch = buehne.querySelector('[data-spruch]')!
+    const wursti = buehne.querySelector('svg.wursti')
+    let nummer = -1
+    let zurueck = 0
+
+    knopf.addEventListener('click', () => {
+      nummer = (nummer + 1) % wurstiSprueche.length
+      spruch.textContent = wurstiSprueche[nummer]
+      stimmungSetzen(wursti, 'lacht')
+      // Klassen kurz entfernen, damit die Animation bei jedem Tipp neu startet
+      knopf.classList.remove('wursti-huepft', 'wursti-winkt')
+      requestAnimationFrame(() => knopf.classList.add('wursti-huepft', 'wursti-winkt'))
+      clearTimeout(zurueck)
+      zurueck = window.setTimeout(() => {
+        stimmungSetzen(wursti, 'froh')
+        knopf.classList.remove('wursti-huepft', 'wursti-winkt')
+      }, 1600)
+    })
+  })
+</script>

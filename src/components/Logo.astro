@@ -1,0 +1,21 @@
+---
+import Wursti from './Wursti.astro'
+
+/** Wortmarke mit kleinem Wursti davor. Schrift statt Pfad, sie steht ohnehin schon im Kopf geladen. */
+interface Props {
+  class?: string
+  hell?: boolean
+}
+
+const { class: klasse, hell = false } = Astro.props
+---
+
+<span class:list={['inline-flex items-center gap-2', klasse]}>
+  <Wursti ohneBeine blinzeln class="h-[1.35em] w-auto" />
+  <span
+    class:list={['font-display text-[1.35em] leading-none font-extrabold tracking-tight', hell ? 'text-papier' : 'text-tinte']}
+    style="font-stretch: 78%"
+  >
+    Byte<span class={hell ? 'text-senf' : 'text-wurst'}>Wurst</span>
+  </span>
+</span>

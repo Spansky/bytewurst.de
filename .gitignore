@@ -1,7 +1,17 @@
 /node_modules
 /dist
-/dist-ssr
-*.local
+.astro
+.emdash/migrations.json
 .DS_Store
-.env*
+*.local
 /flyer/profil
+
+# Lokale D1-Datenbank und R2-Medien von Wrangler
+/.wrangler
+
+# Umgebung und lokale Wrangler-Secrets, darin EMDASH_ENCRYPTION_KEY
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*

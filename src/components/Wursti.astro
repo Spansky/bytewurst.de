@@ -1,0 +1,112 @@
+---
+/*
+  Wursti, das Maskottchen von ByteWurst. Formen und Farben nach dem Favicon
+  auf bytewurst.de (wursti-png, viewBox 4 26 192 88).
+
+  Alle Gesichter stehen im SVG, sichtbar ist nur das zu data-stimmung
+  (froh, staunt, lacht), die Brille hängt an data-brille. Regeln in
+  index.css. Skripte ändern nur diese Attribute, etwa Planspiel und Nacht.
+
+  - folgen: die Pupillen schauen zur Maus bzw. zum Finger (lib/wursti.ts)
+  - blinzeln: ab und zu, nicht bei "Bewegung reduzieren"
+  - ohneBeine: etwa im Logo
+*/
+export type Stimmung = 'froh' | 'staunt' | 'lacht'
+
+interface Props {
+  class?: string
+  /** Mit Titel ist Wursti ein Bild für Screenreader, ohne ist er Dekoration */
+  titel?: string
+  stimmung?: Stimmung
+  folgen?: boolean
+  blinzeln?: boolean
+  brille?: boolean
+  ohneBeine?: boolean
+}
+
+const {
+  class: klasse,
+  titel,
+  stimmung = 'froh',
+  folgen = false,
+  blinzeln = true,
+  brille = false,
+  ohneBeine = false,
+} = Astro.props
+
+const tinte = '#2d2d2d'
+---
+
+<svg
+  viewBox={ohneBeine ? '4 22 192 76' : '4 22 192 92'}
+  overflow="visible"
+  class:list={['wursti', klasse]}
+  role={titel ? 'img' : undefined}
+  aria-label={titel}
+  aria-hidden={titel ? undefined : 'true'}
+  focusable="false"
+  data-stimmung={stimmung}
+  data-brille={brille ? '' : undefined}
+  data-folgen={folgen ? '' : undefined}
+  data-blinzeln={blinzeln ? '' : undefined}
+>
+  {
+    !ohneBeine && (
+      <g>
+        <rect x="62" y="82" width="8" height="20" rx="4" fill="var(--color-wurst-bein)" />
+        <ellipse cx="66" cy="104" rx="7" ry="4" fill="var(--color-schuh)" />
+        <rect x="130" y="82" width="8" height="20" rx="4" fill="var(--color-wurst-bein)" />
+        <ellipse cx="134" cy="104" rx="7" ry="4" fill="var(--color-schuh)" />
+      </g>
+    )
+  }
+
+  <!-- Linker Arm -->
+  <g transform="rotate(-25 30 55)">
+    <rect x="18" y="50" width="20" height="8" rx="4" fill="var(--color-wurst-bein)" />
+    <circle cx="17" cy="54" r="6" fill="var(--color-wursti)" />
+  </g>
+  <!-- Rechter Arm: dreht sich zum Winken um die Schulter bei 164/60 -->
+  <g transform="translate(164 60)">
+    <g class="wursti-arm-rechts">
+      <g transform="translate(-164 -60) rotate(15 170 60)">
+        <rect x="162" y="56" width="20" height="8" rx="4" fill="var(--color-wurst-bein)" />
+        <circle cx="183" cy="60" r="6" fill="var(--color-wursti)" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Körper -->
+  <ellipse cx="100" cy="58" rx="75" ry="32" fill="var(--color-wursti)" />
+  <ellipse cx="95" cy="42" rx="55" ry="12" fill="#fff" opacity="0.15" />
+  <g stroke="#000" stroke-opacity="0.12" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <path d="M55 48 Q60 58 55 68" />
+    <path d="M145 48 Q150 58 145 68" />
+  </g>
+  <ellipse cx="70" cy="66" rx="8" ry="5" fill="rgb(255 150 150 / 0.4)" />
+  <ellipse cx="130" cy="66" rx="8" ry="5" fill="rgb(255 150 150 / 0.4)" />
+
+  <!-- Augen: beim Staunen etwas größer, die Pupillen kleiner (index.css) -->
+  <g class="wursti-augen">
+    <ellipse class="wursti-weiss" cx="80" cy="52" rx="12" ry="14" fill="#fff" />
+    <ellipse class="wursti-weiss" cx="120" cy="52" rx="12" ry="14" fill="#fff" />
+    <g class="wursti-pupillen">
+      <ellipse class="wursti-pupille" cx="82" cy="54" rx="6" ry="7" fill={tinte} />
+      <ellipse class="wursti-pupille" cx="122" cy="54" rx="6" ry="7" fill={tinte} />
+      <circle cx="85" cy="50" r="2.6" fill="#fff" />
+      <circle cx="125" cy="50" r="2.6" fill="#fff" />
+    </g>
+  </g>
+
+  <g class="wursti-brille" fill="none" stroke={tinte} stroke-width="2.6">
+    <circle cx="80" cy="52" r="15.5" />
+    <circle cx="120" cy="52" r="15.5" />
+    <path d="M95.5 50 Q100 46 104.5 50" />
+    <path d="M64.5 50 L52 46 M135.5 50 L148 46" stroke-linecap="round" />
+  </g>
+
+  <!-- Mund, einer je Stimmung -->
+  <path class="wursti-mund wursti-mund-froh" d="M90 68 Q100 78 110 68" stroke={tinte} stroke-width="2.6" fill="none" stroke-linecap="round" />
+  <path class="wursti-mund wursti-mund-lacht" d="M88 67 Q100 86 112 67 Z" fill="#6b1d0c" stroke={tinte} stroke-width="2.2" stroke-linejoin="round" />
+  <ellipse class="wursti-mund wursti-mund-staunt" cx="100" cy="73" rx="4.5" ry="5.5" fill={tinte} />
+</svg>

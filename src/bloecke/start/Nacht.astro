@@ -1,0 +1,316 @@
+---
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope'
+import { faPause } from '@fortawesome/free-solid-svg-icons/faPause'
+import { faPlay } from '@fortawesome/free-solid-svg-icons/faPlay'
+import Icon from '../../components/Icon.astro'
+import Tagesreport from '../../components/Tagesreport.astro'
+import Wursti from '../../components/Wursti.astro'
+import { NACHT_MINUTEN } from '../../data/start'
+import { station, STERNE, szene, uhr } from '../../lib/nacht'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/*
+  Die Nacht zum Durchziehen: ein Regler von 19 Uhr bis 7 Uhr. Alles in der
+  Szene hängt nur an der Minute (lib/nacht.ts). Der Server rendert
+  Ladenschluss, das Skript schreibt bei jeder Minute die Werte neu.
+
+  Beim ersten Sichtbarwerden spielt die Nacht einmal von selbst ab, außer
+  bei "Bewegung reduzieren". Dann springt der Knopf von Station zu Station.
+*/
+type Props = BlockProps<'nacht'>
+
+const { value } = Astro.props
+const s = szene(0)
+const st = station(0)
+const anzeige = (an: boolean) => (an ? 'inline' : 'none')
+---
+
+<section aria-labelledby="nacht-titel" class="fokus-hell bg-nacht py-20 text-kreide md:py-28" data-nacht>
+  <div class="rahmen">
+    <div class="max-w-3xl">
+      <h2 id="nacht-titel" class="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">{value.titel}</h2>
+      {value.text && <p class="mt-6 text-lg leading-relaxed text-kreide/85">{einsetzen(value.text)}</p>}
+    </div>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <div class="relative overflow-hidden rounded-3xl ring-1 ring-nacht-linie" data-buehne>
+          <svg viewBox="0 0 640 400" class="block h-auto w-full" aria-hidden="true" data-szene>
+            <defs>
+              <linearGradient id="nacht-himmel" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color={s.oben} data-n="oben"></stop>
+                <stop offset="1" stop-color={s.horizont} data-n="horizont"></stop>
+              </linearGradient>
+              <radialGradient id="nacht-schein">
+                <stop offset="0" stop-color="#ffd98a" stop-opacity="0.55"></stop>
+                <stop offset="1" stop-color="#ffd98a" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+            <rect width="640" height="400" fill="url(#nacht-himmel)"></rect>
+
+            <g opacity={s.sterne} data-n="sterne">
+              {STERNE.map((stern) => <circle cx={stern.x} cy={stern.y} r={stern.r} fill="#fff" class="funkeln" style={`--verzug: ${stern.verzug}s`} />)}
+            </g>
+            <g opacity={s.mond.deckkraft} data-n="mond">
+              <circle cx={s.mond.x} cy={s.mond.y} r="20" fill="#f4ecd2" data-n="mond-hell"></circle>
+              <circle cx={s.mond.x + 8} cy={s.mond.y - 5} r="17" fill={s.oben} data-n="mond-schatten"></circle>
+            </g>
+            <circle cx="560" cy={s.sonne.y} r="34" fill="#ffcf6b" opacity={s.sonne.deckkraft} data-n="sonne"></circle>
+
+            <!-- Wolke, in der ByteWurst rechnet -->
+            <g opacity={s.wolke} data-n="wolke">
+              <ellipse cx="515" cy="108" rx="78" ry="30" fill="#e9eef7"></ellipse>
+              <circle cx="478" cy="96" r="28" fill="#e9eef7"></circle>
+              <circle cx="522" cy="82" r="34" fill="#e9eef7"></circle>
+              <circle cx="562" cy="98" r="24" fill="#e9eef7"></circle>
+            </g>
+            <ellipse cx="515" cy="100" rx="98" ry="52" fill="var(--color-prognose)" display="none" data-n="wolke-schein"></ellipse>
+            <g transform="translate(470 92)" display="none" data-n="diagramm">
+              <path
+                d="M0 26 C12 24 18 14 28 16 S44 26 54 12 S76 2 90 6"
+                fill="none"
+                stroke="var(--color-nacht)"
+                stroke-width="3.5"
+                stroke-linecap="round"
+                pathLength="1"
+                stroke-dasharray="1 1"
+                stroke-dashoffset="1"
+                data-n="diagramm-linie"></path>
+              <path
+                d="M78 26 l6 6 l12 -14"
+                fill="none"
+                stroke="var(--color-prognose)"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                display="none"
+                data-n="diagramm-haken"></path>
+            </g>
+
+            {
+              [0, 1, 2, 3, 4].map((i) => (
+                <g display="none" data-n={`bon-${i}`}>
+                  <rect x="-7" y="-10" width="14" height="20" rx="1.5" fill="#fffdf8" />
+                  <path d="M-4 -5 h8 M-4 -1 h8 M-4 3 h5" stroke="#9a948b" stroke-width="1.2" />
+                </g>
+              ))
+            }
+
+            <rect y="330" width="640" height="70" fill={s.boden} data-n="boden"></rect>
+
+            <!-- Die Metzgerei -->
+            <g>
+              <rect x="30" y="150" width="270" height="182" fill={s.laden.wand} data-n="laden-wand"></rect>
+              <rect x="30" y="150" width="270" height="10" fill={s.laden.band} data-n="laden-band"></rect>
+              <rect x="70" y="164" width="190" height="34" rx="4" fill="var(--color-wurst)"></rect>
+              <text x="165" y="188" text-anchor="middle" fill="#fffdf8" style="font: 800 20px var(--font-display); letter-spacing: 0.12em">METZGEREI</text>
+              <g opacity={s.laden.markise} data-n="markise">
+                {
+                  Array.from({ length: 9 }, (_, i) => (
+                    <path d={`M${40 + i * 28} 206 h28 v18 a14 10 0 0 1 -28 0 z`} fill={i % 2 ? '#fffdf8' : 'var(--color-wurst)'} />
+                  ))
+                }
+              </g>
+              <circle cx="140" cy="285" r="120" fill="url(#nacht-schein)" display={anzeige(s.laden.licht)} data-n="laden-schein"></circle>
+              <rect x="52" y="240" width="160" height="82" rx="3" fill={s.laden.fenster} data-n="laden-fenster"></rect>
+              <path d="M52 240 h160 M132 240 v82" stroke={s.laden.rahmen} stroke-width="4" data-n="laden-rahmen"></path>
+              <rect x="228" y="240" width="52" height="92" rx="2" fill={s.laden.tuer} data-n="laden-tuer"></rect>
+              <circle cx="270" cy="290" r="3" fill="#d8b46a"></circle>
+              <rect x="236" y="252" width="36" height="16" rx="2" fill="#fffdf8" opacity={s.laden.schild} data-n="laden-schild"></rect>
+              <text x="254" y="264" text-anchor="middle" fill="#1d1a17" style="font: 700 9px var(--font-mono)" data-n="laden-schild-text">{s.laden.schildText}</text>
+            </g>
+
+            <!-- Dein Zuhause -->
+            <g>
+              <path d="M452 250 L530 196 L608 250 Z" fill={s.haus.dach} data-n="dach"></path>
+              <rect x="462" y="248" width="136" height="84" fill={s.haus.wand} data-n="haus-wand"></rect>
+              <circle cx="505" cy="285" r="70" fill="url(#nacht-schein)" display={anzeige(s.haus.licht)} data-n="haus-schein"></circle>
+              <rect x="482" y="266" width="44" height="36" rx="2" fill={s.haus.fenster} data-n="haus-fenster"></rect>
+              <path d="M504 266 v36 M482 284 h44" stroke={s.haus.rahmen} stroke-width="3" data-n="haus-rahmen"></path>
+              <rect x="546" y="272" width="32" height="60" rx="2" fill={s.haus.tuer} data-n="haus-tuer"></rect>
+              <text x="520" y="252" fill="#e9eef7" style="font: 700 15px var(--font-sans)" opacity="0.85" display="none" data-n="zzz">z z z</text>
+            </g>
+
+            <!-- Der Brief um 04:00 -->
+            <g display="none" data-n="brief">
+              <rect x="-16" y="-11" width="32" height="22" rx="3" fill="#fffdf8" stroke="var(--color-wurst)" stroke-width="2"></rect>
+              <path d="M-16 -9 L0 3 L16 -9" fill="none" stroke="var(--color-wurst)" stroke-width="2"></path>
+            </g>
+          </svg>
+          <p
+            class="ziffern absolute top-3 left-3 rounded-xl bg-nacht/75 px-3 py-1.5 font-mono text-2xl font-bold text-senf md:top-4 md:left-4 md:text-3xl"
+            data-uhrzeit
+          >
+            {uhr(0)}
+          </p>
+          <div class="absolute top-[5%] left-[72%] w-[16%]">
+            <Wursti blinzeln class="h-auto w-full" />
+          </div>
+        </div>
+
+        <div class="mt-5 flex items-center gap-4">
+          <button
+            type="button"
+            aria-label="Nacht abspielen"
+            data-abspielen
+            class="group inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-senf text-tinte shadow-[0_3px_0_#b8861a] transition-transform hover:-translate-y-0.5"
+          >
+            <Icon icon={faPlay} class="h-4 w-4 group-data-[laeuft]:hidden" />
+            <Icon icon={faPause} class="hidden h-4 w-4 group-data-[laeuft]:block" />
+          </button>
+          <div class="min-w-0 flex-1">
+            <label for="nacht-regler" class="sr-only">Uhrzeit in der Nacht</label>
+            <input
+              id="nacht-regler"
+              type="range"
+              min="0"
+              max={NACHT_MINUTEN}
+              step="5"
+              value="0"
+              aria-valuetext={`${uhr(0)} Uhr, ${st.titel}`}
+              class="wurstregler wurstregler-dunkel w-full"
+            />
+            <div class="ziffern flex justify-between font-mono text-xs text-nebel" aria-hidden="true">
+              <span>19:00</span>
+              <span>22:00</span>
+              <span>01:00</span>
+              <span class="font-bold text-senf">04:00</span>
+              <span>07:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6 lg:col-span-5">
+        <div class="rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-7" aria-live="polite" aria-atomic="true" data-station>
+          <h3 class="schild text-2xl text-senf">{st.titel}</h3>
+          <p class="mt-2 text-xl leading-snug">{st.text}</p>
+        </div>
+        <!-- Mail und leeres Postfach liegen übereinander, damit die Höhe beim Eintreffen nicht springt -->
+        <div class="grid">
+          <div class="invisible [grid-area:1/1]" aria-hidden="true" data-mail>
+            <Tagesreport />
+          </div>
+          <div
+            class="flex flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-nacht-linie p-6 text-center text-nebel [grid-area:1/1]"
+            data-postfach
+          >
+            <Icon icon={faEnvelope} class="h-7 w-7" />
+            <p>Dein Postfach. Noch leer, um 4 Uhr kommt Post.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { MAIL_AB, NACHT_MINUTEN, nachtStationen } from '../../data/start'
+  import { bewegungReduziert } from '../../lib/bewegung'
+  import { anwenden, station, szene, uhr } from '../../lib/nacht'
+  import { stimmungSetzen } from '../../lib/wursti'
+
+  const DAUER_MS = 15000
+
+  document.querySelectorAll<HTMLElement>('[data-nacht]').forEach((nacht) => {
+    const svg = nacht.querySelector<SVGSVGElement>('svg[data-szene]')!
+    const regler = nacht.querySelector<HTMLInputElement>('input[type="range"]')!
+    const knopf = nacht.querySelector<HTMLButtonElement>('[data-abspielen]')!
+    const stationsKarte = nacht.querySelector<HTMLElement>('[data-station]')!
+    const mail = nacht.querySelector<HTMLElement>('[data-mail]')!
+    const postfach = nacht.querySelector<HTMLElement>('[data-postfach]')!
+    const wursti = nacht.querySelector('[data-buehne] svg.wursti')
+
+    let m = 0
+    let laeuft = false
+    let rahmen = 0
+    let schonGespielt = false
+    let letzteStation = station(0)
+
+    function zeigen() {
+      anwenden(svg, m)
+      const s = szene(m)
+      const st = station(m)
+      nacht.querySelector('[data-uhrzeit]')!.textContent = uhr(m)
+      stimmungSetzen(wursti, s.wursti.stimmung, s.wursti.brille)
+      regler.value = String(m)
+      regler.setAttribute('aria-valuetext', `${uhr(m)} Uhr, ${st.titel}`)
+      if (st !== letzteStation) {
+        letzteStation = st
+        stationsKarte.querySelector('h3')!.textContent = st.titel
+        stationsKarte.querySelector('p')!.textContent = st.text
+      }
+      const post = m >= MAIL_AB
+      if (post !== !mail.classList.contains('invisible')) {
+        mail.classList.toggle('invisible', !post)
+        mail.classList.toggle('einfliegen', post)
+        mail.setAttribute('aria-hidden', String(!post))
+        postfach.hidden = post
+      }
+    }
+
+    function anhalten() {
+      laeuft = false
+      cancelAnimationFrame(rahmen)
+      knopf.removeAttribute('data-laeuft')
+      knopf.setAttribute('aria-label', 'Nacht abspielen')
+      stationsKarte.setAttribute('aria-live', 'polite')
+    }
+
+    // Abspielen: die Minute läuft in DAUER_MS von der aktuellen Stelle bis 07:00
+    function abspielen() {
+      if (m >= NACHT_MINUTEN) m = 0
+      laeuft = true
+      knopf.setAttribute('data-laeuft', '')
+      knopf.setAttribute('aria-label', 'Anhalten')
+      // Während des Abspielens nicht jede Station ansagen
+      stationsKarte.setAttribute('aria-live', 'off')
+      const ab = m
+      let start = 0
+      const schritt = (jetzt: number) => {
+        if (!start) start = jetzt
+        const weiter = Math.min(NACHT_MINUTEN, ab + ((jetzt - start) / DAUER_MS) * NACHT_MINUTEN)
+        m = Math.round(weiter)
+        zeigen()
+        if (weiter >= NACHT_MINUTEN) anhalten()
+        else rahmen = requestAnimationFrame(schritt)
+      }
+      rahmen = requestAnimationFrame(schritt)
+    }
+
+    knopf.addEventListener('click', () => {
+      schonGespielt = true
+      if (bewegungReduziert()) {
+        const naechste = nachtStationen.find((s) => s.ab > m)
+        m = naechste ? naechste.ab : 0
+        zeigen()
+        return
+      }
+      if (laeuft) anhalten()
+      else abspielen()
+    })
+
+    regler.addEventListener('input', () => {
+      anhalten()
+      schonGespielt = true
+      m = Number(regler.value)
+      zeigen()
+    })
+
+    // Beim ersten Sichtbarwerden einmal von selbst abspielen
+    if (!bewegungReduziert()) {
+      const io = new IntersectionObserver(
+        ([e]) => {
+          if (e.isIntersecting && !schonGespielt) {
+            schonGespielt = true
+            abspielen()
+            io.disconnect()
+          }
+        },
+        { threshold: 0.6 },
+      )
+      io.observe(nacht.querySelector('[data-buehne]')!)
+    }
+  })
+</script>

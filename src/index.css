@@ -277,7 +277,7 @@
 }
 
 /* ===========================================================================
-   Einblenden beim Scrollen, gesteuert von components/Einblenden.tsx. Ohne
+   Einblenden beim Scrollen, gesteuert von lib/seite.ts. Ohne
    JavaScript fehlt die Klasse js, dann bleibt alles sichtbar.
    =========================================================================== */
 @layer utilities {
@@ -332,18 +332,39 @@
 }
 
 /* ===========================================================================
-   Wursti: blinzeln, wackeln, hüpfen. Die Augen folgen der Maus per Skript.
+   Wursti: Gesichter, blinzeln, wackeln, hüpfen. Die Augen folgen der Maus
+   per Skript (lib/wursti.ts). Im SVG stehen alle Münder und die Brille,
+   data-stimmung und data-brille entscheiden, was zu sehen ist.
    =========================================================================== */
-.wursti-augen {
+.wursti-mund,
+.wursti-brille {
+  display: none;
+}
+.wursti[data-stimmung="froh"] .wursti-mund-froh,
+.wursti[data-stimmung="lacht"] .wursti-mund-lacht,
+.wursti[data-stimmung="staunt"] .wursti-mund-staunt,
+.wursti[data-brille] .wursti-brille {
+  display: inline;
+}
+/* Staunen: Augen etwas größer, Pupillen kleiner */
+.wursti-augen,
+.wursti-weiss,
+.wursti-pupille {
   transform-box: fill-box;
   transform-origin: center;
+}
+.wursti[data-stimmung="staunt"] .wursti-weiss {
+  transform: scaleY(1.07);
+}
+.wursti[data-stimmung="staunt"] .wursti-pupille {
+  transform: scale(0.75, 0.79);
 }
 .wursti-augen[data-zu] {
   transform: scaleY(0.1);
   transition: transform 0.08s;
 }
 /* Der Arm dreht sich um seinen Ursprung, den der Elternknoten auf die
-   Schulter verschiebt (Wursti.tsx). Deshalb kein transform-box hier. */
+   Schulter verschiebt (Wursti.astro). Deshalb kein transform-box hier. */
 .wursti-winkt .wursti-arm-rechts {
   animation: winken 0.5s ease-in-out 3;
 }

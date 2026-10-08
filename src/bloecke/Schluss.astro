@@ -1,0 +1,35 @@
+---
+import Bild from '../components/Bild.astro'
+import Knoepfe from '../components/Knoepfe.astro'
+import WurstiBuehne from '../components/WurstiBuehne.astro'
+import { einsetzen } from '../lib/text'
+import type { BlockProps } from './typen'
+
+/* Der letzte Abschnitt vor der Fußzeile: reden wir. Auf allen CMS-Seiten. */
+type Props = BlockProps<'schluss'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="schluss-titel" class="fokus-hell relative overflow-hidden bg-tinte text-papier">
+  <div class="absolute inset-0">
+    <Bild
+      name="ueber-die-theke"
+      sizes="(min-width: 1024px) 100vw, (min-width: 640px) 160vw, 320vw"
+      alt=""
+      class="h-full w-full object-cover opacity-35"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-tinte via-tinte/85 to-tinte/30"></div>
+  </div>
+  <div class="rahmen relative grid items-end gap-12 py-24 md:py-32 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <h2 id="schluss-titel" class="titel text-[clamp(2.8rem,7vw,5.6rem)]">{value.titel}</h2>
+      {value.text && <p class="mt-6 max-w-xl text-lg leading-relaxed text-papier/90">{einsetzen(value.text)}</p>}
+      <Knoepfe dunkel class="mt-9" />
+      {value.nachsatz && <p class="mt-6 text-papier/75">{einsetzen(value.nachsatz)}</p>}
+    </div>
+    <div class="hidden lg:col-span-4 lg:col-start-9 lg:block">
+      <WurstiBuehne class="mx-auto mt-24 w-56" />
+    </div>
+  </div>
+</section>

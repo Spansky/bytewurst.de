@@ -1,0 +1,33 @@
+---
+import { bildEintrag, bildSatz } from '../lib/bilder'
+
+/** AVIF, WebP, Maße gegen Layoutsprünge. Quelle: scripts/prepare-images.mjs */
+interface Props {
+  name: string
+  alt: string
+  /** Gezeichnete Breite für sizes. Bei object-cover die Breite des Fotos, nicht des Rahmens (LESSONS 2026-09-27). */
+  sizes: string
+  class?: string
+  /** Nur für das Bild im ersten Bildschirm: nicht lazy, hohe Priorität */
+  vorne?: boolean
+}
+
+const { name, alt, sizes, class: klasse, vorne = false } = Astro.props
+const b = bildEintrag(name)
+const groesste = b.breiten[b.breiten.length - 1]
+---
+
+<picture>
+  <source type="image/avif" srcset={bildSatz(name, 'avif')} sizes={sizes} />
+  <source type="image/webp" srcset={bildSatz(name, 'webp')} sizes={sizes} />
+  <img
+    src={`/bilder/${name}-${groesste}.webp`}
+    alt={alt}
+    width={b.breite}
+    height={b.hoehe}
+    loading={vorne ? undefined : 'lazy'}
+    fetchpriority={vorne ? 'high' : undefined}
+    decoding={vorne ? undefined : 'async'}
+    class={klasse}
+  />
+</picture>

@@ -1,0 +1,247 @@
+---
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons/faRotateLeft'
+import Icon from '../../components/Icon.astro'
+import Knoepfe from '../../components/Knoepfe.astro'
+import Wursti from '../../components/Wursti.astro'
+import { spielHoechstens, spielRunden } from '../../data/start'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/*
+  Bauchgefühl gegen ByteWurst: drei Tage, ein Artikel. Erst schätzt man
+  selbst, dann deckt die Kasse auf. Die Zahlen sind ausgedacht und auf der
+  Seite so gekennzeichnet (src/data/start.ts).
+
+  Der Server rendert Runde eins, das Skript führt das Spiel. ByteWurst- und
+  Verkaufszahl stehen erst nach dem Aufdecken im Markup, sonst verrät das
+  Spiel die Lösung.
+*/
+type Props = BlockProps<'planspiel'>
+
+const { value } = Astro.props
+const r = spielRunden[0]
+const START = 100
+const balken = [
+  { schluessel: 'plan', name: 'Dein Plan', farbe: 'var(--color-senf)' },
+  { schluessel: 'bytewurst', name: 'ByteWurst', farbe: 'var(--color-prognose)' },
+  { schluessel: 'verkauft', name: 'Verkauft', farbe: 'var(--color-wurst)' },
+]
+---
+
+<section aria-labelledby="spiel-titel" class="fokus-hell relative bg-nacht py-20 text-kreide md:py-28" data-planspiel>
+  <div class="rahmen">
+    <div class="max-w-3xl">
+      <h2 id="spiel-titel" class="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">{value.titel}</h2>
+      {value.text && <p class="mt-6 text-lg leading-relaxed text-kreide/85">{einsetzen(value.text)}</p>}
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-12 lg:gap-8">
+      <!-- Linke Karte: die Lage und der Regler -->
+      <div class="rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-8 lg:col-span-5">
+        <h3 class="titel text-4xl md:text-5xl" data-feld="tag">{r.tag}</h3>
+        <p class="mt-1 font-semibold text-senf" data-feld="runde">Tag eins von drei</p>
+        <p class="mt-4 leading-relaxed text-kreide/85" data-feld="lage">{r.lage}</p>
+        <p class="mt-3 font-mono text-sm text-nebel">
+          Letzte Woche am selben Tag: <strong class="text-kreide"><span data-feld="vorwoche">{r.vorwoche}</span> Stück</strong>
+        </p>
+
+        <div class="mt-8">
+          <label for="spiel-regler" class="font-semibold">Wie viele produzierst du?</label>
+          <p class="titel ziffern mt-2 text-6xl text-senf">
+            <span data-feld="plan">{START}</span> <span class="text-2xl text-kreide/70">Stück</span>
+          </p>
+          <input
+            id="spiel-regler"
+            type="range"
+            min="0"
+            max={spielHoechstens}
+            step="1"
+            value={START}
+            aria-valuetext={`${START} Stück`}
+            class="wurstregler wurstregler-dunkel mt-3 w-full disabled:cursor-not-allowed disabled:opacity-50"
+          />
+        </div>
+
+        <div class="mt-6">
+          <button type="button" data-schritt="aufdecken" class="knopf knopf-senf w-full sm:w-auto">
+            Ab in die Wurstküche
+            <Icon icon={faArrowRight} class="h-4 w-4" />
+          </button>
+          <button type="button" data-schritt="weiter" hidden class="knopf knopf-senf w-full sm:w-auto">
+            Nächster Tag
+            <Icon icon={faArrowRight} class="h-4 w-4" />
+          </button>
+          <button type="button" data-schritt="neu" hidden class="knopf knopf-linie w-full text-kreide sm:w-auto">
+            <Icon icon={faRotateLeft} class="h-4 w-4" />
+            Noch mal von vorn
+          </button>
+        </div>
+      </div>
+
+      <!-- Rechte Karte: Auflösung. Balken in Wurstform, was über den Verkauf hinausgeht, ist schraffiert (übrig). -->
+      <div class="flex flex-col rounded-3xl bg-nacht-hell p-6 ring-1 ring-nacht-linie md:p-8 lg:col-span-7">
+        <div class="space-y-4">
+          {
+            balken.map((b, i) => (
+              <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[8rem_minmax(0,1fr)]" data-balken={b.schluessel}>
+                <span class="text-sm font-semibold text-kreide/85">{b.name}</span>
+                <div class="relative h-9" style={`--verzug: ${[0, 150, 350][i]}ms`}>
+                  <div
+                    data-wurst
+                    class="absolute inset-y-0 left-0 overflow-hidden rounded-full shadow-[inset_0_-4px_0_rgb(0_0_0/0.18),inset_0_3px_0_rgb(255_255_255/0.18)] transition-[width] delay-(--verzug) duration-[900ms] ease-[var(--ease-weich)] motion-reduce:transition-none"
+                    style={`width: ${b.schluessel === 'plan' ? `max(2.25rem, ${(START / spielHoechstens) * 100}%)` : '0%'}; background: ${b.farbe}`}
+                  >
+                    <div
+                      data-uebrig
+                      hidden
+                      class="absolute inset-y-0 right-0 [background-image:repeating-linear-gradient(-45deg,rgb(20_22_25/0.55)_0_6px,transparent_6px_12px)]"
+                    />
+                    {/* Abbindestellen wie bei einer Wurstkette */}
+                    <div class="absolute inset-0 [background-image:repeating-linear-gradient(90deg,transparent_0_58px,rgb(0_0_0/0.16)_58px_60px)]" />
+                  </div>
+                  <span
+                    data-zahl
+                    class="ziffern absolute top-1/2 -translate-y-1/2 pl-3 font-mono text-sm font-bold text-kreide transition-[left] delay-(--verzug) duration-[900ms] ease-[var(--ease-weich)] motion-reduce:transition-none"
+                    style={`left: ${b.schluessel === 'plan' ? `max(2.25rem, ${(START / spielHoechstens) * 100}%)` : '0%'}`}
+                  >
+                    {b.schluessel === 'plan' ? START : '?'}
+                  </span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <p class="mt-3 text-xs text-nebel">Schraffiert: übrig geblieben.</p>
+
+        <div class="mt-auto flex items-end gap-4 pt-8">
+          <Wursti brille folgen class="h-auto w-24 shrink-0 sm:w-28" />
+          <div class="min-w-0" aria-live="polite" aria-atomic="true" data-feld="urteil">
+            <p class="text-lg leading-snug">Meine Zahl steht schon. <span class="text-nebel">Du zuerst.</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-live="polite">
+      <div data-ergebnis hidden class="fokus-dunkel mt-6 flex flex-col gap-6 rounded-3xl bg-senf p-6 text-tinte md:flex-row md:items-center md:justify-between md:p-8">
+        <div>
+          <p class="titel text-3xl md:text-4xl" data-feld="summe"></p>
+          <p class="mt-2 max-w-2xl" data-feld="fazit"></p>
+        </div>
+        <Knoepfe class="shrink-0" />
+      </div>
+    </div>
+
+    <p class="mt-6 max-w-3xl text-sm text-nebel">
+      Die Zahlen im Spiel sind ausgedacht. Wie gut die Prognose bei dir trifft, zeigen erst deine eigenen Verkaufsdaten.
+    </p>
+  </div>
+</section>
+
+<script>
+  import { spielHoechstens, spielRunden } from '../../data/start'
+  import { ganz } from '../../lib/format'
+  import { stimmungSetzen } from '../../lib/wursti'
+
+  const RUNDEN_NAME = ['Tag eins von drei', 'Tag zwei von drei', 'Tag drei von drei']
+  const START = 100
+
+  function urteil(plan: number, verkauft: number): string {
+    const d = plan - verkauft
+    if (Math.abs(d) <= 4) return 'Respekt, fast genau. Da steckt Erfahrung drin.'
+    if (d > 0) return `${ganz(d)} Bratwürste übrig. Ab in die Abschrift.`
+    return `${ganz(-d)} Bratwürste zu wenig. Die letzten Kunden gehen ohne nach Hause.`
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-planspiel]').forEach((spiel) => {
+    const feld = (name: string) => spiel.querySelector<HTMLElement>(`[data-feld="${name}"]`)!
+    const regler = spiel.querySelector<HTMLInputElement>('input[type="range"]')!
+    const schritt = (name: string) => spiel.querySelector<HTMLButtonElement>(`[data-schritt="${name}"]`)!
+    const wursti = spiel.querySelector('svg.wursti')
+    const ergebnis = spiel.querySelector<HTMLElement>('[data-ergebnis]')!
+
+    let runde = 0
+    let aufgedeckt = false
+    let ergebnisse: { plan: number; prognose: number; verkauft: number }[] = []
+
+    /** Ein Balken: Breite nach Stückzahl, schraffiert was über den Verkauf hinausgeht */
+    function balken(name: string, wert: number | null, verkauft?: number) {
+      const el = spiel.querySelector(`[data-balken="${name}"]`)!
+      const wurst = el.querySelector<HTMLElement>('[data-wurst]')!
+      const zahl = el.querySelector<HTMLElement>('[data-zahl]')!
+      const uebrig = el.querySelector<HTMLElement>('[data-uebrig]')!
+      const breite = wert === null ? '0%' : `max(2.25rem, ${(wert / spielHoechstens) * 100}%)`
+      wurst.style.width = breite
+      zahl.style.left = breite
+      zahl.textContent = wert === null ? '?' : ganz(wert)
+      const bisVerkauf = wert === null || verkauft === undefined ? 100 : Math.min(100, (verkauft / Math.max(wert, 1)) * 100)
+      uebrig.hidden = bisVerkauf >= 100
+      uebrig.style.left = `${bisVerkauf}%`
+    }
+
+    function zeigen() {
+      const r = spielRunden[runde]
+      const plan = Number(regler.value)
+      const fertig = aufgedeckt && runde === spielRunden.length - 1
+      const daneben = Math.abs(plan - r.verkauft)
+
+      feld('tag').textContent = r.tag
+      feld('runde').textContent = RUNDEN_NAME[runde]
+      feld('lage').textContent = r.lage
+      feld('vorwoche').textContent = String(r.vorwoche)
+      feld('plan').textContent = ganz(plan)
+      regler.setAttribute('aria-valuetext', `${plan} Stück`)
+      regler.disabled = aufgedeckt
+
+      schritt('aufdecken').hidden = aufgedeckt
+      schritt('weiter').hidden = !aufgedeckt || fertig
+      schritt('neu').hidden = !fertig
+
+      balken('plan', plan, aufgedeckt ? r.verkauft : undefined)
+      balken('bytewurst', aufgedeckt ? r.prognose : null, r.verkauft)
+      balken('verkauft', aufgedeckt ? r.verkauft : null)
+
+      stimmungSetzen(wursti, !aufgedeckt ? 'froh' : daneben <= 10 ? 'lacht' : 'staunt', !aufgedeckt)
+      feld('urteil').innerHTML = !aufgedeckt
+        ? '<p class="text-lg leading-snug">Meine Zahl steht schon. <span class="text-nebel">Du zuerst.</span></p>'
+        : `<p class="text-lg leading-snug font-semibold">${urteil(plan, r.verkauft)}</p>
+           <p class="mt-1 text-nebel">ByteWurst lag ${ganz(Math.abs(r.prognose - r.verkauft))} Stück daneben, du ${ganz(daneben)}.</p>`
+
+      ergebnis.hidden = !fertig
+      if (fertig) {
+        const summeDu = ergebnisse.reduce((s, e) => s + Math.abs(e.plan - e.verkauft), 0)
+        const summeBw = ergebnisse.reduce((s, e) => s + Math.abs(e.prognose - e.verkauft), 0)
+        feld('summe').textContent = `Drei Tage: Du lagst ${ganz(summeDu)} Stück daneben, ByteWurst ${ganz(summeBw)}.`
+        feld('fazit').textContent =
+          summeDu <= summeBw + 10
+            ? 'Starkes Bauchgefühl. Und jetzt stell dir vor, das hätte jeder in deinem Team, auch wenn du im Urlaub bist.'
+            : 'Kein Vorwurf, Bratwurst ist schwer. Genau dafür rechnet ByteWurst jede Nacht, für jede Warengruppe und jeden Tag.'
+      }
+    }
+
+    regler.addEventListener('input', zeigen)
+    schritt('aufdecken').addEventListener('click', () => {
+      const r = spielRunden[runde]
+      aufgedeckt = true
+      ergebnisse = [...ergebnisse.slice(0, runde), { plan: Number(regler.value), prognose: r.prognose, verkauft: r.verkauft }]
+      zeigen()
+      // Der gedrückte Knopf ist jetzt versteckt, der Fokus geht auf den nächsten Schritt
+      ;(schritt('weiter').hidden ? schritt('neu') : schritt('weiter')).focus()
+    })
+    schritt('weiter').addEventListener('click', () => {
+      runde += 1
+      aufgedeckt = false
+      zeigen()
+      schritt('aufdecken').focus()
+    })
+    schritt('neu').addEventListener('click', () => {
+      runde = 0
+      aufgedeckt = false
+      ergebnisse = []
+      regler.value = String(START)
+      zeigen()
+      schritt('aufdecken').focus()
+    })
+  })
+</script>

@@ -1,0 +1,99 @@
+---
+import { faRotate } from '@fortawesome/free-solid-svg-icons/faRotate'
+import Icon from '../../components/Icon.astro'
+import Wursti from '../../components/Wursti.astro'
+import { absaetze, einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/*
+  Die Pinnwand in der Wurstküche: Zettel mit dem, was jeder Metzger kennt.
+  Antippen dreht einen Zettel um, hinten steht, was ByteWurst daran ändert.
+  Beide Seiten liegen in derselben Rasterzelle, damit der Zettel so hoch ist
+  wie die längere Seite. Die Zettel pflegt man in EmDash.
+*/
+type Props = BlockProps<'pinnwand'>
+
+const { value } = Astro.props
+const FARBEN = { papier: 'bg-papier', senf: 'bg-senf-hell', rosa: 'bg-[#f6d3c4]' }
+const DREHUNG = ['-2.5deg', '1.8deg', '-1deg', '2.4deg', '-1.6deg', '1.2deg']
+const NADEL = ['bg-wurst', 'bg-prognose', 'bg-senf', 'bg-wurst', 'bg-tinte', 'bg-prognose']
+const letzter = value.zettel.length - 1
+---
+
+<section aria-labelledby="pinnwand-titel" class="bg-papier py-20 md:py-28">
+  <div class="rahmen grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-4">
+      <h2 id="pinnwand-titel" class="titel text-[clamp(2.5rem,5.4vw,4.4rem)]">{value.titel}</h2>
+      {absaetze(value.text).map((a, i) => <p class:list={['text-lg leading-relaxed text-tinte/85', i ? 'mt-4' : 'mt-6']}>{a}</p>)}
+    </div>
+
+    <div class="lg:col-span-8">
+      <div
+        class="rounded-[1.25rem] border-[10px] border-[#8a6440] bg-kork p-5 shadow-[inset_0_2px_14px_rgb(0_0_0/0.35)] [background-image:radial-gradient(rgb(0_0_0/0.13)_1px,transparent_1.4px),radial-gradient(rgb(255_255_255/0.12)_1px,transparent_1.4px)] [background-position:0_0,7px_9px] [background-size:13px_13px] sm:p-8"
+      >
+        <ul class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {
+            value.zettel.map((z, i) => (
+              <li
+                data-einblenden="kippen"
+                style={`--kipp: ${i % 2 ? 6 : -6}deg; --ruhe: ${DREHUNG[i % DREHUNG.length]}; --verzug: ${i * 90}ms`}
+                class={i === letzter && i % 2 === 0 ? 'sm:col-span-2 xl:col-span-1' : undefined}
+              >
+                <button
+                  type="button"
+                  aria-pressed="false"
+                  aria-label={`Zettel umdrehen: ${z.vorne}`}
+                  data-zettel={einsetzen(z.hinten)}
+                  class="zettel group relative block w-full text-left [perspective:900px]"
+                >
+                  <span
+                    aria-hidden="true"
+                    class:list={[
+                      'absolute -top-2 left-1/2 z-10 h-5 w-5 -translate-x-1/2 rounded-full shadow-[0_3px_4px_rgb(0_0_0/0.4),inset_-2px_-2px_0_rgb(0_0_0/0.2)]',
+                      NADEL[i % NADEL.length],
+                    ]}
+                  />
+                  <span class="zettel-innen grid">
+                    <span
+                      class:list={[
+                        'zettel-seite flex min-h-52 flex-col p-5 pt-7 [grid-area:1/1] shadow-[0_10px_18px_-8px_rgb(0_0_0/0.45)]',
+                        FARBEN[z.farbe ?? 'papier'],
+                      ]}
+                    >
+                      <span class="schild text-[1.375rem] leading-tight">{z.vorne}</span>
+                      {z.vorne_klein && <span class="mt-2 text-tinte/70">{z.vorne_klein}</span>}
+                      <span class="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold text-wurst-tief">
+                        <Icon icon={faRotate} class="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-180" />
+                        Umdrehen
+                      </span>
+                    </span>
+                    <span class="zettel-seite zettel-rueck flex min-h-52 flex-col bg-nacht p-5 pt-7 text-kreide [grid-area:1/1] shadow-[0_10px_18px_-8px_rgb(0_0_0/0.45)]">
+                      <span class="flex items-center gap-2">
+                        <Wursti ohneBeine blinzeln={false} class="h-5 w-auto" />
+                        <span class="etikett text-prognose">Mit ByteWurst</span>
+                      </span>
+                      <span class="mt-3 text-[0.9375rem] leading-snug">{einsetzen(z.hinten)}</span>
+                    </span>
+                  </span>
+                </button>
+                {/* Die Rückseite für Screenreader ansagen, der Knopfname bleibt fest */}
+                <p class="sr-only" aria-live="polite" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('button[data-zettel]').forEach((knopf) => {
+    const ansage = knopf.nextElementSibling!
+    knopf.addEventListener('click', () => {
+      const umgedreht = knopf.getAttribute('aria-pressed') !== 'true'
+      knopf.setAttribute('aria-pressed', String(umgedreht))
+      ansage.textContent = umgedreht ? knopf.dataset.zettel! : ''
+    })
+  })
+</script>

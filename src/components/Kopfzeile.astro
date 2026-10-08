@@ -1,0 +1,126 @@
+---
+import { faBars } from '@fortawesome/free-solid-svg-icons/faBars'
+import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone'
+import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
+import { firma } from '../data/betrieb'
+import Icon from './Icon.astro'
+import Logo from './Logo.astro'
+
+/*
+  Klebende Kopfzeile mit eigener Hintergrundfarbe, auch ganz oben: Safari
+  nimmt sie als Farbe der oberen Leiste (hausstandard/ios-leisten.md).
+  Die Menüpunkte kommen aus dem EmDash-Menü "primary" (layouts/Base.astro).
+  Das Menü auf dem Handy steht mit hidden im Markup. Solange es offen ist,
+  sind Inhalt und Fußzeile inert.
+*/
+interface Props {
+  pfad: string
+  punkte: { url: string; label: string }[]
+}
+
+const { pfad, punkte } = Astro.props
+const aktuell = (url: string) => (url === pfad ? 'page' : undefined)
+---
+
+<header class="sticky top-0 z-40 border-b border-fuge bg-fliese pt-[env(safe-area-inset-top)]">
+  <div class="rahmen flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
+    <a href="/" class="shrink-0 text-lg md:text-xl" aria-label="ByteWurst, zur Startseite">
+      <Logo />
+    </a>
+
+    <nav aria-label="Hauptnavigation" class="hidden items-center gap-8 md:flex">
+      {
+        punkte.map((p) => (
+          <a
+            href={p.url}
+            aria-current={aktuell(p.url)}
+            class="relative py-2 font-semibold text-tinte/75 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-[3px] after:origin-left after:scale-x-0 after:rounded-full after:bg-wurst after:transition-transform after:duration-300 hover:text-tinte hover:after:scale-x-100 aria-[current=page]:text-tinte aria-[current=page]:after:scale-x-100"
+          >
+            {p.label}
+          </a>
+        ))
+      }
+      <a href={firma.anmelden} class="py-2 font-semibold text-tinte/75 transition-colors hover:text-tinte">Einloggen</a>
+      <a href={firma.demo} target="_blank" rel="noopener" class="knopf knopf-wurst min-h-11 px-5 py-2 text-base">Demo buchen</a>
+    </nav>
+
+    <div class="flex items-center gap-1 md:hidden">
+      <a
+        href={`tel:${firma.telefonRoh}`}
+        aria-label={`Anrufen: ${firma.telefon}`}
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-wurst"
+      >
+        <Icon icon={faPhone} class="h-[1.1rem] w-[1.1rem]" />
+      </a>
+      <button
+        type="button"
+        id="menue-knopf"
+        aria-expanded="false"
+        aria-controls="menue"
+        aria-label="Menü öffnen"
+        class="group inline-flex h-11 w-11 items-center justify-center rounded-full text-tinte"
+      >
+        <Icon icon={faBars} class="h-5 w-5 group-aria-expanded:hidden" />
+        <Icon icon={faXmark} class="hidden h-5 w-5 group-aria-expanded:block" />
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="menue"
+    aria-label="Menü"
+    hidden
+    class="fixed inset-x-0 top-[calc(4rem+1px+env(safe-area-inset-top))] bottom-0 z-40 flex flex-col overflow-y-auto bg-fliese px-4 pt-6 pb-[calc(2rem+env(safe-area-inset-bottom))] md:hidden"
+  >
+    <ul class="flex flex-col">
+      {
+        [{ url: '/', label: 'Start' }, ...punkte].map((p) => (
+          <li class="border-b border-fuge">
+            <a href={p.url} aria-current={aktuell(p.url)} class="titel block py-4 text-5xl aria-[current=page]:text-wurst">
+              {p.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-8 flex flex-col gap-3">
+      <a href={firma.demo} target="_blank" rel="noopener" class="knopf knopf-wurst">Demo buchen</a>
+      <a href={`tel:${firma.telefonRoh}`} class="knopf knopf-linie text-tinte">
+        <Icon icon={faPhone} class="h-4 w-4" />
+        {firma.telefon}
+      </a>
+      <a href={firma.anmelden} class="mt-2 text-center font-semibold text-grau underline underline-offset-4">Schon Kunde? Einloggen</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const knopf = document.getElementById('menue-knopf')!
+  const menue = document.getElementById('menue')!
+  const darunter = () => [document.getElementById('inhalt'), document.querySelector('body > footer')]
+
+  const taste = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setzen(false)
+      knopf.focus()
+    }
+  }
+
+  function setzen(offen: boolean) {
+    menue.hidden = !offen
+    knopf.setAttribute('aria-expanded', String(offen))
+    knopf.setAttribute('aria-label', offen ? 'Menü schließen' : 'Menü öffnen')
+    document.documentElement.style.overflow = offen ? 'hidden' : ''
+    // Alles unter dem Menü ist solange nicht erreichbar, sonst läuft Tab hinter das Overlay
+    darunter().forEach((el) => el?.toggleAttribute('inert', offen))
+    if (offen) {
+      menue.querySelector('a')?.focus()
+      window.addEventListener('keydown', taste)
+    } else {
+      window.removeEventListener('keydown', taste)
+    }
+  }
+
+  knopf.addEventListener('click', () => setzen(menue.hidden))
+  menue.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setzen(false)))
+</script>

@@ -1,0 +1,124 @@
+---
+import Bild from '../../components/Bild.astro'
+import Wursti from '../../components/Wursti.astro'
+import { aktionswoche } from '../../data/beispiele'
+import { prozent } from '../../lib/format'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/*
+  Der Wahrheitstest für eine Aktion, nach der Geschichte auf bytewurst.de:
+  Hackfleisch zum Aktionspreis, mehr Besucher, gleicher Umsatz. Erst raten,
+  dann druckt der Bon. Die Bon-Höhe ist aus Besuchern und Umsatz abgeleitet.
+
+  Der Zustand hängt als data-antwort am Abschnitt, Bon und Auflösung
+  schalten per CSS-Variante (group-data-[antwort]).
+*/
+type Props = BlockProps<'wahrheitstest'>
+
+const { value } = Astro.props
+const t = aktionswoche.aktionTag
+const zeilen: [string, string][] = [
+  ['Besucher', prozent(aktionswoche.besucher[t] - 100)],
+  ['Umsatz gesamt', prozent(aktionswoche.umsatz[t] - 100)],
+  ['Ø Bon', prozent((aktionswoche.umsatz[t] / aktionswoche.besucher[t] - 1) * 100)],
+  ['Zusatzkäufe', 'kaum'],
+  ['Nachproduktion', 'teurer'],
+]
+const knopf =
+  'knopf border-2 border-tinte bg-papier text-tinte hover:bg-white aria-pressed:bg-tinte aria-pressed:text-papier'
+---
+
+<section aria-labelledby="test-titel" class="group/test fokus-dunkel bg-senf py-20 md:py-28" data-wahrheitstest>
+  <div class="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-6">
+      <h2 id="test-titel" class="titel text-[clamp(2.5rem,5.6vw,4.6rem)]">{value.titel}</h2>
+      {value.frage && <p class="mt-6 text-lg leading-relaxed">{einsetzen(value.frage)}</p>}
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row" role="group" aria-label="Deine Antwort">
+        <button type="button" aria-pressed="false" data-antwort="ja" class={knopf}>Klar, der Laden war voll!</button>
+        <button type="button" aria-pressed="false" data-antwort="nein" class={knopf}>Ich hab da so ein Gefühl: eher nicht</button>
+      </div>
+
+      <!-- Das Skript setzt die Auflösung aus der Vorlage in die Live-Region, so wird sie auch angesagt -->
+      <div aria-live="polite" data-ansage></div>
+      <template data-aufloesung>
+        <div class="mt-8 rounded-3xl bg-papier/70 p-6">
+          <p class="titel text-3xl">
+            <span class="hidden group-data-[antwort=ja]/test:inline">Leider nein.</span>
+            <span class="hidden group-data-[antwort=nein]/test:inline">Gutes Gefühl. Jetzt hast du es schwarz auf weiß.</span>
+          </p>
+          {value.aufloesung && <p class="mt-3 leading-relaxed">{einsetzen(value.aufloesung)}</p>}
+        </div>
+      </template>
+
+      {value.text && <p class="mt-8 leading-relaxed">{einsetzen(value.text)}</p>}
+    </div>
+
+    <!-- Mit Antwort ist der Bon höher als das Foto. Unter lg Platz reservieren, sonst ragt er in den nächsten Abschnitt -->
+    <div class="relative mx-auto w-full max-w-md group-data-[antwort]/test:min-h-[25rem] lg:col-span-6 lg:max-w-none lg:group-data-[antwort]/test:min-h-0">
+      <div class="overflow-hidden rounded-3xl shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5)]">
+        <Bild
+          name="bon"
+          sizes="(min-width: 1024px) 46vw, 448px"
+          alt="Ein Kartenterminal von oben auf orangem Grund, aus dem ein langer weißer Kassenbon kommt."
+          class="aspect-[3/2] h-auto w-full object-cover"
+        />
+      </div>
+
+      <div
+        data-bon
+        aria-hidden="true"
+        class="bon-schatten pointer-events-none absolute top-6 right-3 w-[15.5rem] rotate-[3deg] opacity-0 transition-opacity duration-300 group-data-[antwort]/test:pointer-events-auto group-data-[antwort]/test:opacity-100 sm:right-8 sm:w-72"
+      >
+        <div
+          class="bon px-5 text-[0.8125rem] [clip-path:inset(0_0_100%_0)] transition-[clip-path] duration-[1600ms] ease-[steps(16,end)] group-data-[antwort]/test:[clip-path:inset(0_0_0_0)] motion-reduce:transition-none"
+        >
+          <p class="text-center font-bold tracking-wide">BYTEWURST</p>
+          <p class="text-center">Wahrheitstest</p>
+          <div class="bon-linie my-3"></div>
+          <p>Aktion: Hackfleisch</p>
+          <p>Tag: Donnerstag</p>
+          <div class="bon-linie my-3"></div>
+          <ul class="space-y-1">
+            {
+              zeilen.map(([was, wert]) => (
+                <li class="ziffern flex justify-between gap-3">
+                  <span>{was}</span>
+                  <span class="font-bold">{wert}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="bon-linie my-3"></div>
+          <p class="font-bold">ERGEBNIS</p>
+          <p>Nicht wiederholen.</p>
+          <p class="mt-2 text-[0.75rem] text-grau">Beispielauswertung</p>
+        </div>
+      </div>
+
+      <Wursti
+        folgen
+        class="absolute -bottom-10 -left-4 h-auto w-32 drop-shadow-[0_10px_10px_rgb(0_0_0/0.25)] sm:-left-10 sm:w-40"
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  import { stimmungSetzen } from '../../lib/wursti'
+
+  document.querySelectorAll<HTMLElement>('[data-wahrheitstest]').forEach((test) => {
+    const knoepfe = test.querySelectorAll<HTMLButtonElement>('button[data-antwort]')
+    knoepfe.forEach((knopf) =>
+      knopf.addEventListener('click', () => {
+        test.dataset.antwort = knopf.dataset.antwort
+        knoepfe.forEach((k) => k.setAttribute('aria-pressed', String(k === knopf)))
+        const vorlage = test.querySelector<HTMLTemplateElement>('template[data-aufloesung]')!
+        test.querySelector('[data-ansage]')!.replaceChildren(vorlage.content.cloneNode(true))
+        test.querySelector('[data-bon]')!.removeAttribute('aria-hidden')
+        stimmungSetzen(test.querySelector('svg.wursti'), 'staunt')
+      }),
+    )
+  })
+</script>

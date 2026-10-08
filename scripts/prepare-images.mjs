@@ -4,7 +4,7 @@
  * (nach dem Zuschnitt), damit jedes <img> width und height bekommt.
  *
  * Die Fotos sind Platzhalter von Unsplash, Nachweis in reference/bilder/nachweis.json.
- * Die Ergebnisse sind eingecheckt. Coolify baut nur `npm run build`, dieses
+ * Die Ergebnisse sind eingecheckt. Der Deploy baut nur `npm run build`, dieses
  * Skript läuft dort nicht. Neues Bild: Datei nach reference/bilder, Eintrag in
  * MOTIVE, `npm run images`, Ergebnis mit committen.
  */
@@ -67,7 +67,7 @@ for (const m of MOTIVE) {
 await writeFile(path.join(ROOT, 'src', 'data', 'bilder.json'), JSON.stringify(manifest, null, 2) + '\n')
 process.stdout.write('src/data/bilder.json geschrieben\n')
 
-// Bildnachweis fürs Impressum. reference/ fehlt im Docker-Build, deshalb liegt
+// Bildnachweis fürs Impressum. reference/ ist nur lokal gedacht, deshalb liegt
 // die Liste der tatsächlich benutzten Fotos zusätzlich unter src/data.
 const nachweis = JSON.parse(await readFile(path.join(ROOT, 'reference', 'bilder', 'nachweis.json'), 'utf8'))
 const liste = MOTIVE.map((m) => {

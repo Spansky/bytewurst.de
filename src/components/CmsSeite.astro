@@ -1,0 +1,30 @@
+---
+import { getEmDashEntry, getSeoMeta } from 'emdash'
+import Bloecke from '../bloecke/Bloecke.astro'
+import { SEITEN_URL } from '../data/betrieb'
+import { seite as seiteHolen, type SeitenSchluessel } from '../data/seiten'
+import Base from '../layouts/Base.astro'
+
+/*
+  Eine Seite, deren Abschnitte aus EmDash kommen (Sammlung "pages"). Fehlt
+  der Eintrag oder ist er nicht veröffentlicht, gibt es die 404-Seite.
+  Ein im SEO-Feld gesetzter Titel geht vor dem aus seiten.ts.
+*/
+interface Props {
+  schluessel: SeitenSchluessel
+}
+
+const seite = seiteHolen(Astro.props.schluessel)
+const { entry, cacheHint } = await getEmDashEntry('pages', seite.cms!)
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint)
+if (!entry) return Astro.rewrite('/404')
+
+const seo = getSeoMeta(entry, { siteUrl: SEITEN_URL, path: seite.pfad, defaultTitle: seite.titel })
+---
+
+<Base seite={seite} titel={seo.title} inhalt={{ collection: 'pages', id: entry.data.id, slug: entry.id }}>
+  <div {...entry.edit.inhalt}>
+    <Bloecke value={entry.data.inhalt} />
+  </div>
+</Base>

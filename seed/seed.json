@@ -1,0 +1,598 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "ByteWurst",
+    "description": "Konzeptentwurf von Jock&Jock: Verkaufsseite für ByteWurst, Umsatzprognose und Reporting für Metzgereien",
+    "author": "Jock&Jock"
+  },
+  "settings": {
+    "title": "ByteWurst",
+    "tagline": "Umsatzprognose und Reporting für Metzgereien",
+    "timezone": "Europe/Berlin"
+  },
+  "blockTypes": [
+    {
+      "slug": "einstieg",
+      "label": "Start: Einstieg",
+      "description": "Erster Bildschirm der Startseite mit Schaufenster, Prognose-Bon und Wursti",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text",
+              "type": "text"
+            },
+            {
+              "slug": "hinweis",
+              "label": "Kleiner Hinweis unter den Knöpfen",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "pinnwand",
+      "label": "Start: Pinnwand",
+      "description": "Notizzettel zum Umdrehen: vorne das Problem, hinten was ByteWurst daran ändert",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text (Absätze durch Leerzeile trennen)",
+              "type": "text"
+            },
+            {
+              "slug": "zettel",
+              "label": "Zettel",
+              "type": "repeater",
+              "required": true,
+              "validation": {
+                "minItems": 1,
+                "maxItems": 6,
+                "subFields": [
+                  {
+                    "slug": "vorne",
+                    "label": "Vorne",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "slug": "vorne_klein",
+                    "label": "Vorne, klein darunter",
+                    "type": "string"
+                  },
+                  {
+                    "slug": "hinten",
+                    "label": "Hinten: was ByteWurst daran ändert",
+                    "type": "text",
+                    "required": true
+                  },
+                  {
+                    "slug": "farbe",
+                    "label": "Papierfarbe",
+                    "type": "select",
+                    "options": [
+                      "papier",
+                      "senf",
+                      "rosa"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "planspiel",
+      "label": "Start: Planspiel",
+      "description": "Bauchgefühl gegen ByteWurst. Die Spielzahlen stehen in src/data/start.ts",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text, {artikel} wird ersetzt",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "wahrheitstest",
+      "label": "Start: Wahrheitstest",
+      "description": "Raten, ob sich eine Aktion gerechnet hat, dann druckt der Bon",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "frage",
+              "label": "Frage",
+              "type": "text"
+            },
+            {
+              "slug": "aufloesung",
+              "label": "Auflösung nach dem Raten",
+              "type": "text"
+            },
+            {
+              "slug": "text",
+              "label": "Text darunter",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "nacht",
+      "label": "Start: Nacht-Uhr",
+      "description": "Die Nacht von 19 bis 7 Uhr zum Durchziehen. Die Stationen stehen in src/data/start.ts",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "einwaende",
+      "label": "Start: Einwände",
+      "description": "Noch ein Programm? Mit Kaffeefoto und A4-Ausdruck",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text (Absätze durch Leerzeile trennen)",
+              "type": "text"
+            },
+            {
+              "slug": "punkte",
+              "label": "Punkte",
+              "type": "repeater",
+              "validation": {
+                "maxItems": 6,
+                "subFields": [
+                  {
+                    "slug": "symbol",
+                    "label": "Symbol",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                      "kasse",
+                      "uhr",
+                      "drucker",
+                      "lupe"
+                    ]
+                  },
+                  {
+                    "slug": "text",
+                    "label": "Text",
+                    "type": "text",
+                    "required": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "frueher",
+      "label": "Start: Früher",
+      "description": "Altes Foto: als der Chef noch alles im Kopf hatte",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text (Absätze durch Leerzeile trennen)",
+              "type": "text"
+            },
+            {
+              "slug": "bildunterschrift",
+              "label": "Bildunterschrift",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "kassenzettel",
+      "label": "Start: Kassenzettel",
+      "description": "Alle Funktionen als Bon. Die Posten stehen in src/data/start.ts",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text, {kostenlos_leistungen} wird ersetzt",
+              "type": "text"
+            },
+            {
+              "slug": "link",
+              "label": "Linktext zu den Funktionen",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "preis_teaser",
+      "label": "Start: Preis mit Rechner",
+      "description": "Preisrechner mit Wurst-Regler. Preise stehen in src/data/preise.ts",
+      "category": "Startseite",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text, {euro_je_100k} wird ersetzt",
+              "type": "text"
+            },
+            {
+              "slug": "link",
+              "label": "Linktext zu den Preisen",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "schluss",
+      "label": "Schluss: Reden wir",
+      "description": "Letzter Abschnitt vor der Fußzeile mit Demo-Knöpfen",
+      "category": "Alle Seiten",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text",
+              "type": "text"
+            },
+            {
+              "slug": "nachsatz",
+              "label": "Nachsatz",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Seiten",
+      "labelSingular": "Seite",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Titel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "inhalt",
+          "label": "Abschnitte",
+          "type": "blocks",
+          "validation": {
+            "allowedTypes": [
+              "einstieg",
+              "pinnwand",
+              "planspiel",
+              "wahrheitstest",
+              "nacht",
+              "einwaende",
+              "frueher",
+              "kassenzettel",
+              "preis_teaser",
+              "schluss"
+            ],
+            "maxItems": 20
+          }
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Hauptnavigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Funktionen",
+          "url": "/funktionen/"
+        },
+        {
+          "type": "custom",
+          "label": "Preise",
+          "url": "/preise/"
+        }
+      ]
+    },
+    {
+      "name": "footer",
+      "label": "Fußzeile: Seiten",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Funktionen",
+          "url": "/funktionen/"
+        },
+        {
+          "type": "custom",
+          "label": "Preise",
+          "url": "/preise/"
+        },
+        {
+          "type": "custom",
+          "label": "Einloggen",
+          "url": "https://bytewurst.de/login"
+        },
+        {
+          "type": "custom",
+          "label": "Impressum",
+          "url": "/impressum/"
+        },
+        {
+          "type": "custom",
+          "label": "Datenschutz",
+          "url": "/datenschutz/"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "start",
+        "slug": "start",
+        "status": "published",
+        "data": {
+          "title": "Startseite",
+          "inhalt": [
+            {
+              "_type": "einstieg",
+              "_version": 1,
+              "_key": "einstieg",
+              "titel": "Dein Bauchgefühl ist gut. Deine Kasse weiß es besser.",
+              "text": "ByteWurst rechnet jede Nacht aus deinen Verkaufsdaten aus, was nächste Woche über deine Theke geht und wie viel du produzieren solltest. Um vier Uhr früh liegt dein Report im Postfach. Und nach jeder Aktion siehst du schwarz auf weiß, ob sie sich gerechnet hat.",
+              "hinweis": "Deine Kasse bleibt, wie sie ist, und lernen musst du auch nichts. Gemeinsam mit Metzgern entwickelt."
+            },
+            {
+              "_type": "pinnwand",
+              "_version": 1,
+              "_key": "pinnwand",
+              "titel": "Montags zu viel. Samstags zu wenig.",
+              "text": "Wer bestellt und produziert, entscheidet aus Erfahrung. Das klappt gut, bis die Erfahrung Urlaub hat. Oder in Rente geht.\n\nKommen dir diese Zettel bekannt vor? Dreh sie um. Hinten steht, was ByteWurst daraus macht.",
+              "zettel": [
+                {
+                  "vorne": "Montag, 17 Uhr. Vom Wochenende liegt noch Aufschnitt da.",
+                  "vorne_klein": "Ab in die Abschrift. Wie jeden Montag.",
+                  "hinten": "Die Wochenprognose sagt dir je Warengruppe und Wochentag, wie viel du brauchst. Montags produzierst du weniger, ohne zu raten.",
+                  "farbe": "papier"
+                },
+                {
+                  "vorne": "Samstag, 11 Uhr. Grillfleisch aus.",
+                  "vorne_klein": "Die Schlange ist noch lang.",
+                  "hinten": "ByteWurst kennt das erste Grillwochenende im Mai, die Leberkäs-Spitze am Samstagvormittag und das Ferienloch im August. Aus deinen eigenen Verkäufen der letzten Jahre.",
+                  "farbe": "senf"
+                },
+                {
+                  "vorne": "Hackfleisch im Angebot. Laden voll!",
+                  "vorne_klein": "Und die Kasse? Weiß keiner.",
+                  "hinten": "Nach jeder Aktion siehst du schwarz auf weiß Besucher, Umsatz und Bon-Höhe im Vorher-Nachher-Vergleich. Du wiederholst nur, was sich rechnet.",
+                  "farbe": "papier"
+                },
+                {
+                  "vorne": "Die Neue plant nach Gefühl.",
+                  "vorne_klein": "Das alte Gefühl ist in Rente gegangen.",
+                  "hinten": "Die Prognose hängt jeden Morgen als A4 an der Pinnwand. Die Neue liest dieselben Zahlen wie der Chef.",
+                  "farbe": "rosa"
+                },
+                {
+                  "vorne": "Kassenauswertung machen!",
+                  "vorne_klein": "Steht hier seit März.",
+                  "hinten": "Musst du nicht. Die Zahlen kommen zu dir: jeden Morgen um 4 Uhr als kurze Mail, auf Wunsch als A4 für genau diese Pinnwand.",
+                  "farbe": "papier"
+                }
+              ]
+            },
+            {
+              "_type": "planspiel",
+              "_version": 1,
+              "_key": "planspiel",
+              "titel": "Plan mal selbst. Gegen die Wurst.",
+              "text": "Drei Tage, ein Artikel: {artikel}. Du schätzt, wie viele Stück du produzierst. ByteWurst schätzt auch. Dann zeigt die Kasse, was wirklich über die Theke gegangen ist."
+            },
+            {
+              "_type": "wahrheitstest",
+              "_version": 1,
+              "_key": "wahrheitstest",
+              "titel": "Volle Theke heißt nicht volle Kasse.",
+              "frage": "Hackfleisch zum Aktionspreis, der Laden war voll. Hat sich das gerechnet? Rate mal.",
+              "aufloesung": "So war es bei einem Kunden von ByteWurst: Es kamen tatsächlich mehr Leute. Aber sie kauften kaum etwas dazu. In der Tüte landete vor allem das Hackfleisch zum Spottpreis, ausgerechnet ein Artikel mit ohnehin guter Marge. Nachproduziert werden musste auch noch, und zwar teurer. Diese Aktion macht er heute nicht mehr. Das Geld steckt er in die, die nachweislich funktionieren.",
+              "text": "Nach jeder Aktion zeigt dir ByteWurst Besucher, Umsatz und Bon-Höhe im Vorher-Nachher-Vergleich. Und ob deine Kunden zusätzlich gekauft haben oder nur das Sonderangebot. So fließt dein Werbebudget nur noch in Aktionen, die sich rechnen."
+            },
+            {
+              "_type": "nacht",
+              "_version": 1,
+              "_key": "nacht",
+              "titel": "Während du schläfst, rechnet die Wurst.",
+              "text": "Zieh die Uhr von Ladenschluss bis zum ersten Kaffee und schau zu, was nachts mit deinen Kassendaten passiert."
+            },
+            {
+              "_type": "einwaende",
+              "_version": 1,
+              "_key": "einwaende",
+              "titel": "Die beste Software ist die, die du nie öffnen musst.",
+              "text": "Viele Metzger winken erst mal ab: noch ein Programm, in das man sich einarbeiten muss? Verständlich. Deshalb kommt ByteWurst zu dir, nicht umgekehrt.\n\nEin Kunde wollte gar kein neues Programm. Er wollte eine E-Mail, jeden Morgen um vier, mit den zehn besten Produkten vom Vortag und einer Übersicht, wann seine Kundschaft kommt und wie viel sie pro Einkauf ausgibt. Die bekommt er seitdem. Er liest seine Zahlen beim ersten Kaffee, bevor der erste Kunde vor der Theke steht.",
+              "punkte": [
+                {
+                  "symbol": "kasse",
+                  "text": "Kasse und Warenwirtschaft bleiben, wie sie sind. Es gibt nichts zu installieren und nichts zu warten."
+                },
+                {
+                  "symbol": "uhr",
+                  "text": "In etwa zehn Minuten eingerichtet. Deine ersten Umsatzdiagramme siehst du noch am selben Tag."
+                },
+                {
+                  "symbol": "drucker",
+                  "text": "Lieber Papier? Jeder Report kommt als A4 aus dem Drucker, für die Pinnwand in der Wurstküche."
+                },
+                {
+                  "symbol": "lupe",
+                  "text": "Wer tiefer graben will, zoomt sich durch die Diagramme. Muss aber keiner."
+                }
+              ]
+            },
+            {
+              "_type": "frueher",
+              "_version": 1,
+              "_key": "frueher",
+              "titel": "Früher hatte der Chef alles im Kopf.",
+              "text": "Hängt deine Planung am Gefühl von ein, zwei Leuten? Genau deshalb kommen Inhaber von Metzgereien zu ByteWurst. Das Personal wechselt, gute Fachkräfte kommen längst nicht mehr nur aus der Region, und alles selbst zu kontrollieren ist keine Lösung.\n\nMit ByteWurst plant jeder im Team mit denselben Zahlen, egal wer gerade hinter der Theke steht.",
+              "bildunterschrift": "Damals: Der Chef weiß alles. Ist er krank, weiß es keiner."
+            },
+            {
+              "_type": "kassenzettel",
+              "_version": 1,
+              "_key": "kassenzettel",
+              "titel": "Alles, was in der Wurst steckt.",
+              "text": "Zwölf Posten auf einem Bon. Bei Early Adopter sind alle inklusive, nur die Summe richtet sich nach deinem Umsatz. Zum Ausprobieren gibt es {kostenlos_leistungen} kostenlos.",
+              "link": "Alle Funktionen im Detail"
+            },
+            {
+              "_type": "preis_teaser",
+              "_version": 1,
+              "_key": "preis",
+              "titel": "Die Landmetzgerei zahlt nicht wie die Kette.",
+              "text": "Der Preis richtet sich nach deinem Umsatz: {euro_je_100k} € im Monat je 100.000 € Jahresumsatz. Zum Ausprobieren gibt es ByteWurst kostenlos, mit einer Filiale und drei Produkten.",
+              "link": "Alle Preise und Antworten"
+            },
+            {
+              "_type": "schluss",
+              "_version": 1,
+              "_key": "schluss",
+              "titel": "Lass uns über Wurst reden.",
+              "text": "Wir zeigen dir ByteWurst gern bei dir in der Metzgerei, per Video oder am Telefon. Eingerichtet ist sie in etwa zehn Minuten, deine ersten Umsatzdiagramme mit deinen eigenen Zahlen siehst du noch am selben Tag.",
+              "nachsatz": "Wir sprechen Metzger, nicht IT. Versprochen."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

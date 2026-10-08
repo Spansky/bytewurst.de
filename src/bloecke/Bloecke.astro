@@ -1,0 +1,40 @@
+---
+import { Blocks, defineBlockComponents } from 'emdash/ui'
+import type { PageInhaltBlock } from '../../emdash-env'
+import Schluss from './Schluss.astro'
+import Einstieg from './start/Einstieg.astro'
+import Einwaende from './start/Einwaende.astro'
+import Frueher from './start/Frueher.astro'
+import Kassenzettel from './start/Kassenzettel.astro'
+import Nacht from './start/Nacht.astro'
+import Pinnwand from './start/Pinnwand.astro'
+import Planspiel from './start/Planspiel.astro'
+import PreisTeaser from './start/PreisTeaser.astro'
+import Wahrheitstest from './start/Wahrheitstest.astro'
+
+/*
+  Ordnet jedem Blocktyp aus EmDash seine Komponente zu. Neuer Blocktyp:
+  in seed/seed.json unter blockTypes und allowedTypes eintragen, Komponente
+  anlegen, hier verknüpfen.
+*/
+interface Props {
+  value?: PageInhaltBlock[] | null
+}
+
+const { value } = Astro.props
+
+const komponenten = defineBlockComponents<PageInhaltBlock>({
+  einstieg: Einstieg,
+  pinnwand: Pinnwand,
+  planspiel: Planspiel,
+  wahrheitstest: Wahrheitstest,
+  nacht: Nacht,
+  einwaende: Einwaende,
+  frueher: Frueher,
+  kassenzettel: Kassenzettel,
+  preis_teaser: PreisTeaser,
+  schluss: Schluss,
+})
+---
+
+<Blocks value={value} components={komponenten} />

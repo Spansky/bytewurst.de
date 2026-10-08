@@ -1,0 +1,30 @@
+---
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
+import Icon from '../../components/Icon.astro'
+import Preisrechner from '../../components/Preisrechner.astro'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+type Props = BlockProps<'preis_teaser'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="preis-titel" class="fliesen py-20 md:py-28">
+  <div class="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-5">
+      <h2 id="preis-titel" class="titel text-[clamp(2.5rem,5.4vw,4.4rem)]">{value.titel}</h2>
+      {value.text && <p class="mt-6 text-lg leading-relaxed text-tinte/85">{einsetzen(value.text)}</p>}
+      <a
+        href="/preise/"
+        class="mt-8 inline-flex items-center gap-2 text-lg font-bold text-wurst-tief underline decoration-wurst decoration-[3px] underline-offset-[6px] hover:text-wurst"
+      >
+        {value.link || 'Alle Preise und Antworten'}
+        <Icon icon={faArrowRight} class="h-4 w-4" />
+      </a>
+    </div>
+    <div class="lg:col-span-7">
+      <Preisrechner />
+    </div>
+  </div>
+</section>

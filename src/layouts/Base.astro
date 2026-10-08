@@ -1,0 +1,139 @@
+---
+import { getMenu } from 'emdash'
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from 'emdash/ui'
+import { createPublicPageContext } from 'emdash/page'
+import Fusszeile from '../components/Fusszeile.astro'
+import Kopfzeile from '../components/Kopfzeile.astro'
+import { firma, KONZEPT, SEITEN_URL } from '../data/betrieb'
+import type { Seite } from '../data/seiten'
+import { bildSatz } from '../lib/bilder'
+import '../index.css'
+
+/*
+  Seitenrahmen für jede Route: Kopfbereich, Kopfzeile, Inhalt, Fußzeile.
+
+  Meta-Angaben, Open Graph und Canonical schreibt <EmDashHead> aus dem
+  Seitenkontext. Im SEO-Feld eines CMS-Eintrags gesetzte Werte gehen vor.
+  Solange KONZEPT gilt: noindex auf jeder Seite und kein JSON-LD (EmDash
+  schreibt WebSite-JSON-LD nur, wenn siteName gesetzt ist).
+*/
+interface Props {
+  seite: Seite
+  /** Titel aus dem SEO-Feld des CMS-Eintrags, sonst der aus seiten.ts */
+  titel?: string | null
+  /** Eintrag in EmDash, dessen SEO-Feld über die Vorgaben gelegt wird */
+  inhalt?: { collection: string; id: string; slug?: string | null }
+}
+
+const { seite, titel, inhalt } = Astro.props
+const istFehler = seite.schluessel === 'fehlt'
+const url = istFehler ? null : `${SEITEN_URL}${seite.pfad}`
+const vollerTitel = titel || seite.titel
+
+const [hauptmenue, fussmenue] = await Promise.all([getMenu('primary'), getMenu('footer')])
+const menuePunkte = (menue: typeof hauptmenue) =>
+  (menue?.items ?? []).map((p) => ({ url: p.url, label: p.label, target: p.target ?? undefined }))
+
+const seitenKontext = createPublicPageContext({
+  Astro,
+  kind: inhalt ? 'content' : 'custom',
+  pageType: 'website',
+  title: vollerTitel,
+  pageTitle: vollerTitel,
+  description: seite.beschreibung,
+  canonical: url,
+  image: `${SEITEN_URL}/og-image.jpg`,
+  content: inhalt,
+  seo: { robots: KONZEPT || istFehler ? 'noindex' : null },
+  siteName: KONZEPT ? undefined : 'ByteWurst',
+  siteUrl: SEITEN_URL,
+})
+
+const software = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'ByteWurst',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  url: `${SEITEN_URL}/`,
+  image: `${SEITEN_URL}/og-image.jpg`,
+  description: 'Umsatzprognose und Reporting für Metzgereien. Rechnet nachts aus den Kassendaten, was nächste Woche über die Theke geht.',
+  publisher: {
+    '@type': 'Organization',
+    name: firma.name,
+    telephone: firma.telefonRoh,
+    email: firma.email,
+    address: { '@type': 'PostalAddress', streetAddress: firma.strasse, postalCode: firma.plz, addressLocality: firma.ort, addressCountry: 'DE' },
+  },
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Kostenlos mit einer Filiale und drei Produkten' },
+}
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Ohne JavaScript bleibt alles sichtbar: die Einblend-Übergänge hängen an der Klasse js -->
+    <script is:inline>
+      document.documentElement.classList.add('js')
+    </script>
+
+    <link rel="preload" href="/fonts/anybody.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/rethink-sans.woff2" as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#f7f3ea" />
+    <meta name="apple-mobile-web-app-title" content="ByteWurst" />
+
+    <title>{vollerTitel}</title>
+    <EmDashHead page={seitenKontext} />
+    {KONZEPT && <meta property="og:site_name" content="ByteWurst" />}
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wursti, das Maskottchen von ByteWurst, neben dem Schriftzug ByteWurst" />
+    {
+      seite.vorladen && (
+        <link
+          rel="preload"
+          as="image"
+          type="image/avif"
+          imagesrcset={bildSatz(seite.vorladen.name, 'avif')}
+          imagesizes={seite.vorladen.sizes}
+          media={seite.vorladen.media}
+          fetchpriority="high"
+        />
+      )
+    }
+    {seite.schluessel === 'start' && !KONZEPT && <script type="application/ld+json" set:html={JSON.stringify(software)} />}
+  </head>
+  <body>
+    <EmDashBodyStart page={seitenKontext} />
+    <a
+      href="#inhalt"
+      class="knopf knopf-wurst absolute top-[calc(0.75rem+env(safe-area-inset-top))] left-4 z-50 -translate-y-[300%] focus:translate-y-0"
+    >
+      Zum Inhalt
+    </a>
+    <div aria-hidden="true" class="leiste-unten pointer-events-none fixed inset-x-0 bottom-0 -z-20 h-3"></div>
+    <Kopfzeile pfad={seite.pfad} punkte={menuePunkte(hauptmenue)} />
+    <main id="inhalt" class="overflow-x-clip bg-fliese">
+      <slot />
+    </main>
+    <Fusszeile seiten={menuePunkte(fussmenue)} />
+    <EmDashBodyEnd page={seitenKontext} />
+
+    <script>
+      import { einblenden, grundfarbe } from '../lib/seite'
+      import { wurstiStarten } from '../lib/wursti'
+
+      grundfarbe()
+      einblenden()
+      wurstiStarten()
+    </script>
+  </body>
+</html>

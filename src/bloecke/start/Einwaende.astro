@@ -1,0 +1,77 @@
+---
+import { faCashRegister } from '@fortawesome/free-solid-svg-icons/faCashRegister'
+import { faMagnifyingGlassChart } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlassChart'
+import { faPrint } from '@fortawesome/free-solid-svg-icons/faPrint'
+import { faStopwatch } from '@fortawesome/free-solid-svg-icons/faStopwatch'
+import Bild from '../../components/Bild.astro'
+import Icon from '../../components/Icon.astro'
+import { prognoseGruppen, prognoseTage } from '../../data/beispiele'
+import { absaetze, einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/*
+  "Noch ein Programm?" Die Antwort von bytewurst.de: die Zahlen kommen zu dir.
+  Dazu das Kaffeefoto und ein A4-Ausdruck, wie er an der Pinnwand hängt.
+*/
+type Props = BlockProps<'einwaende'>
+
+const { value } = Astro.props
+const SYMBOLE = { kasse: faCashRegister, uhr: faStopwatch, drucker: faPrint, lupe: faMagnifyingGlassChart }
+
+const g = prognoseGruppen[0]
+const werte = g.voraus.slice(1, 7)
+const max = Math.max(...werte)
+---
+
+<section aria-labelledby="einwand-titel" class="bg-papier py-20 md:py-28">
+  <div class="rahmen grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-6">
+      <h2 id="einwand-titel" class="titel text-[clamp(2.5rem,5.4vw,4.4rem)]">{value.titel}</h2>
+      {absaetze(value.text).map((a, i) => <p class:list={['text-lg leading-relaxed text-tinte/85', i ? 'mt-4' : 'mt-6']}>{a}</p>)}
+      {
+        value.punkte?.length ? (
+          <ul class="mt-8 space-y-4">
+            {value.punkte.map((p) => (
+              <li class="flex gap-4">
+                <span class="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-senf text-tinte">
+                  <Icon icon={SYMBOLE[p.symbol]} class="h-4 w-4" />
+                </span>
+                <span class="leading-relaxed">{einsetzen(p.text)}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null
+      }
+    </div>
+
+    <div class="relative mx-auto w-full max-w-md lg:col-span-6 lg:max-w-lg">
+      <div class="overflow-hidden rounded-[2rem] shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5)]">
+        <Bild
+          name="kaffee"
+          sizes="(min-width: 1024px) 512px, 448px"
+          alt="Eine Tasse schwarzer Kaffee mit Untertasse auf einem dunklen, polierten Holztisch."
+          class="aspect-square h-auto w-full object-cover"
+        />
+      </div>
+      <div data-einblenden="kippen" style="--kipp: 10deg; --ruhe: 4deg" class="absolute -right-2 -bottom-10 w-[46%] sm:-right-10">
+        <!-- A4-Ausdruck der Wochenprognose, wie er an der Pinnwand hängt -->
+        <div class="relative bg-papier p-4 pt-6 shadow-[0_24px_40px_-20px_rgb(0_0_0/0.55)] [aspect-ratio:1/1.414]">
+          <span aria-hidden="true" class="absolute -top-2 left-1/2 h-5 w-5 -translate-x-1/2 rounded-full bg-wurst shadow-[0_3px_4px_rgb(0_0_0/0.4)]"></span>
+          <p class="etikett text-grau">ByteWurst, Wochenprognose</p>
+          <p class="mt-1 text-lg leading-tight font-bold">Wurst, nächste Woche</p>
+          <div class="mt-4 flex aspect-[2/1] w-full items-end gap-1.5 border-b border-tinte/30">
+            {werte.map((v) => <div class="flex-1 rounded-t-[2px] bg-tinte/80" style={`height: ${(v / max) * 100}%`} />)}
+          </div>
+          <div class="mt-1 flex gap-1.5 font-mono text-[0.625rem] text-grau">
+            {prognoseTage.slice(6, 12).map((t) => <span class="flex-1 text-center">{t}</span>)}
+          </div>
+          <div class="mt-4 space-y-1.5" aria-hidden="true">
+            <div class="h-1.5 w-11/12 rounded bg-fuge"></div>
+            <div class="h-1.5 w-4/5 rounded bg-fuge"></div>
+            <div class="h-1.5 w-2/3 rounded bg-fuge"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

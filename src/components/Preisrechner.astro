@@ -1,0 +1,68 @@
+---
+import { EFFIZIENZ_ANNAHME, UMSATZ_MAX, UMSATZ_MIN, UMSATZ_START, WECKLE_PREIS } from '../data/preise'
+import { euroGenau, umsatzKurz } from '../lib/format'
+import { rechnen, SCHRITTE, stellungAus } from '../lib/preisrechner'
+
+/*
+  Preisrechner für Early Adopter: Jahresumsatz einstellen, Monatsgebühr
+  ablesen. Der Server rendert den Startwert, das Skript setzt bei jeder
+  Bewegung die Texte aus lib/preisrechner.ts neu (data-feld).
+*/
+interface Props {
+  voll?: boolean
+  class?: string
+}
+
+const { voll = false, class: klasse } = Astro.props
+const id = `rechner-${voll ? 'voll' : 'kurz'}`
+const start = stellungAus(UMSATZ_START)
+const r = rechnen(start)
+---
+
+<div data-preisrechner class:list={['rounded-3xl bg-papier p-5 text-tinte shadow-[0_24px_50px_-28px_rgb(0_0_0/0.45)] md:p-8', klasse]}>
+  <label for={id} class="block font-semibold">Dein Jahresumsatz</label>
+  <p class="titel ziffern mt-1 text-[clamp(2.4rem,7vw,3.6rem)] text-tinte" data-feld="umsatz">{r.umsatz}</p>
+  <input id={id} type="range" min="0" max={SCHRITTE} value={start} aria-valuetext={r.wertText} class="wurstregler mt-4 w-full" />
+  <div class="ziffern mt-1 flex justify-between font-mono text-xs text-grau" aria-hidden="true">
+    <span>{umsatzKurz(UMSATZ_MIN)}</span>
+    <span>{umsatzKurz(UMSATZ_MAX)}</span>
+  </div>
+
+  <div class="bon-linie mt-6 pt-6 sm:flex sm:items-end sm:justify-between sm:gap-6">
+    <div>
+      <p class="font-semibold">Du zahlst im Monat</p>
+      <p class="titel ziffern mt-1 text-[clamp(3rem,9vw,4.6rem)] text-wurst" aria-live="polite" data-feld="gebuehr">{r.gebuehr}</p>
+    </div>
+    <p class="mt-3 max-w-xs text-sm text-grau sm:mt-0 sm:text-right" data-feld="anteil">{r.anteil}</p>
+  </div>
+
+  <p class="mt-5 rounded-2xl bg-senf/25 px-4 py-3 text-[0.9375rem]">
+    Das sind ungefähr <strong class="ziffern" data-feld="weckle">{r.weckle}</strong> im Monat.{' '}
+    <span class="text-grau">(Bei angenommenen {euroGenau(WECKLE_PREIS)} das Stück.)</span>
+  </p>
+
+  {
+    voll && (
+      <p class="mt-4 text-[0.9375rem] text-grau">
+        Und was es bringen kann: ByteWurst rechnet konservativ mit {EFFIZIENZ_ANNAHME * 100} % Effizienzgewinn durch bessere Prognosen und weniger
+        Abschriften. Bei <span data-feld="umsatz">{r.umsatz}</span> Umsatz wären das rund{' '}
+        <strong class="ziffern text-tinte" data-feld="ersparnis">{r.ersparnis}</strong>. Eine Schätzung, keine Zusage. Was es bei dir bringt, zeigen deine eigenen Zahlen.
+      </p>
+    )
+  }
+</div>
+
+<script>
+  import { rechnen } from '../lib/preisrechner'
+
+  document.querySelectorAll<HTMLElement>('[data-preisrechner]').forEach((rechner) => {
+    const regler = rechner.querySelector('input')!
+    regler.addEventListener('input', () => {
+      const r = rechnen(Number(regler.value))
+      regler.setAttribute('aria-valuetext', r.wertText)
+      rechner.querySelectorAll<HTMLElement>('[data-feld]').forEach((el) => {
+        el.textContent = r[el.dataset.feld as keyof typeof r]
+      })
+    })
+  })
+</script>

@@ -3,6 +3,10 @@
  *
  * Was ByteWurst kann, stammt von bytewurst.de (Startseite, Doku, Blog). Die
  * Zahlen im Planspiel sind ausgedacht und auf der Seite so gekennzeichnet.
+ *
+ * Überschriften, Absätze und die Zettel der Pinnwand stehen in EmDash
+ * (seed/seed.json). Hier bleibt, was am Ablauf hängt: Spielrunden,
+ * Nacht-Stationen mit ihren Minuten, die Bon-Posten und Wurstis Sprüche.
  */
 
 /** Was Wursti sagt, wenn man ihn anstupst. Reihum, nicht zufällig. */
@@ -15,45 +19,6 @@ export const wurstiSprueche = [
   'Ich rechne nachts, damit du schlafen kannst.',
   'Noch einmal stupsen und ich rechne dir die Grillsaison aus.',
 ]
-
-/**
- * Notizzettel an der Pinnwand in der Wurstküche: vorne das Problem, so wie
- * es Metzger beschreiben (bytewurst.de), hinten was ByteWurst daran ändert.
- */
-export const zettel = [
-  {
-    vorne: 'Montag, 17 Uhr. Vom Wochenende liegt noch Aufschnitt da.',
-    vorneKlein: 'Ab in die Abschrift. Wie jeden Montag.',
-    hinten: 'Die Wochenprognose sagt dir je Warengruppe und Wochentag, wie viel du brauchst. Montags produzierst du weniger, ohne zu raten.',
-    farbe: 'papier',
-  },
-  {
-    vorne: 'Samstag, 11 Uhr. Grillfleisch aus.',
-    vorneKlein: 'Die Schlange ist noch lang.',
-    hinten: 'ByteWurst kennt das erste Grillwochenende im Mai, die Leberkäs-Spitze am Samstagvormittag und das Ferienloch im August. Aus deinen eigenen Verkäufen der letzten Jahre.',
-    farbe: 'senf',
-  },
-  {
-    vorne: 'Hackfleisch im Angebot. Laden voll!',
-    vorneKlein: 'Und die Kasse? Weiß keiner.',
-    hinten: 'Nach jeder Aktion siehst du schwarz auf weiß Besucher, Umsatz und Bon-Höhe im Vorher-Nachher-Vergleich. Du wiederholst nur, was sich rechnet.',
-    farbe: 'papier',
-  },
-  {
-    vorne: 'Die Neue plant nach Gefühl.',
-    vorneKlein: 'Das alte Gefühl ist in Rente gegangen.',
-    hinten: 'Die Prognose hängt jeden Morgen als A4 an der Pinnwand. Die Neue liest dieselben Zahlen wie der Chef.',
-    farbe: 'rosa',
-  },
-  {
-    vorne: 'Kassenauswertung machen!',
-    vorneKlein: 'Steht hier seit März.',
-    hinten: 'Musst du nicht. Die Zahlen kommen zu dir: jeden Morgen um 4 Uhr als kurze Mail, auf Wunsch als A4 für genau diese Pinnwand.',
-    farbe: 'papier',
-  },
-] as const
-
-export type ZettelFarbe = (typeof zettel)[number]['farbe']
 
 /**
  * Das Planspiel: grobe Bratwurst, drei Tage. Ausgedachte Zahlen, so auf der

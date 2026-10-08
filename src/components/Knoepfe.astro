@@ -1,0 +1,27 @@
+---
+import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons/faCalendarCheck'
+import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone'
+import { firma } from '../data/betrieb'
+import Icon from './Icon.astro'
+
+/** Die beiden Wege zur Demo: Termin buchen oder anrufen. Überall gleich. */
+interface Props {
+  dunkel?: boolean
+  class?: string
+}
+
+const { dunkel = false, class: klasse } = Astro.props
+---
+
+<div class:list={['flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center', klasse]}>
+  <a href={firma.demo} target="_blank" rel="noopener" class:list={['knopf', dunkel ? 'knopf-senf' : 'knopf-wurst']}>
+    <Icon icon={faCalendarCheck} class="h-4 w-4" />
+    Demo buchen
+  </a>
+  <a href={`tel:${firma.telefonRoh}`} class:list={['knopf knopf-linie', dunkel ? 'text-kreide' : 'text-tinte']}>
+    <Icon icon={faPhone} class="h-4 w-4" />
+    <span>
+      Lieber anrufen: <span class="ziffern whitespace-nowrap">{firma.telefon}</span>
+    </span>
+  </a>
+</div>

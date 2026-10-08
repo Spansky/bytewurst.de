@@ -9,7 +9,7 @@ export function bildEintrag(name: string): BildEintrag {
   return b
 }
 
-/** srcset einer Bildquelle, auch für das Vorladen im Kopf (scripts/prerender.mjs) */
+/** srcset einer Bildquelle, auch für das Vorladen im Kopf (layouts/Base.astro) */
 export function bildSatz(name: string, typ: 'avif' | 'webp') {
   return bildEintrag(name)
     .breiten.map((w) => `/bilder/${name}-${w}.${typ} ${w}w`)

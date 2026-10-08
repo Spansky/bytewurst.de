@@ -1,7 +1,22 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "types": [
+      "node"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src",
+    ".astro/types.d.ts",
+    "emdash-env.d.ts",
+    "worker-configuration.d.ts"
+  ],
+  "exclude": [
+    "dist",
+    "flyer",
+    "reference"
   ]
 }
