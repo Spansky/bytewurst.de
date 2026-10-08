@@ -1,0 +1,34 @@
+# Header für die statischen Dateien, die Cloudflare direkt aus den
+# Worker-Assets ausliefert. Gerenderte Seiten bekommen ihre Header in
+# src/middleware.ts. Entspricht dem, was vorher nginx.conf gesetzt hat.
+
+/*
+  X-Content-Type-Options: nosniff
+
+# Gehashte Bauartefakte: dürfen dauerhaft im Cache bleiben
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Schriften, Bilder und Icons ohne Hash: eine Woche, dann nachfragen
+/fonts/*
+  Cache-Control: public, max-age=604800, must-revalidate
+/bilder/*
+  Cache-Control: public, max-age=604800, must-revalidate
+/favicon.ico
+  Cache-Control: public, max-age=604800, must-revalidate
+/favicon.svg
+  Cache-Control: public, max-age=604800, must-revalidate
+/favicon-96x96.png
+  Cache-Control: public, max-age=604800, must-revalidate
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800, must-revalidate
+/icon-192.png
+  Cache-Control: public, max-age=604800, must-revalidate
+/icon-512.png
+  Cache-Control: public, max-age=604800, must-revalidate
+/og-image.jpg
+  Cache-Control: public, max-age=604800, must-revalidate
+
+/site.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: no-cache

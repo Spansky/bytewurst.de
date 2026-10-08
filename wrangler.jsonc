@@ -1,25 +1,66 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "bytewurst",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
-	// Inhalte von EmDash. Lokal legt Wrangler die Datenbank unter .wrangler/ an.
+	// Aufbau wie bei leon.cv: Die oberste Ebene ist die SICHERE VORGABE, Staging
+	// auf workers.dev. Der Astro-Build schreibt die gewählte Umgebung nach
+	// dist/server/wrangler.json (CLOUDFLARE_ENV beim Bauen), ein schlichtes
+	// `wrangler deploy` liefert genau diese Datei aus. Ohne CLOUDFLARE_ENV zielt
+	// der Build also auf Staging. Produktion braucht CLOUDFLARE_ENV=production
+	// (npm run deploy:production). Bindungen und Variablen erben benannte
+	// Umgebungen nicht, deshalb führt jede ihre eigenen auf.
+	"name": "bytewurst-staging",
+	"workers_dev": true,
+	"preview_urls": false,
+	// Wrangler legt Datenbank und Bucket beim ersten Deploy an. Nie auf die
+	// Ressourcen der Produktion unten zeigen lassen.
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "bytewurst",
+			"database_name": "bytewurst-staging",
 		},
 	],
-	// Hochgeladene Medien aus der Verwaltung
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
-			"bucket_name": "bytewurst-media",
+			"bucket_name": "bytewurst-staging-media",
 		},
 	],
+	// Sandboxed Plugins brauchen Worker Loader (bezahlter Workers-Tarif). Bei Bedarf:
+	// "worker_loaders": [{ "binding": "LOADER" }],
 	// Wartung und geplante Veröffentlichungen von EmDash (src/worker.ts)
 	"triggers": {
 		"crons": ["* * * * *"],
+	},
+	"env": {
+		// Produktion: bytewurst.stevejocks.de. Die Zone stevejocks.de muss dafür im
+		// selben Cloudflare-Konto liegen (Custom Domain).
+		"production": {
+			"name": "bytewurst",
+			"routes": [
+				{
+					"pattern": "bytewurst.stevejocks.de",
+					"custom_domain": true,
+				},
+			],
+			"workers_dev": false,
+			"preview_urls": false,
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "bytewurst",
+				},
+			],
+			"r2_buckets": [
+				{
+					"binding": "MEDIA",
+					"bucket_name": "bytewurst-media",
+				},
+			],
+			"triggers": {
+				"crons": ["* * * * *"],
+			},
+		},
 	},
 }

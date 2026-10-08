@@ -11,6 +11,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:production": "CLOUDFLARE_ENV=production astro build && wrangler deploy; rm -rf dist",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "astro check",
     "icons": "node scripts/make-icons.mjs",

@@ -1,5 +1,10 @@
 ---
 import CmsSeite from '../../components/CmsSeite.astro'
+import { cmsSeite } from '../../lib/cms'
+
+const daten = await cmsSeite('funktionen')
+if (!daten) return Astro.rewrite('/404')
+if (Astro.cache?.enabled) Astro.cache.set(daten.cacheHint)
 ---
 
-<CmsSeite schluessel="funktionen" />
+<CmsSeite {...daten} />
