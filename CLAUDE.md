@@ -8,16 +8,17 @@ Stand, Freigabeliste und offene Punkte: siehe PROJEKT.md.
 
 | Was | Adresse |
 |---|---|
-| Live | https://bytewurst.stevejocks.de (geplant, Cloudflare Worker `bytewurst`, noch nicht ausgeliefert) |
+| Live | https://preview.bytewurst.de (geplant, Cloudflare Worker `bytewurst`, noch nicht ausgeliefert) |
 | Staging | `bytewurst-staging.<konto>.workers.dev` (Worker `bytewurst-staging`) |
 | Repo | git@github-stevejocks:stevejocks/website-bytewurst.git (noch nicht auf GitHub angelegt) |
 | Original des Kunden | https://bytewurst.de (SvelteKit, dort läuft auch die Anwendung selbst) |
 
 Die Seite läuft als Cloudflare Worker, aufgebaut wie leon.cv (`wrangler.jsonc`,
-docs/0003). Stand 2026-10-03 zeigt `bytewurst.stevejocks.de` per Platzhalter-DNS noch auf den
-netcup-Server. Für die Custom Domain muss die Zone `stevejocks.de` im Cloudflare-Konto
-liegen. Nach dem ersten Produktions-Deploy
-`curl -I https://bytewurst.stevejocks.de/og-image.jpg` prüfen, muss 200 liefern.
+docs/0003, Domain seit docs/0005). Für die Custom Domain `preview.bytewurst.de` muss die
+Zone `bytewurst.de` im Cloudflare-Konto liegen. Die Zone gehört ByteButchers, auf
+`bytewurst.de` selbst läuft ihre Anwendung: dort nichts anfassen außer dem einen Eintrag
+`preview`, und nur mit ihrem Einverständnis. Nach dem ersten Produktions-Deploy
+`curl -I https://preview.bytewurst.de/og-image.jpg` prüfen, muss 200 liefern.
 `SEITEN_URL` steht in `src/data/betrieb.ts`.
 
 ## Kunde
@@ -35,8 +36,8 @@ Die Seite ist ein Entwurf von Jock&Jock, von ByteButchers weder beauftragt noch
 freigegeben. `KONZEPT = true` in `src/data/betrieb.ts` schaltet: `noindex` auf allen
 Seiten, `robots.txt` sperrt alles (`src/pages/robots.txt.ts`), kein JSON-LD (auch nicht das
 WebSite-JSON-LD von EmDash, `siteName` bleibt dafür leer), Hinweis in der Fußzeile. Impressum und
-Datenschutz nennen dann Jock&Jock als Anbieter (`konzeptAnbieter`), denn unter der
-stevejocks-Adresse betreiben wir die Seite. Erst auf `false`, wenn ByteButchers
+Datenschutz nennen dann Jock&Jock als Anbieter (`konzeptAnbieter`), denn wir betreiben die
+Seite (auch unter `preview.bytewurst.de`, Freigabeliste in PROJEKT.md). Erst auf `false`, wenn ByteButchers
 abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
 
 ## Tatsachen
@@ -104,7 +105,7 @@ npm run pruefen   # lint (ohne Warnungen), astro check und build in einem Rutsch
 npm run preview   # gebauter Worker lokal in workerd
 npm run typegen   # worker-configuration.d.ts nach Änderungen an wrangler.jsonc
 npm run deploy             # NUR der Nutzer: Staging (workers.dev)
-npm run deploy:production  # NUR der Nutzer: Produktion (bytewurst.stevejocks.de)
+npm run deploy:production  # NUR der Nutzer: Produktion (preview.bytewurst.de)
 npm run images    # reference/bilder -> public/bilder (AVIF, WebP) + src/data/bilder.json + bildnachweis.json
 npm run icons     # scripts/icons -> Favicons, App-Icons, og-image.jpg
 python3 scripts/wortmarke.py   # Wortmarke und Unterzeile fürs Vorschaubild als Pfade (fonttools)

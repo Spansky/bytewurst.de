@@ -15,7 +15,7 @@
 export const KONZEPT = true
 
 /** Die Adresse, unter der die Seite läuft. Vor dem Eintragen per curl prüfen (hausstandard). */
-export const SEITEN_URL = 'https://bytewurst.stevejocks.de'
+export const SEITEN_URL = 'https://preview.bytewurst.de'
 
 export const firma = {
   produkt: 'ByteWurst',
@@ -41,7 +41,7 @@ export const firma = {
 } as const
 
 /**
- * Solange KONZEPT gilt, betreibt Jock&Jock die Seite unter der stevejocks-Adresse
+ * Solange KONZEPT gilt, betreibt Jock&Jock die Seite (unter preview.bytewurst.de)
  * und ist damit Anbieter und verantwortlich. Daten wie im Impressum von
  * jockjock.de (website-jockjock/src/data/kontakt.ts).
  */

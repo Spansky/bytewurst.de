@@ -34,13 +34,14 @@
 		"crons": ["* * * * *"],
 	},
 	"env": {
-		// Produktion: bytewurst.stevejocks.de. Die Zone stevejocks.de muss dafür im
-		// selben Cloudflare-Konto liegen (Custom Domain).
+		// Produktion: preview.bytewurst.de. Die Zone bytewurst.de muss dafür im
+		// selben Cloudflare-Konto liegen (Custom Domain). Auf bytewurst.de selbst
+		// läuft die Anwendung des Kunden, die bleibt unberührt.
 		"production": {
 			"name": "bytewurst",
 			"routes": [
 				{
-					"pattern": "bytewurst.stevejocks.de",
+					"pattern": "preview.bytewurst.de",
 					"custom_domain": true,
 				},
 			],

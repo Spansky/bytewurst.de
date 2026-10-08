@@ -87,9 +87,11 @@ mit QR-Code zum Demo-Termin. Für ByteButchers noch zu bestätigen:
 
 - [ ] GitHub-Repo `stevejocks/website-bytewurst` anlegen, dann `git push -u origin main`.
 - [ ] Branch `feat/astro-emdash` durchsehen und nach `main` übernehmen.
-- [ ] Cloudflare: Liegt die Zone `stevejocks.de` im Konto? Sonst geht die Custom Domain
-      der Produktion nicht. Workers-Tarif prüfen, der Worker ist rund 4,8 MB (gzip), frei
-      sind 3 MB.
+- [ ] Domain `preview.bytewurst.de`: Die Zone `bytewurst.de` gehört ByteButchers. Entweder
+      sie liegt (oder kommt) in unser Cloudflare-Konto, oder ByteButchers legt die Custom
+      Domain in ihrem Konto an und der Worker zieht dorthin. Ohne Zone im Konto schlägt
+      `npm run deploy:production` an der Route fehl.
+- [ ] Workers-Tarif prüfen: Der Worker ist rund 4,8 MB (gzip), frei sind 3 MB.
 - [ ] Erst Staging (`npm run deploy`), dann Produktion (`npm run deploy:production`).
       Nach dem ersten Deploy je Ziel die `database_id` in `wrangler.jsonc` eintragen,
       `/_emdash/admin` einrichten (Seed einspielen, Admin-Passkey). Optional Secret
@@ -98,8 +100,11 @@ mit QR-Code zum Demo-Termin. Für ByteButchers noch zu bestätigen:
 - [ ] Datenschutzerklärung: Hoster ist jetzt Cloudflare (Auftragsverarbeitung,
       Drittlandübermittlung, Protokolle). Der Abschnitt „Beim Aufruf der Seite“ beschreibt
       noch einen eigenen Server. Vor dem Ausliefern prüfen und anpassen lassen.
-- [ ] DNS: `bytewurst.stevejocks.de` zeigt noch per Platzhalter auf netcup, das löst die
-      Custom Domain ab.
+- [ ] Wer ist unter `preview.bytewurst.de` Anbieter? Im Konzeptmodus nennen Impressum und
+      Datenschutz Jock&Jock. Unter einer Adresse von ByteButchers kann das anders aussehen,
+      vor dem Ausliefern mit ihnen klären.
+- [ ] Der alte Platzhalter `bytewurst.stevejocks.de` (DNS auf netcup) wird nicht mehr
+      gebraucht und kann weg.
 - [ ] Wer pflegt Inhalte in EmDash? Konten für ByteButchers erst nach Freigabe anlegen.
 - [ ] Datenschutz: Die Seite selbst setzt weiter keine Cookies. Die Verwaltung unter
       `/_emdash` schon (Anmeldung), das betrifft nur Redakteure. Prüfen, ob die
