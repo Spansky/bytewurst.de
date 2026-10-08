@@ -32,10 +32,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
     ssr: {
       optimizeDeps: {
-        // Vorab bündeln, sonst entdeckt Vite React erst beim ersten Rendern der
-        // Credit-Insel, optimiert neu und bricht laufende Anfragen im Worker ab
-        // (zwei Kopien von React, "Invalid hook call"). Nur Entwicklung.
-        include: ['react', 'react/jsx-runtime', 'react-dom', 'react-dom/server.edge'],
+        // Vorab bündeln, sonst entdeckt Vite Abhängigkeiten erst beim ersten
+        // Rendern, optimiert neu und bricht laufende Anfragen im Worker ab
+        // (zwei Kopien von React, "Invalid hook call"). Betrifft React für die
+        // Credit-Insel und jedes einzeln importierte Font-Awesome-Symbol. Nur
+        // Entwicklung, der Build ist davon nicht betroffen.
+        include: ['react', 'react/jsx-runtime', 'react-dom', 'react-dom/server.edge', '@fortawesome/free-solid-svg-icons/*'],
       },
     },
   },

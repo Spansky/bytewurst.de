@@ -1,0 +1,58 @@
+---
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight'
+import { datum, lesezeit } from '../lib/blog'
+import { einsetzen } from '../lib/text'
+import Bild from './Bild.astro'
+import Icon from './Icon.astro'
+
+/* Ein Beitrag in der Übersicht: Foto, Datum, Titel, Anreißer. Die ganze Karte ist der Link. */
+interface Props {
+  slug: string
+  titel: string
+  anreisser?: string | null
+  bild?: string | null
+  inhalt?: unknown
+  veroeffentlicht?: Date | null
+  ueberschrift?: 'h2' | 'h3'
+  /** Gezeichnete Breite des Fotos, passend zum Raster der Liste */
+  sizes?: string
+}
+
+const {
+  slug,
+  titel,
+  anreisser,
+  bild,
+  inhalt,
+  veroeffentlicht,
+  ueberschrift = 'h2',
+  sizes = '(min-width: 1320px) 600px, (min-width: 768px) 45vw, 100vw',
+} = Astro.props
+const Ueberschrift = ueberschrift
+---
+
+<article class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-papier shadow-[0_24px_40px_-26px_rgb(0_0_0/0.45)] ring-1 ring-fuge transition-transform duration-300 hover:-translate-y-1">
+  {
+    bild && (
+      <Bild
+        name={bild}
+        alt=""
+        sizes={sizes}
+        class="aspect-[3/2] h-auto w-full object-cover"
+      />
+    )
+  }
+  <div class="flex flex-1 flex-col p-6">
+    <p class="text-sm text-grau">
+      {datum(veroeffentlicht)} · {lesezeit(inhalt)} Min. Lesezeit
+    </p>
+    <Ueberschrift class="schild mt-2 text-2xl leading-tight">
+      <a href={`/blog/${slug}/`} class="after:absolute after:inset-0">{titel}</a>
+    </Ueberschrift>
+    {anreisser && <p class="mt-3 leading-relaxed text-tinte/80">{einsetzen(anreisser)}</p>}
+    <span aria-hidden="true" class="mt-auto inline-flex items-center gap-2 pt-5 font-bold text-wurst-tief group-hover:text-wurst">
+      Weiterlesen
+      <Icon icon={faArrowRight} class="transition-transform group-hover:translate-x-1" />
+    </span>
+  </div>
+</article>

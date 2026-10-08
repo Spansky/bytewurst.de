@@ -11,7 +11,7 @@ import { defineMiddleware } from 'astro:middleware'
   den Worker-Assets, dort läuft diese Middleware nicht. Deren Header stehen
   in public/_headers.
 */
-const MIT_SCHRAEGSTRICH = /^\/(funktionen|preise|impressum|datenschutz)$/
+const MIT_SCHRAEGSTRICH = /^\/(funktionen|preise|impressum|datenschutz|blog|blog\/[a-z0-9-]+)$/
 
 export const onRequest = defineMiddleware(async ({ url }, next) => {
   if (MIT_SCHRAEGSTRICH.test(url.pathname)) {

@@ -1,0 +1,56 @@
+---
+import BlogKarte from '../../components/BlogKarte.astro'
+import Wursti from '../../components/Wursti.astro'
+import { seite } from '../../data/seiten'
+import Base from '../../layouts/Base.astro'
+import { beitraege as laden } from '../../lib/blog'
+
+/*
+  Übersicht aller Beiträge aus der Sammlung "posts", neueste zuerst. Der
+  Kopf ist bewusst Code: zwei Sätze, die sich kaum ändern. Die Beiträge selbst
+  pflegt man in der Verwaltung.
+*/
+const { beitraege, cacheHint } = await laden()
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint)
+---
+
+<Base seite={seite('blog')}>
+  <section aria-labelledby="blog-titel" class="fliesen">
+    <div class="rahmen grid items-end gap-10 pt-10 pb-14 md:pt-16 lg:grid-cols-12">
+      <div class="lg:col-span-8">
+        <h1 id="blog-titel" class="titel text-[clamp(2.8rem,7vw,5.4rem)]">Aus der Wurstküche.</h1>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-tinte/85 md:text-xl">
+          Wie Metzgereien mit ihren eigenen Kassendaten planen, Aktionen prüfen und morgens um vier wissen, was gestern lief. Kurz, ohne IT-Deutsch.
+        </p>
+      </div>
+      <div class="hidden lg:col-span-3 lg:col-start-10 lg:block">
+        <Wursti folgen brille class="ml-auto h-auto w-44 drop-shadow-[0_14px_12px_rgb(0_0_0/0.25)]" />
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Beiträge" class="fliesen pb-20 md:pb-28">
+    <div class="rahmen">
+      {
+        beitraege.length ? (
+          <ul class="grid gap-8 md:grid-cols-2 lg:gap-10">
+            {beitraege.map((b, i) => (
+              <li data-einblenden style={`--verzug: ${(i % 2) * 80}ms`}>
+                <BlogKarte
+                  slug={b.id}
+                  titel={b.data.title}
+                  anreisser={b.data.anreisser}
+                  bild={b.data.bild}
+                  inhalt={b.data.inhalt}
+                  veroeffentlicht={b.data.publishedAt}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="max-w-xl rounded-2xl bg-papier p-6 text-lg">Hier erscheinen bald die ersten Beiträge. Die Wurst rechnet noch.</p>
+        )
+      }
+    </div>
+  </section>
+</Base>

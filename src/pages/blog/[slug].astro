@@ -1,0 +1,133 @@
+---
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
+import { decodeSlug, getEmDashEntry, getSeoMeta } from 'emdash'
+import { PortableText } from 'emdash/ui'
+import Schluss from '../../bloecke/Schluss.astro'
+import BlogKarte from '../../components/BlogKarte.astro'
+import Bild from '../../components/Bild.astro'
+import Icon from '../../components/Icon.astro'
+import ZumAnfassen from '../../components/ZumAnfassen.astro'
+import { SEITEN_URL } from '../../data/betrieb'
+import { fotoAlt } from '../../data/fotos'
+import { seite } from '../../data/seiten'
+import Base from '../../layouts/Base.astro'
+import { beitraege, datum, lesezeit } from '../../lib/blog'
+import { einsetzen, ptEinsetzen } from '../../lib/text'
+
+/*
+  Ein Blogbeitrag: Kopf mit Foto, Text aus Portable Text, darunter das
+  gewählte Diagramm zum Anfassen, weitere Beiträge und der Schluss der
+  Startseite (derselbe Block aus EmDash, nicht doppelt gepflegt).
+*/
+const slug = decodeSlug(Astro.params.slug)
+if (!slug) return Astro.rewrite('/404')
+const { entry, cacheHint } = await getEmDashEntry('posts', slug)
+if (!entry) return Astro.rewrite('/404')
+
+const [{ beitraege: alle }, { entry: start }] = await Promise.all([beitraege(4), getEmDashEntry('pages', 'start')])
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint)
+
+const b = entry.data
+const pfad = `/blog/${entry.id}/`
+const anreisser = einsetzen(b.anreisser)
+const seo = getSeoMeta(entry, { siteUrl: SEITEN_URL, path: pfad, defaultTitle: `${b.title} - ByteWurst`, defaultDescription: anreisser })
+const weitere = alle.filter((x) => x.id !== entry.id).slice(0, 3)
+const schluss = start?.data.inhalt?.find((x) => x._type === 'schluss')
+const groessen = '(min-width: 1024px) 40vw, 100vw'
+---
+
+<Base
+  seite={{
+    ...seite('blog'),
+    pfad,
+    titel: seo.title,
+    beschreibung: seo.description ?? anreisser,
+    sitemap: false,
+    vorladen: b.bild ? { name: b.bild, sizes: groessen } : undefined,
+  }}
+  titel={seo.title}
+  inhalt={{ collection: 'posts', id: b.id, slug: entry.id }}
+>
+  <article aria-labelledby="beitrag-titel">
+    <header class="fliesen">
+      <div class="rahmen grid items-center gap-12 pt-8 pb-16 md:pt-12 lg:grid-cols-12 lg:pb-20">
+        <div class="lg:col-span-7">
+          <a href="/blog/" class="inline-flex min-h-11 items-center gap-2 font-semibold text-wurst-tief underline-offset-4 hover:underline">
+            <Icon icon={faArrowLeft} />
+            Alle Beiträge
+          </a>
+          <h1 id="beitrag-titel" class="titel mt-4 text-[clamp(2.6rem,6.4vw,5rem)]" {...entry.edit.title}>{b.title}</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-tinte/85 md:text-xl" {...entry.edit.anreisser}>{anreisser}</p>
+          <p class="mt-6 text-[0.9375rem] text-grau">
+            {b.publishedAt && <time datetime={b.publishedAt.toISOString()}>{datum(b.publishedAt)}</time>}
+            {b.publishedAt && ' · '}
+            {lesezeit(b.inhalt)} Min. Lesezeit
+          </p>
+        </div>
+        {
+          b.bild && (
+            <div class="lg:col-span-5">
+              <div class="rotate-[1.2deg] overflow-hidden rounded-[1.5rem] border-[10px] border-papier bg-papier shadow-[0_40px_70px_-35px_rgb(0_0_0/0.55)]">
+                <Bild name={b.bild} alt={fotoAlt(b.bild)} sizes={groessen} vorne class="aspect-[4/3] h-auto w-full object-cover" />
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="bg-papier py-16 md:py-24">
+      <div class="rahmen">
+        <div class="beitrag mx-auto max-w-[44rem]" {...entry.edit.inhalt}>
+          <PortableText value={ptEinsetzen(b.inhalt)} />
+        </div>
+      </div>
+    </div>
+
+    {
+      b.zum_anfassen && (
+        <section aria-labelledby="anfassen-titel" class="fliesen py-16 md:py-24">
+          <div class="rahmen">
+            <div class="mx-auto max-w-3xl">
+              <h2 id="anfassen-titel" class="titel text-[clamp(2.2rem,4.6vw,3.4rem)]">
+                Zum Anfassen.
+              </h2>
+              <p class="mt-4 text-lg text-tinte/85">Probier es selbst aus. Alle Zahlen hier sind Beispiele.</p>
+              <ZumAnfassen art={b.zum_anfassen} class="mt-8" />
+            </div>
+          </div>
+        </section>
+      )
+    }
+  </article>
+
+  {
+    weitere.length > 0 && (
+      <section aria-labelledby="weitere-titel" class="bg-papier py-16 md:py-24">
+        <div class="rahmen">
+          <h2 id="weitere-titel" class="titel text-[clamp(2.2rem,4.6vw,3.4rem)]">
+            Mehr aus der Wurstküche.
+          </h2>
+          <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {weitere.map((x) => (
+              <li>
+                <BlogKarte
+                  slug={x.id}
+                  titel={x.data.title}
+                  anreisser={x.data.anreisser}
+                  bild={x.data.bild}
+                  inhalt={x.data.inhalt}
+                  veroeffentlicht={x.data.publishedAt}
+                  ueberschrift="h3"
+                  sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {schluss && <Schluss value={schluss} index={0} blockKey="schluss" />}
+</Base>

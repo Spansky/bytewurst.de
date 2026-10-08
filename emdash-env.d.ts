@@ -3,7 +3,7 @@
 
 /// <reference types="emdash/locals" />
 
-import type { BylineSummary, ContentBylineCredit, TaxonomyTerm } from "emdash";
+import type { BylineSummary, ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
 export interface PageInhaltEinstiegV1Block {
   _type: "einstieg";
@@ -222,8 +222,26 @@ export interface Page {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Post {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  anreisser: string;
+  bild: "schaufenster" | "theke" | "ueber-die-theke" | "frueher" | "wurst-senf" | "kaffee" | "bon";
+  zum_anfassen?: "prognose" | "wochenvergleich" | "aktionswoche" | "wetter" | "tagesreport" | "preisrechner";
+  inhalt: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
     pages: Page;
+    posts: Post;
   }
 }

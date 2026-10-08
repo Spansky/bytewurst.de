@@ -1,0 +1,25 @@
+---
+import Aktionswoche from './Aktionswoche.astro'
+import Preisrechner from './Preisrechner.astro'
+import Prognose from './Prognose.astro'
+import Tagesreport from './Tagesreport.astro'
+import WetterJahreszeit from './WetterJahreszeit.astro'
+import Wochenvergleich from './Wochenvergleich.astro'
+
+/* Diagramm oder Rechner unter einem Blogbeitrag, gewählt im Feld "zum_anfassen" */
+interface Props {
+  art: string
+  class?: string
+}
+
+const { art, class: klasse } = Astro.props
+---
+
+<div class={klasse}>
+  {art === 'prognose' && <Prognose />}
+  {art === 'wochenvergleich' && <Wochenvergleich />}
+  {art === 'aktionswoche' && <Aktionswoche />}
+  {art === 'wetter' && <WetterJahreszeit />}
+  {art === 'tagesreport' && <Tagesreport class="mx-auto max-w-lg" />}
+  {art === 'preisrechner' && <Preisrechner voll />}
+</div>

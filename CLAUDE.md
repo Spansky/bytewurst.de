@@ -52,7 +52,8 @@ abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
   Daten ändert, prüft beide Werte, sonst widerspricht das Diagramm seinem Text.
 - Texte im CMS dürfen Redakteure ändern, die Regeln oben gelten trotzdem. Zahlen und Preise
   stehen nie im CMS, sondern als Platzhalter (`{euro_je_100k}`, `{kostenlos_leistungen}`,
-  `{artikel}`), ersetzt in `src/lib/text.ts`. Neuer Platzhalter: dort eintragen.
+  `{artikel}`, für Rechenbeispiele im Blog `{beispiel_umsatz}`, `{beispiel_gebuehr}` usw.),
+  ersetzt in `src/lib/text.ts`. Neuer Platzhalter: dort eintragen. Das gilt auch für den Blog.
 - Kassensysteme, Datenschutz der Anwendung, Serverstandort, Kundennamen: unbekannt,
   deshalb nirgends genannt. Ebenso offen: ob für den nächtlichen Import etwas exportiert
   oder hochgeladen werden muss (die Preistabelle nennt "Daten-Upload") und ob die Demo mit
@@ -104,6 +105,8 @@ npm run dev       # Entwicklung, Port 5196, läuft als Hintergrunddienst (npx as
 npm run pruefen   # lint (ohne Warnungen), astro check und build in einem Rutsch
 npm run preview   # gebauter Worker lokal in workerd
 npm run typegen   # worker-configuration.d.ts nach Änderungen an wrangler.jsonc
+node scripts/blog.mjs seed                 # content/blog/*.md -> seed/seed.json
+node scripts/blog.mjs import --url <adr>   # dieselben Beiträge in eine laufende Seite (EMDASH_TOKEN)
 npm run deploy             # NUR der Nutzer: Staging (workers.dev)
 npm run deploy:production  # NUR der Nutzer: Produktion (preview.bytewurst.de)
 npm run images    # reference/bilder -> public/bilder (AVIF, WebP) + src/data/bilder.json + bildnachweis.json
@@ -141,6 +144,12 @@ committen.
 - Den Eintrag lädt die Seite im Frontmatter (`lib/cms.ts`), nicht eine Komponente: nur dort
   darf sie bei fehlendem Eintrag auf `/404` umschreiben.
 - Menüs `primary` (Kopfzeile) und `footer` (Fußzeile, Seiten) kommen aus EmDash.
+- Blog unter `/blog/` und `/blog/<slug>/`: eigene Sammlung `posts` (Felder in
+  `scripts/blog.mjs`, `SAMMLUNG`), Seiten in `src/pages/blog/`. Fotos nur aus der Auswahl
+  in `src/data/fotos.ts`, Spielerei unter dem Beitrag über `components/ZumAnfassen.astro`.
+  Die ersten Beiträge liegen als Markdown in `content/blog/`, Konzept in docs/0006.
+  Schema der Sammlung ändern: `SAMMLUNG` anpassen, `node scripts/blog.mjs seed`, und für
+  bestehende Seiten `import` (legt fehlende Felder an, ändert aber keine vorhandenen).
 - `seed/seed.json` ist Schema und Startinhalt. EmDash spielt ihn nur in eine leere Datenbank
   ein (Einrichtungsassistent). Spätere Änderungen am Seed erreichen eine laufende Seite nicht,
   dort pflegt man in der Verwaltung unter `/_emdash/admin`. Inhalt geändert und soll in den
@@ -226,11 +235,14 @@ committen.
 - **Betrieb**: Staging und Produktion haben getrennte D1-Datenbanken und R2-Buckets. Nie
   eine Bindung von Staging auf Ressourcen der Produktion zeigen lassen. Benannte Umgebungen
   erben keine Bindungen, Vars oder Trigger, jede führt ihre eigenen auf.
+- **Platzhalter in Markdown**: Zwei Platzhalter mit Unterstrich in einem Absatz liest der
+  Markdown-Umwandler von EmDash als _kursiv_. `scripts/blog.mjs` sichert sie vorher. Wer
+  Markdown anders einspielt (`npx emdash content create`), prüft das Ergebnis.
 - **Statische Dateien** liefert Cloudflare ohne Worker aus. Ihre Header stehen in
   `public/_headers`, nicht in der Middleware.
 - **Entwicklung in workerd**: Taucht nach einem Neustart "Invalid hook call" auf, hat Vite
   eine Abhängigkeit erst beim Rendern entdeckt. In `vite.ssr.optimizeDeps.include`
-  (`astro.config.mjs`) eintragen.
+  (`astro.config.mjs`) eintragen. React und alle Font-Awesome-Symbole stehen schon drin.
 - **Wahrheitstest**: Mit Antwort ist der Bon höher als das Foto, unter lg reserviert der
   Container Platz (`min-h`). Wer den Bon verlängert, prüft bei 375 px, dass er nicht in
   den nächsten Abschnitt ragt.

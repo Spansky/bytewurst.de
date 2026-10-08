@@ -19,7 +19,8 @@ interface Props {
 }
 
 const { pfad, punkte } = Astro.props
-const aktuell = (url: string) => (url === pfad ? 'page' : undefined)
+// Ein Blogbeitrag gehört zum Menüpunkt Blog
+const aktuell = (url: string) => (url === pfad || (url !== '/' && url.endsWith('/') && pfad.startsWith(url)) ? 'page' : undefined)
 ---
 
 <header class="sticky top-0 z-40 border-b border-fuge bg-fliese pt-[env(safe-area-inset-top)]">

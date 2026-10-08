@@ -549,3 +549,87 @@
   vertical-align: -0.125em;
   width: 1.25em;
 }
+
+/* ===========================================================================
+   Text eines Blogbeitrags (Portable Text aus EmDash, pages/blog/[slug].astro).
+   Zwischenüberschriften wie die Schilder der Seite, Links in Wurstrot.
+   =========================================================================== */
+.beitrag {
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-tinte) 88%, transparent);
+}
+.beitrag > * + * {
+  margin-top: 1.1em;
+}
+.beitrag h2 {
+  margin-top: 1.7em;
+  font-family: var(--font-display);
+  font-weight: 850;
+  font-stretch: 62%;
+  font-size: clamp(2rem, 4.2vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--color-tinte);
+}
+.beitrag h3 {
+  margin-top: 1.6em;
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-stretch: 85%;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  color: var(--color-tinte);
+}
+.beitrag h2 + *,
+.beitrag h3 + * {
+  margin-top: 0.6em;
+}
+.beitrag strong {
+  font-weight: 700;
+  color: var(--color-tinte);
+}
+.beitrag a {
+  font-weight: 700;
+  color: var(--color-wurst-tief);
+  text-decoration: underline;
+  text-decoration-color: var(--color-wurst);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.beitrag a:hover {
+  color: var(--color-wurst);
+}
+.beitrag ul,
+.beitrag ol {
+  padding-left: 1.4em;
+}
+.beitrag ul {
+  list-style: none;
+}
+.beitrag ul > li {
+  position: relative;
+}
+/* Aufzählungspunkt als kleine Wurst */
+.beitrag ul > li::before {
+  content: "";
+  position: absolute;
+  left: -1.3em;
+  top: 0.62em;
+  width: 0.85em;
+  height: 0.42em;
+  border-radius: 999px;
+  background: var(--color-wursti);
+}
+.beitrag ol {
+  list-style: decimal;
+}
+.beitrag li + li {
+  margin-top: 0.45em;
+}
+.beitrag blockquote {
+  border-left: 4px solid var(--color-senf);
+  padding-left: 1.1em;
+  font-style: italic;
+}

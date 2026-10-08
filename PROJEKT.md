@@ -65,6 +65,9 @@ Muss ByteButchers bestätigen oder liefern, bevor `KONZEPT` auf `false` geht:
       wären viel stärker. Auf dem Theken-Foto stehen englische Preisschilder, auf dem
       Foto über der Theke tschechische.
 - [ ] Echte Kundenstimmen oder Logos, falls Kunden genannt werden dürfen.
+- [ ] Blog (docs/0006): Die vier Beiträge erzählen nur Bekanntes ausführlicher. Trotzdem
+      freigeben lassen, vor allem die Hackfleisch-Geschichte, „gut ein Fünftel weniger je
+      Kunde“ als Beispiel und den Leberkäsweckle-Vergleich im Preisbeitrag.
 
 ## Flyer A5, Stand 2026-10-07
 
@@ -105,6 +108,10 @@ mit QR-Code zum Demo-Termin. Für ByteButchers noch zu bestätigen:
       vor dem Ausliefern mit ihnen klären.
 - [ ] Der alte Platzhalter `bytewurst.stevejocks.de` (DNS auf netcup) wird nicht mehr
       gebraucht und kann weg.
+- [ ] Blog auf Staging und Produktion bringen: nach dem Deploy
+      `EMDASH_TOKEN=… node scripts/blog.mjs import --url <adresse> --entwurf`, Beiträge in
+      der Verwaltung prüfen und veröffentlichen, Menüpunkt „Blog“ (`/blog/`) in den Menüs
+      `primary` und `footer` ergänzen.
 - [ ] Wer pflegt Inhalte in EmDash? Konten für ByteButchers erst nach Freigabe anlegen.
 - [ ] Datenschutz: Die Seite selbst setzt weiter keine Cookies. Die Verwaltung unter
       `/_emdash` schon (Anmeldung), das betrifft nur Redakteure. Prüfen, ob die

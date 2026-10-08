@@ -15,10 +15,11 @@ export const GROESSEN = {
   Start, Funktionen und Preise holen ihren Inhalt aus EmDash (Sammlung
   "pages", Eintrag mit dem Slug in `cms`). Titel und Beschreibung hier sind
   die Vorgabe, im SEO-Feld des Eintrags lassen sie sich überschreiben.
-  Neue Seite: hier eintragen und unter src/pages anlegen.
+  Neue Seite: hier eintragen und unter src/pages anlegen. Die Beiträge unter
+  /blog/<slug>/ kommen aus der Sammlung "posts" und stehen nicht hier.
 */
 
-export type SeitenSchluessel = 'start' | 'funktionen' | 'preise' | 'impressum' | 'datenschutz' | 'fehlt'
+export type SeitenSchluessel = 'start' | 'funktionen' | 'preise' | 'blog' | 'impressum' | 'datenschutz' | 'fehlt'
 
 export type Seite = {
   schluessel: SeitenSchluessel
@@ -63,6 +64,14 @@ export const seiten: Seite[] = [
       'Kostenlos starten mit einer Filiale und drei Produkten. Danach 5 Euro im Monat je 100.000 Euro Vorjahresumsatz. Die Landmetzgerei zahlt nicht wie die Kette.',
     sitemap: true,
     vorladen: { name: 'wurst-senf', sizes: GROESSEN.wurstSenf, media: '(min-width: 1024px)' },
+  },
+  {
+    schluessel: 'blog',
+    pfad: '/blog/',
+    titel: 'Blog - ByteWurst für Metzgereien',
+    beschreibung:
+      'Aus der Wurstküche: wie Metzgereien mit ihren Kassendaten planen, Aktionen prüfen und morgens um vier wissen, was gestern lief. Der Blog von ByteWurst.',
+    sitemap: true,
   },
   {
     schluessel: 'impressum',

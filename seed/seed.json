@@ -718,6 +718,75 @@
           }
         }
       ]
+    },
+    {
+      "slug": "posts",
+      "label": "Blog",
+      "labelSingular": "Beitrag",
+      "description": "Beiträge unter /blog/. Zahlen und Preise nur als Platzhalter, siehe CLAUDE.md.",
+      "supports": [
+        "drafts",
+        "revisions",
+        "scheduling",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/blog/{slug}/",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Titel",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "anreisser",
+          "label": "Anreißer (Übersicht und Beschreibung für Suchmaschinen)",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "bild",
+          "label": "Foto",
+          "type": "select",
+          "required": true,
+          "validation": {
+            "options": [
+              "schaufenster",
+              "theke",
+              "ueber-die-theke",
+              "frueher",
+              "wurst-senf",
+              "kaffee",
+              "bon"
+            ]
+          }
+        },
+        {
+          "slug": "zum_anfassen",
+          "label": "Zum Anfassen (Diagramm oder Rechner im Beitrag)",
+          "type": "select",
+          "validation": {
+            "options": [
+              "prognose",
+              "wochenvergleich",
+              "aktionswoche",
+              "wetter",
+              "tagesreport",
+              "preisrechner"
+            ]
+          }
+        },
+        {
+          "slug": "inhalt",
+          "label": "Text",
+          "type": "portableText",
+          "required": true,
+          "searchable": true
+        }
+      ]
     }
   ],
   "menus": [
@@ -734,6 +803,11 @@
           "type": "custom",
           "label": "Preise",
           "url": "/preise/"
+        },
+        {
+          "type": "custom",
+          "label": "Blog",
+          "url": "/blog/"
         }
       ]
     },
@@ -750,6 +824,11 @@
           "type": "custom",
           "label": "Preise",
           "url": "/preise/"
+        },
+        {
+          "type": "custom",
+          "label": "Blog",
+          "url": "/blog/"
         },
         {
           "type": "custom",
@@ -1125,6 +1204,1144 @@
               "titel": "Erst mal anschauen? Gern.",
               "text": "Wir zeigen dir ByteWurst gern bei dir in der Metzgerei, per Video oder am Telefon. Eingerichtet ist sie in etwa zehn Minuten, deine ersten Umsatzdiagramme mit deinen eigenen Zahlen siehst du noch am selben Tag.",
               "nachsatz": "Wir sprechen Metzger, nicht IT. Versprochen."
+            }
+          ]
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "post-was-kostet-bytewurst",
+        "slug": "was-kostet-bytewurst",
+        "status": "published",
+        "data": {
+          "title": "Was kostet ByteWurst?",
+          "anreisser": "Die Landmetzgerei zahlt nicht wie die Kette. Wie sich der Preis von ByteWurst aus deinem Umsatz ergibt, was kostenlos drin ist und was ein Rechenbeispiel ergibt.",
+          "bild": "wurst-senf",
+          "zum_anfassen": "preisrechner",
+          "inhalt": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k0",
+                  "text": "Bei Software für Metzgereien ist die Preisfrage oft die erste und manchmal die schwierigste. Bei ByteWurst ist sie kurz: Der Preis richtet sich nach deinem Umsatz. Eine kleine Landmetzgerei zahlt nicht wie eine Kette mit zwanzig Filialen, und beide zahlen nur für das, was sie umsetzen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2",
+                  "text": "Kostenlos ausprobieren",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k4",
+                  "text": "Zum Ausprobieren gibt es ByteWurst kostenlos, mit begrenzten Daten: ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k5",
+                  "text": "{kostenlos_leistungen}",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k6",
+                  "text": ". Damit siehst du, wie ByteWurst mit deinen Zahlen arbeitet, bevor du dich entscheidest.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k8",
+                  "text": "Early Adopter: alle Funktionen",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kd",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ka",
+                  "text": "Steigst du um, zahlst du im Monat ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "kb",
+                  "text": "{euro_je_100k} € je 100.000 € Vorjahresumsatz",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "kc",
+                  "text": ". Dafür bekommst du alle Funktionen, beliebig viele Filialen und Produkte, alle Reports und Auswertungen. Als Early Adopter hast du außerdem einen direkten Draht zum Entwicklungsteam und redest mit, wenn neue Funktionen dazukommen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kf",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ke",
+                  "text": "Ein Rechenbeispiel: Bei {beispiel_umsatz} Jahresumsatz sind das {beispiel_gebuehr} im Monat. Das sind ungefähr {beispiel_weckle} Leberkäsweckle, bei angenommenen {weckle_preis} das Stück. Den Vergleich haben wir uns ausgedacht, die Rechnung nicht. Mit dem Wurst-Regler unter dem Beitrag stellst du deinen eigenen Umsatz ein.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kh",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kg",
+                  "text": "Was es bringen kann",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kj",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ki",
+                  "text": "ByteWurst rechnet konservativ mit {effizienz} Effizienzgewinn durch bessere Prognosen und weniger Abschriften. Bei {beispiel_umsatz} Umsatz wären das rund {beispiel_ersparnis} im Jahr. Das ist eine Schätzung, keine Zusage. Was es bei dir bringt, zeigen deine eigenen Zahlen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kl",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kk",
+                  "text": "Die Fragen, die Metzger vorher stellen",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "ko",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "km",
+                  "text": "Welcher Umsatz zählt?",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "kn",
+                  "text": " Dein Gesamtumsatz aus dem Vorjahr. Weil ByteWurst deine Umsatzdaten ohnehin für Prognosen und Reports verarbeitet, rechnet sie den Betrag selbst aus. Du musst nichts melden.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kr",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kp",
+                  "text": "Wie lange bin ich gebunden?",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "kq",
+                  "text": " Early Adopter wird jährlich abgerechnet, du kannst aber jederzeit kündigen. Deine Daten bleiben bis zum Ende des bezahlten Zeitraums zugänglich.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "ku",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ks",
+                  "text": "Kann ich wechseln?",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "kt",
+                  "text": " Von Kostenlos auf Early Adopter geht jederzeit. Ein Wechsel zurück gilt zum Ende deines Abrechnungszeitraums.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kx",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kv",
+                  "text": "Wie bezahle ich?",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "kw",
+                  "text": " Per Banküberweisung (SEPA) oder auf Rechnung. Kreditkarte kommt bald.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kz",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ky",
+                  "text": "Und für große Betriebe?",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k10",
+                  "text": "Für große Betriebe mit eigenen Anforderungen kommt in Kürze Enterprise: eigene Anbindungen, Betrieb auf deinen eigenen Servern, persönlicher Support, 99,9 % zugesicherte Verfügbarkeit und Reports nach Maß. Der Preis dafür steht auf Anfrage.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "k12",
+                  "_type": "link",
+                  "href": "/preise/"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k13",
+                  "text": "Alle Preise und der Vergleich der Tarife",
+                  "marks": [
+                    "k12"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "post-um-vier-uhr-frueh-im-postfach",
+        "slug": "um-vier-uhr-frueh-im-postfach",
+        "status": "published",
+        "data": {
+          "title": "Um vier Uhr früh im Postfach",
+          "anreisser": "Noch ein Programm, in das man sich einarbeiten muss? Musst du nicht. Wie ByteWurst die Zahlen zu dir bringt, statt dich an den Bildschirm zu holen, und was im Tagesreport steht.",
+          "bild": "kaffee",
+          "zum_anfassen": "tagesreport",
+          "inhalt": [
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k15",
+                  "text": "Viele Metzger winken erst mal ab, wenn es um Software geht: noch ein Programm, in das man sich einarbeiten muss? Verständlich. Abends fehlt die Zeit, morgens steht die Kundschaft vor der Theke. Deshalb kommt ByteWurst zu dir, nicht umgekehrt.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k17",
+                  "text": "Ein Kunde wollte eine E-Mail",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1a",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k19",
+                  "text": "Ein Kunde wollte gar kein neues Programm. Er wollte eine E-Mail, jeden Morgen um vier, mit den zehn besten Produkten vom Vortag und einer Übersicht, wann seine Kundschaft kommt und wie viel sie pro Einkauf ausgibt. Die bekommt er seitdem. Er liest seine Zahlen beim ersten Kaffee, bevor der erste Kunde vor der Theke steht.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1c",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1b",
+                  "text": "Was in der Nacht passiert",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1f",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1d",
+                  "text": "Feierabend",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1e",
+                  "text": ": Der letzte Bon ist gedruckt. Alles, was heute über die Theke ging, steht in deiner Kasse.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1i",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1g",
+                  "text": "Nachts",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1h",
+                  "text": ": ByteWurst holt sich die Verkaufsdaten des Tages automatisch aus deinem Warenwirtschaftssystem.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1l",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1j",
+                  "text": "Rechnen",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1k",
+                  "text": ": Sie legt den Tag neben deine letzten Jahre und wägt Wochentag, Jahreszeit, Feiertage und Wetter ab.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1o",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1m",
+                  "text": "Die Prognose steht",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1n",
+                  "text": ": für die nächsten sieben Tage, je Warengruppe und Wochentag.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1r",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1p",
+                  "text": "04:00 Uhr",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1q",
+                  "text": ": Pling. Dein Tagesreport liegt im Postfach.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1t",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1s",
+                  "text": "Was im Tagesreport steht",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1v",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1u",
+                  "text": "Umsatz, Bon-Anzahl und Durchschnittsbon von gestern. Die Renner und Ladenhüter, jeden Morgen frisch sortiert. Und die Stoßzeiten, also wann deine Kundschaft kommt, damit Personal und Theke vorbereitet sind.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1x",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1w",
+                  "text": "Unter dem Beitrag siehst du einen solchen Report mit Beispielzahlen: 4.812 € Umsatz bei 318 Bons, im Schnitt also 15,13 € je Einkauf. Die Balken der Stoßzeiten kannst du antippen. Mit ByteWurst stehen da deine echten Zahlen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1z",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1y",
+                  "text": "Ohne Login, ohne App",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k20",
+                  "text": "Der Report kommt als kurze Mail. Du musst dich nirgends anmelden und keine App installieren. Lieber Papier? Jeder Report kommt auch als A4 aus dem Drucker und hängt dann in der Wurstküche an der Pinnwand, für alle, die morgens als Erste da sind.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k22",
+                  "text": "Wer tiefer graben will, zoomt sich durch die Diagramme. Muss aber keiner. Die beste Software ist die, die du nie öffnen musst.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "k24",
+                  "_type": "link",
+                  "href": "/"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k25",
+                  "text": "So sieht die Nacht mit ByteWurst aus",
+                  "marks": [
+                    "k24"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "post-volle-theke-heisst-nicht-volle-kasse",
+        "slug": "volle-theke-heisst-nicht-volle-kasse",
+        "status": "published",
+        "data": {
+          "title": "Volle Theke heißt nicht volle Kasse",
+          "anreisser": "Der Laden war voll, die Aktion ein Erfolg. Oder? Warum du am Aktionsartikel allein nicht siehst, ob sich eine Aktion gerechnet hat, und was du stattdessen anschauen solltest.",
+          "bild": "bon",
+          "zum_anfassen": "aktionswoche",
+          "inhalt": [
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k27",
+                  "text": "Hackfleisch zum Aktionspreis, und der Laden ist voll. Ein gutes Gefühl. Ob unterm Strich mehr hängen geblieben ist, weiß trotzdem keiner. Denn wie gut der Aktionsartikel lief, sagt wenig darüber, was die Aktion dem ganzen Laden gebracht hat.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2a",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k29",
+                  "text": "Eine Aktion, die sich nicht gerechnet hat",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2c",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2b",
+                  "text": "So war es bei einem Kunden von ByteWurst: Es kamen tatsächlich mehr Leute. Aber sie kauften kaum etwas dazu. In der Tüte landete vor allem das Hackfleisch zum Spottpreis, ausgerechnet ein Artikel mit ohnehin guter Marge. Nachproduziert werden musste auch noch, und zwar teurer.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2e",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2d",
+                  "text": "Diese Aktion macht er heute nicht mehr. Das Geld steckt er in die, die nachweislich funktionieren.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2g",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2f",
+                  "text": "Drei Zahlen statt einer",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2i",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2h",
+                  "text": "Nach jeder Aktion zeigt dir ByteWurst schwarz auf weiß, was sie dem Umsatz des ganzen Ladens gebracht hat, im Vergleich vorher und nachher:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2l",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2j",
+                  "text": "Besucher",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2k",
+                  "text": ": Kamen mehr Leute?",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2o",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2m",
+                  "text": "Umsatz",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2n",
+                  "text": ": Hat die Kasse mehr eingenommen?",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2r",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2p",
+                  "text": "Bon-Höhe",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2q",
+                  "text": ": Hat der einzelne Kunde mehr oder weniger ausgegeben?",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2t",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2s",
+                  "text": "Dazu siehst du, ob deine Kunden zusätzlich gekauft haben oder nur das Sonderangebot.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2v",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2u",
+                  "text": "Wie das aussehen kann, zeigt ein Beispiel: An einem Aktionstag kommen 28 Prozent mehr Besucher, der Umsatz bleibt gleich. Rechnerisch gibt jeder Kunde gut ein Fünftel weniger aus als sonst. Volle Theke, gleiche Kasse. Die Zahlen sind ausgedacht, das Muster ist es nicht. Im Diagramm unter dem Beitrag kannst du jeden Tag der Aktionswoche antippen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2x",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2w",
+                  "text": "Was du davon hast",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2z",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2y",
+                  "text": "Du wiederholst nur, was sich rechnet. So fließt dein Werbebudget nur noch in Aktionen, die dir wirklich etwas bringen, und nicht in die, die sich nur gut anfühlen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k30",
+                  "text": "Und du musst dafür nichts auswerten. ByteWurst holt sich die Verkaufsdaten jede Nacht selbst und legt die Aktion neben die Tage davor. Deine Kasse bleibt, wie sie ist.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "k32",
+                  "_type": "link",
+                  "href": "/funktionen/"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k33",
+                  "text": "Mehr zur Aktions-Auswertung und den anderen Funktionen",
+                  "marks": [
+                    "k32"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "post-montags-zu-viel-samstags-zu-wenig",
+        "slug": "montags-zu-viel-samstags-zu-wenig",
+        "status": "published",
+        "data": {
+          "title": "Montags zu viel, samstags zu wenig",
+          "anreisser": "Wer in der Metzgerei bestellt und produziert, plant aus Erfahrung. Das klappt, bis die Erfahrung Urlaub hat. Was eine Wochenprognose aus deinen eigenen Kassendaten daran ändert.",
+          "bild": "theke",
+          "zum_anfassen": "prognose",
+          "inhalt": [
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k35",
+                  "text": "Montag, 17 Uhr. Vom Wochenende liegt noch Aufschnitt in der Theke, und der wandert in die Abschrift. Wie jeden Montag. Samstag, 11 Uhr: Das Grillfleisch ist aus, die Schlange ist noch lang. Beides kennt jede Metzgerei, und beides hat dieselbe Ursache. Die Menge für morgen entsteht im Kopf.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k37",
+                  "text": "Das Gefühl von ein, zwei Leuten",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3a",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k39",
+                  "text": "Wer bestellt und produziert, entscheidet aus Erfahrung. Das funktioniert erstaunlich gut, solange die Erfahrung im Laden steht. Hat der Chef Urlaub, geht die langjährige Verkäuferin in Rente oder fängt jemand Neues an, ist das Wissen weg. Das Personal wechselt, gute Fachkräfte kommen längst nicht mehr nur aus der Region, und alles selbst zu kontrollieren ist keine Lösung.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3c",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3b",
+                  "text": "Genau deshalb kommen Inhaber von Metzgereien zu ByteWurst. Nicht, weil ihr Bauchgefühl schlecht wäre, sondern weil es nicht teilbar ist.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3e",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3d",
+                  "text": "Was die Wochenprognose rechnet",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3g",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3f",
+                  "text": "ByteWurst holt sich jede Nacht die Verkaufsdaten des Tages automatisch aus deinem Warenwirtschaftssystem. Daraus rechnet sie, was in den kommenden sieben Tagen über deine Theke geht:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3j",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3h",
+                  "text": "je Warengruppe",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k3i",
+                  "text": ", also Wurst, Frischfleisch, heiße Theke oder Salate getrennt",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3m",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3k",
+                  "text": "je Wochentag",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k3l",
+                  "text": ", denn ein Dienstag ist kein Samstag",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3o",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3n",
+                  "text": "aus deinen eigenen Verkäufen der letzten Jahre",
+                  "marks": [
+                    "strong"
+                  ]
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3q",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3p",
+                  "text": "Dabei erkennt sie Muster, die im Alltag untergehen: das erste Grillwochenende im Mai, die Leberkäs-Spitze am Samstagvormittag, das Ferienloch im August. Wochentag, Jahreszeit, Feiertage und Wetter wägt sie gemeinsam ab und lernt aus deiner Verkaufshistorie, welcher Einfluss bei welchem Artikel wirklich zählt.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3s",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3r",
+                  "text": "Was das im Laden ändert",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3u",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3t",
+                  "text": "Montags produzierst du weniger, ohne zu raten. Samstags steht genug in der Auslage. Und weil die Prognose jeden Morgen auch als A4 an der Pinnwand in der Wurstküche hängt, liest die Neue dieselben Zahlen wie der Chef. Dein Team plant das Sortiment nach Zahlen, egal wer gerade hinter der Theke steht.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3w",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3v",
+                  "text": "Unter dem Beitrag kannst du ausprobieren, wie das aussieht: eine Warengruppe wählen, einen Tag antippen. Die Zahlen dort sind Beispiele, mit ByteWurst stehen da deine eigenen.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3y",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3x",
+                  "text": "Und der Aufwand?",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k3z",
+                  "text": "Deine Kasse bleibt, wie sie ist, eine neue Hardware brauchst du nicht. Eingerichtet ist ByteWurst in etwa zehn Minuten, deine ersten Umsatzdiagramme siehst du noch am selben Tag. Ab dann rechnet die Wurst jede Nacht, während du schläfst.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "k42",
+                  "_type": "link",
+                  "href": "/funktionen/"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k41",
+                  "text": "Wie das genau aussieht, zeigen wir dir gern bei dir in der Metzgerei, per Video oder am Telefon. ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k43",
+                  "text": "Alle Funktionen im Überblick",
+                  "marks": [
+                    "k42"
+                  ]
+                }
+              ]
             }
           ]
         }
