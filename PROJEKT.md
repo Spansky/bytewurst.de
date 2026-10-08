@@ -2,6 +2,15 @@
 
 Wird nicht automatisch geladen. Regeln stehen in CLAUDE.md.
 
+## Stand 2026-10-08
+
+Umgezogen von Vite und React auf Astro 7 mit EmDash 1.2 als CMS, läuft als Cloudflare
+Worker mit D1 und R2 statt nginx in Coolify (Branch
+`feat/astro-emdash`, Begründung und Prüfung in `docs/0001` bis `docs/0004`). Aussehen
+und Verhalten wie abgenommen, im Vergleich mit der alten Fassung pixelgleich bis auf
+Animationen. Texte der Seiten Start, Funktionen und Preise sind in der Verwaltung unter
+`/_emdash/admin` bearbeitbar. Noch nicht gemergt, nicht gepusht, nicht ausgeliefert.
+
 ## Stand 2026-10-03
 
 Konzeptentwurf mit Startseite, Funktionen, Preise, Impressum, Datenschutz und 404.
@@ -77,6 +86,24 @@ mit QR-Code zum Demo-Termin. Für ByteButchers noch zu bestätigen:
 ## Offene Punkte für uns
 
 - [ ] GitHub-Repo `stevejocks/website-bytewurst` anlegen, dann `git push -u origin main`.
-- [ ] Coolify: Anwendung aus dem Repo, Build Pack Dockerfile, Port 3000, Healthcheck
-      `/healthz`, Domain `bytewurst.stevejocks.de`. Danach `curl -I .../og-image.jpg`.
+- [ ] Branch `feat/astro-emdash` durchsehen und nach `main` übernehmen.
+- [ ] Cloudflare: Liegt die Zone `stevejocks.de` im Konto? Sonst geht die Custom Domain
+      der Produktion nicht. Workers-Tarif prüfen, der Worker ist rund 4,8 MB (gzip), frei
+      sind 3 MB.
+- [ ] Erst Staging (`npm run deploy`), dann Produktion (`npm run deploy:production`).
+      Nach dem ersten Deploy je Ziel die `database_id` in `wrangler.jsonc` eintragen,
+      `/_emdash/admin` einrichten (Seed einspielen, Admin-Passkey). Optional Secret
+      `EMDASH_ENCRYPTION_KEY` je Umgebung. Schritte in
+      `docs/0003-auslieferung-cloudflare-workers.md`.
+- [ ] Datenschutzerklärung: Hoster ist jetzt Cloudflare (Auftragsverarbeitung,
+      Drittlandübermittlung, Protokolle). Der Abschnitt „Beim Aufruf der Seite“ beschreibt
+      noch einen eigenen Server. Vor dem Ausliefern prüfen und anpassen lassen.
+- [ ] DNS: `bytewurst.stevejocks.de` zeigt noch per Platzhalter auf netcup, das löst die
+      Custom Domain ab.
+- [ ] Wer pflegt Inhalte in EmDash? Konten für ByteButchers erst nach Freigabe anlegen.
+- [ ] Datenschutz: Die Seite selbst setzt weiter keine Cookies. Die Verwaltung unter
+      `/_emdash` schon (Anmeldung), das betrifft nur Redakteure. Prüfen, ob die
+      Erklärung dazu einen Satz braucht.
+- [ ] `kanten-pruefen.py` (Hausstandard) gegen den neuen Build laufen lassen. Das Skript
+      lag bei der Umstellung nicht vor.
 - [ ] Am iPhone die drei Wege der Leisten prüfen (siehe ios-leisten.md).

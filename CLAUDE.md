@@ -8,12 +8,15 @@ Stand, Freigabeliste und offene Punkte: siehe PROJEKT.md.
 
 | Was | Adresse |
 |---|---|
-| Live | https://bytewurst.stevejocks.de (geplant, in Coolify noch nicht eingerichtet) |
+| Live | https://bytewurst.stevejocks.de (geplant, Cloudflare Worker `bytewurst`, noch nicht ausgeliefert) |
+| Staging | `bytewurst-staging.<konto>.workers.dev` (Worker `bytewurst-staging`) |
 | Repo | git@github-stevejocks:stevejocks/website-bytewurst.git (noch nicht auf GitHub angelegt) |
 | Original des Kunden | https://bytewurst.de (SvelteKit, dort läuft auch die Anwendung selbst) |
 
-Stand 2026-10-03 löst `bytewurst.stevejocks.de` über den Platzhalter-DNS auf den
-netcup-Server auf, antwortet aber nicht. Nach dem Einrichten in Coolify
+Die Seite läuft als Cloudflare Worker, aufgebaut wie leon.cv (`wrangler.jsonc`,
+docs/0003). Stand 2026-10-03 zeigt `bytewurst.stevejocks.de` per Platzhalter-DNS noch auf den
+netcup-Server. Für die Custom Domain muss die Zone `stevejocks.de` im Cloudflare-Konto
+liegen. Nach dem ersten Produktions-Deploy
 `curl -I https://bytewurst.stevejocks.de/og-image.jpg` prüfen, muss 200 liefern.
 `SEITEN_URL` steht in `src/data/betrieb.ts`.
 
@@ -30,7 +33,8 @@ netcup-Server auf, antwortet aber nicht. Nach dem Einrichten in Coolify
 
 Die Seite ist ein Entwurf von Jock&Jock, von ByteButchers weder beauftragt noch
 freigegeben. `KONZEPT = true` in `src/data/betrieb.ts` schaltet: `noindex` auf allen
-Seiten, `robots.txt` sperrt alles, kein JSON-LD, Hinweis in der Fußzeile. Impressum und
+Seiten, `robots.txt` sperrt alles (`src/pages/robots.txt.ts`), kein JSON-LD (auch nicht das
+WebSite-JSON-LD von EmDash, `siteName` bleibt dafür leer), Hinweis in der Fußzeile. Impressum und
 Datenschutz nennen dann Jock&Jock als Anbieter (`konzeptAnbieter`), denn unter der
 stevejocks-Adresse betreiben wir die Seite. Erst auf `false`, wenn ByteButchers
 abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
@@ -45,6 +49,9 @@ abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
 - Wetter oder Jahreszeit: Die Beispieldaten sind so abgestimmt, dass Pearson-R je Tag
   schwach (0,37) und je Woche stark (0,83) herauskommt, wie im Blogartikel. Wer die
   Daten ändert, prüft beide Werte, sonst widerspricht das Diagramm seinem Text.
+- Texte im CMS dürfen Redakteure ändern, die Regeln oben gelten trotzdem. Zahlen und Preise
+  stehen nie im CMS, sondern als Platzhalter (`{euro_je_100k}`, `{kostenlos_leistungen}`,
+  `{artikel}`), ersetzt in `src/lib/text.ts`. Neuer Platzhalter: dort eintragen.
 - Kassensysteme, Datenschutz der Anwendung, Serverstandort, Kundennamen: unbekannt,
   deshalb nirgends genannt. Ebenso offen: ob für den nächtlichen Import etwas exportiert
   oder hochgeladen werden muss (die Preistabelle nennt "Daten-Upload") und ob die Demo mit
@@ -78,35 +85,76 @@ abgenommen hat, vorher die Freigabeliste in PROJEKT.md abarbeiten.
 
 ## Abweichungen vom Hausstandard
 
+- Astro 7 mit EmDash 1.2 als CMS statt Vite und React (seit 2026-10-08, docs/0001 bis 0003).
+  Läuft als Cloudflare Worker mit D1 (Inhalte) und R2 (Medien), wie leon.cv. Kein Docker,
+  kein Coolify.
+- React nur für die EmDash-Verwaltung und den Jock&Jock-Credit (`client:visible`). Alles
+  andere auf der Seite ist Astro mit kleinen `<script>`-Blöcken ohne Framework.
 - Kein `motion`. Alle Animationen sind CSS oder hängen direkt an einem Zustand
   (Nacht-Szene an der Minute, Planspiel an der Runde).
-- react 19.3.0 statt 19.2.8, aktuelle Fassung zum Projektstart.
+- Font-Awesome-Symbole über `components/Icon.astro`, immer 1em hoch und 1,25em breit
+  (`.fa-symbol` in `index.css`, so war es in der abgenommenen React-Fassung). `h-4 w-4` an
+  einem Icon wirkt nicht, die Größe kommt von der Schriftgröße.
 
 ## Befehle
 
 ```bash
-npm run dev       # Entwicklung, Port 5196
-npm run pruefen   # lint (ohne Warnungen), typecheck und build in einem Rutsch
-npm run preview   # gebaute Seite auf Port 4173
+npm run dev       # Entwicklung, Port 5196, läuft als Hintergrunddienst (npx astro dev stop)
+npm run pruefen   # lint (ohne Warnungen), astro check und build in einem Rutsch
+npm run preview   # gebauter Worker lokal in workerd
+npm run typegen   # worker-configuration.d.ts nach Änderungen an wrangler.jsonc
+npm run deploy             # NUR der Nutzer: Staging (workers.dev)
+npm run deploy:production  # NUR der Nutzer: Produktion (bytewurst.stevejocks.de)
 npm run images    # reference/bilder -> public/bilder (AVIF, WebP) + src/data/bilder.json + bildnachweis.json
 npm run icons     # scripts/icons -> Favicons, App-Icons, og-image.jpg
 python3 scripts/wortmarke.py   # Wortmarke und Unterzeile fürs Vorschaubild als Pfade (fonttools)
 python3 flyer/bauen.py         # Flyer A5: flyer.html -> PDFs und Vorschau in flyer/ausgabe
 ```
 
-Die Ergebnisse von `images`, `icons` und `wortmarke.py` sind eingecheckt. Coolify baut
-nur `npm run build`, `reference/` fehlt im Build-Kontext. Nach neuen Fotos lokal
-ausführen und mit committen.
+Die Ergebnisse von `images`, `icons` und `wortmarke.py` sind eingecheckt. Der Deploy
+baut nur `npm run build`. Nach neuen Fotos lokal ausführen und mit committen.
+
+Ohne `CLOUDFLARE_ENV` baut `astro build` immer für Staging. Produktion nur über
+`npm run deploy:production`, das löscht `dist/` danach. Vorher immer
+`npx wrangler deploy --dry-run` gegen den Build: Name, D1, R2 und Route prüfen.
+
+Lokale Datenbank neu aufsetzen (etwa nach Änderungen am Seed):
+
+```bash
+npx astro dev stop && rm -rf .wrangler && npm run dev
+curl http://localhost:5196/_emdash/api/setup/dev-bypass   # spielt den Seed ein, legt Dev-Admin an
+```
+
+Danach schreibt der Entwicklungsserver `emdash-env.d.ts` neu (Typen der Blöcke), mit
+committen.
 
 ## Aufbau
 
-- Mehrseitig mit Vorrendern wie website-thesmokingbrothers: Routen in `src/data/seiten.ts`,
-  `scripts/prerender.mjs` schreibt jede Seite als fertiges HTML in ihren Ordner.
-- Inhalte in `src/data/`: `betrieb.ts` (Firma, Kontakt, Schalter), `start.ts` (Zettel,
-  Planspiel, Nacht, Bon-Posten, Wursti-Sprüche), `funktionen.ts`, `preise.ts`,
-  `beispiele.ts` (alle Diagrammzahlen). Preise nie ins Markup.
+- Server-Rendering (`output: "server"`), jede Seite wird bei Aufruf gerendert. Routen in
+  `src/pages/`, Titel und Beschreibungen in `src/data/seiten.ts`, Kopfbereich in
+  `layouts/Base.astro` über `<EmDashHead>`.
+- Start, Funktionen und Preise kommen aus EmDash: Sammlung `pages`, Einträge `start`,
+  `funktionen`, `preise`, Feld `inhalt` vom Typ `blocks`. Jeder Abschnitt ist ein Blocktyp
+  mit eigener Komponente in `src/bloecke/`, zugeordnet in `bloecke/Bloecke.astro`. Neuer
+  Blocktyp: `seed/seed.json` (`blockTypes` und `allowedTypes`), Komponente, Zuordnung.
+- Den Eintrag lädt die Seite im Frontmatter (`lib/cms.ts`), nicht eine Komponente: nur dort
+  darf sie bei fehlendem Eintrag auf `/404` umschreiben.
+- Menüs `primary` (Kopfzeile) und `footer` (Fußzeile, Seiten) kommen aus EmDash.
+- `seed/seed.json` ist Schema und Startinhalt. EmDash spielt ihn nur in eine leere Datenbank
+  ein (Einrichtungsassistent). Spätere Änderungen am Seed erreichen eine laufende Seite nicht,
+  dort pflegt man in der Verwaltung unter `/_emdash/admin`. Inhalt geändert und soll in den
+  Seed: `npx emdash export-seed --with-content`.
+- Im Code bleiben (`src/data/`): `betrieb.ts` (Firma, Kontakt, Schalter), `start.ts`
+  (Planspiel, Nacht-Stationen, Bon-Posten, Wursti-Sprüche), `preise.ts` (Tarife, Vergleich),
+  `beispiele.ts` (alle Diagrammzahlen). Preise nie ins Markup und nie ins CMS. Impressum und
+  Datenschutz sind Code, weil sie an `KONZEPT` hängen.
+- Zustand der Spielereien: Server rendert den Start, ein Skript übernimmt. Wo Server und
+  Browser dasselbe rechnen, liegt die Rechnung in `src/lib` (`nacht.ts`, `diagramme.ts`,
+  `preisrechner.ts`) und wird von beiden benutzt.
 - Wursti ist das Maskottchen von ByteWurst (Formen nach ihrem Favicon) und lebt in
-  `components/Wursti.tsx`. Für die Icon-Skripte gibt es ihn als festes SVG in
+  `components/Wursti.astro`. Alle Gesichter stehen im SVG, `data-stimmung` (froh, staunt,
+  lacht) und `data-brille` schalten per CSS, Skripte setzen sie über `stimmungSetzen` aus
+  `lib/wursti.ts`. Für die Icon-Skripte gibt es ihn als festes SVG in
   `scripts/icons/wursti.svg`, ohne CSS-Variablen, weil librsvg die nicht kennt.
 
 ## Flyer
@@ -130,22 +178,22 @@ ausführen und mit committen.
 
 | Was | Datei |
 |---|---|
-| Wursti, Augen folgen der Maus, anstupsen | `components/Wursti.tsx`, `components/WurstiBuehne.tsx` |
-| Pinnwand mit Zetteln zum Umdrehen | `sections/start/Pinnwand.tsx` |
-| Planspiel Bauchgefühl gegen ByteWurst | `sections/start/Planspiel.tsx` |
-| Wahrheitstest mit druckendem Bon | `sections/start/Wahrheitstest.tsx` |
-| Nacht-Uhr von 19 bis 7 Uhr | `sections/start/Nacht.tsx` |
-| Bon mit allen Funktionen | `sections/start/Kassenzettel.tsx` |
-| Preisrechner mit Wurst-Regler | `components/Preisrechner.tsx`, `.wurstregler` in `index.css` |
-| Diagramme zum Anfassen (alle) | `components/Prognose.tsx`, `Wochenvergleich.tsx`, `WetterJahreszeit.tsx`, `Aktionswoche.tsx`, `Tagesreport.tsx` |
-| Tarife an Fleischerhaken | `seiten/Preise.tsx` |
+| Wursti, Augen folgen der Maus, anstupsen | `components/Wursti.astro`, `components/WurstiBuehne.astro`, `lib/wursti.ts` |
+| Pinnwand mit Zetteln zum Umdrehen | `bloecke/start/Pinnwand.astro` |
+| Planspiel Bauchgefühl gegen ByteWurst | `bloecke/start/Planspiel.astro` |
+| Wahrheitstest mit druckendem Bon | `bloecke/start/Wahrheitstest.astro` |
+| Nacht-Uhr von 19 bis 7 Uhr | `bloecke/start/Nacht.astro`, `lib/nacht.ts` |
+| Bon mit allen Funktionen | `bloecke/start/Kassenzettel.astro` |
+| Preisrechner mit Wurst-Regler | `components/Preisrechner.astro`, `lib/preisrechner.ts`, `.wurstregler` in `index.css` |
+| Diagramme zum Anfassen (alle) | `components/Prognose.astro`, `Wochenvergleich.astro`, `WetterJahreszeit.astro`, `Aktionswoche.astro`, `Tagesreport.astro`, SVG aus `lib/diagramme.ts` |
+| Tarife an Fleischerhaken | `bloecke/preise/Tarife.astro` |
 
 ## Fallstricke
 
 - **iOS-Leisten** nach `~/.claude/skills/hausstandard/ios-leisten.md`. Kopfzeile oben,
   `.leiste-unten` unten, sonst nichts an den Kanten, auch kein `sticky`. Vor jedem Push
   `kanten-pruefen.py` gegen den Build.
-- **Einblenden** (`components/Einblenden.tsx`) kennt `data-einblenden`, `data-zeichnen`
+- **Einblenden** (`einblenden()` in `lib/seite.ts`) kennt `data-einblenden`, `data-zeichnen`
   und `data-drucken`. Ein neues Attribut muss dort in den Selektor, sonst bleibt das
   Element für immer unsichtbar (so passiert mit dem Funktions-Bon).
 - **WurstiBuehne** setzt keine eigene Position. Wer sie platziert, gibt `absolute` von
@@ -154,7 +202,14 @@ ausführen und mit committen.
 - **Planspiel**: ByteWurst- und Verkaufszahl erst nach dem Aufdecken zeigen, sonst
   verrät das Spiel die Lösung.
 - **Zufall** in Beispieldaten nur über `lib/zufall.ts` mit festem Startwert, nie
-  `Math.random`: das vorgerenderte HTML muss zum ersten Render passen.
+  `Math.random`: Server und Browser rechnen die Diagramme getrennt und müssen dasselbe
+  herausbekommen.
+- **Skripte in `.astro`** laufen einmal je Seite, auch wenn die Komponente mehrfach
+  vorkommt. Deshalb über `querySelectorAll('[data-…]')` jede Instanz einzeln anbinden, und
+  Attributnamen eindeutig halten (`data-uhr` gab es zweimal, Nacht-Uhr heißt jetzt
+  `data-uhrzeit`).
+- **Live-Regionen**: Inhalt, der angesagt werden soll, per Skript in die Region einsetzen
+  (Wahrheitstest: `<template>`), nicht nur per CSS einblenden.
 - **Fotos**: Das Theken-Foto ist rechts beschnitten (großes Schild mit Pfundpreis), die
   kleinen Preisschilder mit Pfund bleiben lesbar, bis eigene Fotos kommen. Das Kaffeefoto
   ist auf die Tasse beschnitten (Handy mit russischer Beschriftung). Zuschnitte in
@@ -165,7 +220,16 @@ ausführen und mit committen.
   deshalb lädt es dort per `media` vor.
 - **Diagramme**: Die Schrift in den SVGs ist in viewBox-Einheiten gesetzt, auf dem Handy
   `text-[20px]`, ab md klein. Sonst ist sie bei 375 px nur 5 bis 6 px groß.
-- **Mobiles Menü**: Solange es offen ist, sind `#inhalt` und die Fußzeile `inert`.
+- **Mobiles Menü**: Steht mit `hidden` im Markup. Solange es offen ist, sind `#inhalt` und
+  die Fußzeile `inert`.
+- **Betrieb**: Staging und Produktion haben getrennte D1-Datenbanken und R2-Buckets. Nie
+  eine Bindung von Staging auf Ressourcen der Produktion zeigen lassen. Benannte Umgebungen
+  erben keine Bindungen, Vars oder Trigger, jede führt ihre eigenen auf.
+- **Statische Dateien** liefert Cloudflare ohne Worker aus. Ihre Header stehen in
+  `public/_headers`, nicht in der Middleware.
+- **Entwicklung in workerd**: Taucht nach einem Neustart "Invalid hook call" auf, hat Vite
+  eine Abhängigkeit erst beim Rendern entdeckt. In `vite.ssr.optimizeDeps.include`
+  (`astro.config.mjs`) eintragen.
 - **Wahrheitstest**: Mit Antwort ist der Bon höher als das Foto, unter lg reserviert der
   Container Platz (`min-h`). Wer den Bon verlängert, prüft bei 375 px, dass er nicht in
   den nächsten Abschnitt ragt.
