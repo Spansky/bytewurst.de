@@ -2,7 +2,9 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
 	// Aufbau wie bei leon.cv: Die oberste Ebene ist die SICHERE VORGABE, Staging
 	// auf workers.dev. Der Astro-Build schreibt die gewählte Umgebung nach
 	// dist/server/wrangler.json (CLOUDFLARE_ENV beim Bauen), ein schlichtes
@@ -18,20 +20,24 @@
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "bytewurst-staging",
+			"database_name": "bytewurst",
+			"migrations_dir": "../../migrations",
+			"database_id": "3e1b44ec-4b04-46c2-b3a7-a65917bf691f",
 		},
 	],
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
-			"bucket_name": "bytewurst-staging-media",
+			"bucket_name": "bytewurst-media",
 		},
 	],
 	// Sandboxed Plugins brauchen Worker Loader (bezahlter Workers-Tarif). Bei Bedarf:
 	// "worker_loaders": [{ "binding": "LOADER" }],
 	// Wartung und geplante Veröffentlichungen von EmDash (src/worker.ts)
 	"triggers": {
-		"crons": ["* * * * *"],
+		"crons": [
+			"* * * * *"
+		],
 	},
 	"env": {
 		// Produktion: preview.bytewurst.de. Die Zone bytewurst.de muss dafür im
@@ -60,7 +66,9 @@
 				},
 			],
 			"triggers": {
-				"crons": ["* * * * *"],
+				"crons": [
+					"* * * * *"
+				],
 			},
 		},
 	},
