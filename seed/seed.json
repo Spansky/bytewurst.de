@@ -335,6 +335,312 @@
       ]
     },
     {
+      "slug": "funktionen_kopf",
+      "label": "Funktionen: Kopf",
+      "description": "Erster Bildschirm der Seite Funktionen mit Theken-Foto",
+      "category": "Funktionen",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "abschnitt",
+      "label": "Funktionen: Abschnitt mit Diagramm",
+      "description": "Text auf der einen, Diagramm zum Anfassen auf der anderen Seite. Zahlen in src/data/beispiele.ts",
+      "category": "Funktionen",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text (Absätze durch Leerzeile trennen)",
+              "type": "text"
+            },
+            {
+              "slug": "diagramm",
+              "label": "Diagramm",
+              "type": "select",
+              "required": true,
+              "validation": {
+                "options": [
+                  "prognose",
+                  "wochenvergleich",
+                  "aktionswoche",
+                  "wetter",
+                  "tagesreport"
+                ]
+              }
+            },
+            {
+              "slug": "gespiegelt",
+              "label": "Diagramm links",
+              "type": "boolean"
+            },
+            {
+              "slug": "dunkel",
+              "label": "Dunkler Grund",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "auslage",
+      "label": "Funktionen: Auslage",
+      "description": "Weitere Funktionen als Preisschilder",
+      "category": "Funktionen",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "eintraege",
+              "label": "Schilder",
+              "type": "repeater",
+              "required": true,
+              "validation": {
+                "minItems": 1,
+                "maxItems": 12,
+                "subFields": [
+                  {
+                    "slug": "name",
+                    "label": "Name",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "slug": "text",
+                    "label": "Text",
+                    "type": "text",
+                    "required": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "weg",
+      "label": "Funktionen: Weg zum ersten Report",
+      "description": "Zeitleiste von der Demo bis zur Mail um vier",
+      "category": "Funktionen",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text",
+              "type": "text"
+            },
+            {
+              "slug": "schritte",
+              "label": "Schritte",
+              "type": "repeater",
+              "required": true,
+              "validation": {
+                "minItems": 1,
+                "maxItems": 8,
+                "subFields": [
+                  {
+                    "slug": "wann",
+                    "label": "Wann",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "slug": "was",
+                    "label": "Was",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "slug": "text",
+                    "label": "Text",
+                    "type": "text"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "preise_kopf",
+      "label": "Preise: Kopf",
+      "description": "Erster Bildschirm der Seite Preise",
+      "category": "Preise",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift, {euro_je_100k} wird ersetzt",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text, {euro_je_100k} wird ersetzt",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "tarife",
+      "label": "Preise: Tarife an Fleischerhaken",
+      "description": "Die drei Tarife. Preise und Leistungen stehen in src/data/preise.ts",
+      "category": "Preise",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "hinweis",
+              "label": "Hinweis darunter",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "rechner",
+      "label": "Preise: Rechner",
+      "description": "Preisrechner mit Wurst-Regler und Einsparung",
+      "category": "Preise",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "text",
+              "label": "Text",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "vergleich",
+      "label": "Preise: Funktionsvergleich",
+      "description": "Tabelle aus src/data/preise.ts",
+      "category": "Preise",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fragen",
+      "label": "Preise: Fragen",
+      "description": "Häufige Fragen zum Aufklappen",
+      "category": "Preise",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "titel",
+              "label": "Überschrift",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "fragen",
+              "label": "Fragen",
+              "type": "repeater",
+              "required": true,
+              "validation": {
+                "minItems": 1,
+                "maxItems": 12,
+                "subFields": [
+                  {
+                    "slug": "frage",
+                    "label": "Frage",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "slug": "antwort",
+                    "label": "Antwort",
+                    "type": "text",
+                    "required": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "slug": "schluss",
       "label": "Schluss: Reden wir",
       "description": "Letzter Abschnitt vor der Fußzeile mit Demo-Knöpfen",
@@ -397,6 +703,15 @@
               "frueher",
               "kassenzettel",
               "preis_teaser",
+              "funktionen_kopf",
+              "abschnitt",
+              "auslage",
+              "weg",
+              "preise_kopf",
+              "tarife",
+              "rechner",
+              "vergleich",
+              "fragen",
               "schluss"
             ],
             "maxItems": 20
@@ -587,6 +902,227 @@
               "_version": 1,
               "_key": "schluss",
               "titel": "Lass uns über Wurst reden.",
+              "text": "Wir zeigen dir ByteWurst gern bei dir in der Metzgerei, per Video oder am Telefon. Eingerichtet ist sie in etwa zehn Minuten, deine ersten Umsatzdiagramme mit deinen eigenen Zahlen siehst du noch am selben Tag.",
+              "nachsatz": "Wir sprechen Metzger, nicht IT. Versprochen."
+            }
+          ]
+        }
+      },
+      {
+        "id": "funktionen",
+        "slug": "funktionen",
+        "status": "published",
+        "data": {
+          "title": "Funktionen",
+          "inhalt": [
+            {
+              "_type": "funktionen_kopf",
+              "_version": 1,
+              "_key": "kopf",
+              "titel": "Was die Wurst nachts so alles rechnet.",
+              "text": "Deine Kasse sammelt jeden Bon, aber für Auswertungen fehlt abends die Zeit. Deshalb holt sich ByteWurst die Verkaufsdaten jede Nacht selbst aus deinem Warenwirtschaftssystem. Morgens weißt du, was nächste Woche gefragt ist. Daneben steht, wann deine Kundschaft kommt und was deine letzte Aktion gebracht hat. Alle Diagramme auf dieser Seite kannst du anfassen."
+            },
+            {
+              "_type": "abschnitt",
+              "_version": 1,
+              "_key": "prognose",
+              "titel": "Die Wochenprognose für deine Theke",
+              "diagramm": "prognose",
+              "gespiegelt": false,
+              "dunkel": false,
+              "text": "Mal landet zu viel in der Abschrift, mal ist das Grillsortiment am Samstagmittag aus. ByteWurst rechnet dir aus deinen eigenen Verkäufen der letzten Jahre aus, was in den kommenden sieben Tagen über die Theke geht: je Warengruppe, je Wochentag. Sie erkennt Muster, die im Alltag untergehen, wie das erste Grillwochenende im Mai, die Leberkäs-Spitze am Samstagvormittag oder das Ferienloch im August.\n\nDamit plant dein Team das Sortiment nach Zahlen, egal wer gerade hinter der Theke steht. Weniger Abschriften am Montag, keine leere Theke am Samstag."
+            },
+            {
+              "_type": "abschnitt",
+              "_version": 1,
+              "_key": "woche",
+              "titel": "Diese Woche gegen letzte Woche",
+              "diagramm": "wochenvergleich",
+              "gespiegelt": true,
+              "dunkel": true,
+              "text": "Lief der Samstag jetzt gut oder nur gefühlt? Tipp auf einen Wochentag und sieh, wie die Woche gegen die Vorwoche läuft. Genau so einfach fühlt sich die ganze Anwendung an.\n\nIm Umsatzreport wählst du, ob du Euro, Kilogramm oder Stück sehen willst, für einzelne Artikel oder ganze Warengruppen. Feiertage wie Ostern liegen jedes Jahr woanders, deshalb gibt es dafür eine eigene Gegenüberstellung, sieben Tage vorher und nachher."
+            },
+            {
+              "_type": "abschnitt",
+              "_version": 1,
+              "_key": "aktion",
+              "titel": "Der Wahrheitstest für jede Aktion",
+              "diagramm": "aktionswoche",
+              "gespiegelt": false,
+              "dunkel": false,
+              "text": "Zeitungsannonce, Instagram, Sonderpreis aufs Hackfleisch: Der Laden war voll, aber ob unterm Strich mehr hängen geblieben ist, weiß keiner. Nach jeder Aktion zeigt dir ByteWurst schwarz auf weiß, was sie dem Umsatz des ganzen Ladens gebracht hat. Am Aktionsartikel allein siehst du das nicht.\n\nDu siehst Besucher, Umsatz und Bon-Höhe im Vorher-Nachher-Vergleich und ob deine Kunden zusätzlich gekauft haben oder nur das Sonderangebot. Dann wiederholst du nur, was sich rechnet."
+            },
+            {
+              "_type": "abschnitt",
+              "_version": 1,
+              "_key": "wetter",
+              "titel": "Wetter oder Jahreszeit?",
+              "diagramm": "wetter",
+              "gespiegelt": true,
+              "dunkel": true,
+              "text": "An einem heißen Freitag im Juni ist die Grilltheke leer gekauft, im verregneten November will keiner Bratwurst. Macht also das Wetter das Geschäft? ByteWurst prüft solche Bauchgefühle an deinen echten Zahlen.\n\nDafür misst sie, wie eng Verkauf und Temperatur zusammenlaufen. Schalte im Diagramm zwischen Tagen und Wochen um und sieh, wie aus einem schwachen Zusammenhang ein starker wird. Oft steckt schlicht der Kalender dahinter, das Thermometer läuft nur mit.\n\nDeshalb verlässt sich die Prognose nicht auf eine Faustregel. Sie wägt Wochentag, Jahreszeit, Feiertage und Wetter gemeinsam ab und lernt aus deiner Verkaufshistorie, was bei welchem Artikel wirklich zählt. Beim einen Artikel ist es der Samstag. Beim anderen läuft der Absatz auffällig mit der Temperatur, wie in der ByteWurst-Doku beim Ochsenmaulsalat."
+            },
+            {
+              "_type": "abschnitt",
+              "_version": 1,
+              "_key": "report",
+              "titel": "Im Postfach und an der Pinnwand",
+              "diagramm": "tagesreport",
+              "gespiegelt": false,
+              "dunkel": false,
+              "text": "Noch ein Programm, in das man sich einarbeiten muss? Musst du nicht. Jeden Morgen um 4 Uhr liegt dein Tagesreport im Postfach: Umsatz, Bon-Anzahl und Durchschnittsbon von gestern, die Renner und Ladenhüter und wann deine Kundschaft kommt. Ohne Login, ohne App.\n\nJeder Report kommt auch als A4 aus dem Drucker und hängt dann in der Wurstküche an der Pinnwand. Für alle, die morgens als Erste da sind."
+            },
+            {
+              "_type": "auslage",
+              "_version": 1,
+              "_key": "auslage",
+              "titel": "Was sonst noch in der Auslage liegt.",
+              "eintraege": [
+                {
+                  "name": "Filialvergleich",
+                  "text": "Mehrere Standorte nebeneinander, ohne ein einziges Telefonat."
+                },
+                {
+                  "name": "Warengruppen-Vergleich",
+                  "text": "Welche Gruppe wächst, welche schwächelt und wie sich das übers Jahr verschiebt. Ganze Warengruppen wählst du mit einem Klick aus."
+                },
+                {
+                  "name": "BonTok",
+                  "text": "Blättere durch einzelne Bons und filtere zum Beispiel nach Mindestsumme. Rabatte und echte Stornos hält ByteWurst dabei auseinander."
+                },
+                {
+                  "name": "Stoßzeiten",
+                  "text": "Wann deine Kunden kommen, damit Personal und Theke vorbereitet sind."
+                },
+                {
+                  "name": "Bon-Kennzahlen",
+                  "text": "Durchschnittsbon und Bon-Anzahl im Verlauf, Tag für Tag."
+                },
+                {
+                  "name": "Top-Produkte",
+                  "text": "Die Renner und Ladenhüter des Vortags, jeden Morgen frisch sortiert."
+                },
+                {
+                  "name": "Saisonkurven",
+                  "text": "Grillsaison, Feiertage, Ferienloch: die Schwankungen übers Jahr auf einen Blick."
+                },
+                {
+                  "name": "Feiertage im Vergleich",
+                  "text": "Ostern, Pfingsten, Weihnachten: tabellarisch nebeneinander, jeweils sieben Tage vor und nach dem Fest."
+                },
+                {
+                  "name": "Wetter im Umsatzreport",
+                  "text": "Tiefst- und Höchsttemperatur je Woche direkt neben deinen Verkäufen."
+                }
+              ]
+            },
+            {
+              "_type": "weg",
+              "_version": 1,
+              "_key": "weg",
+              "titel": "Von der Demo bis zum ersten Report.",
+              "text": "Kein IT-Projekt, keine neue Kasse. So sieht der Weg aus, vom ersten Gespräch bis zur Mail um vier.",
+              "schritte": [
+                {
+                  "wann": "Heute",
+                  "was": "Demo-Termin aussuchen",
+                  "text": "Online buchen oder anrufen. Wir zeigen dir ByteWurst bei dir vor Ort, per Video oder am Telefon."
+                },
+                {
+                  "wann": "In etwa zehn Minuten",
+                  "was": "Eingerichtet",
+                  "text": "Einmal einrichten, das war es. Kasse und Warenwirtschaft bleiben, wie sie sind."
+                },
+                {
+                  "wann": "Noch am selben Tag",
+                  "was": "Deine ersten Umsatzdiagramme",
+                  "text": "Du siehst, wie sich deine Produkte und Filialen entwickeln, und kannst gleich selbst einschätzen, wie gut deine Daten sind."
+                },
+                {
+                  "wann": "Ab jetzt jede Nacht",
+                  "was": "Import und Prognose",
+                  "text": "ByteWurst holt sich die neuen Verkaufsdaten und rechnet die nächsten sieben Tage durch."
+                },
+                {
+                  "wann": "Jeden Morgen um 4 Uhr",
+                  "was": "Dein Report",
+                  "text": "Als kurze Mail im Postfach, als A4 für die Pinnwand oder als Diagramm zum Reinzoomen."
+                }
+              ]
+            },
+            {
+              "_type": "schluss",
+              "_version": 1,
+              "_key": "schluss",
+              "titel": "Neugierig, was deine Kasse weiß?",
+              "text": "Wir zeigen dir ByteWurst gern bei dir in der Metzgerei, per Video oder am Telefon. Eingerichtet ist sie in etwa zehn Minuten, deine ersten Umsatzdiagramme mit deinen eigenen Zahlen siehst du noch am selben Tag.",
+              "nachsatz": "Wir sprechen Metzger, nicht IT. Versprochen."
+            }
+          ]
+        }
+      },
+      {
+        "id": "preise",
+        "slug": "preise",
+        "status": "published",
+        "data": {
+          "title": "Preise",
+          "inhalt": [
+            {
+              "_type": "preise_kopf",
+              "_version": 1,
+              "_key": "kopf",
+              "titel": "{euro_je_100k} € je 100.000 € Umsatz. Mehr steht nicht auf dem Bon.",
+              "text": "Starte kostenlos mit einer Filiale und drei Produkten. Steigst du um, zahlst du im Monat {euro_je_100k} € je 100.000 € Vorjahresumsatz. Abgerechnet wird jährlich, kündigen kannst du jederzeit."
+            },
+            {
+              "_type": "tarife",
+              "_version": 1,
+              "_key": "tarife",
+              "hinweis": "Als Jahresumsatz zählt dein Gesamtumsatz aus dem Vorjahr. Early Adopter wird jährlich abgerechnet und ist jederzeit kündbar."
+            },
+            {
+              "_type": "rechner",
+              "_version": 1,
+              "_key": "rechner",
+              "titel": "Rechne selbst nach.",
+              "text": "Schieb die Wurst auf deinen Jahresumsatz. Die kleine Landmetzgerei zahlt nicht wie die Kette mit zwanzig Filialen, und beide zahlen nur für das, was sie umsetzen."
+            },
+            {
+              "_type": "vergleich",
+              "_version": 1,
+              "_key": "vergleich",
+              "titel": "Was drin ist, auf einen Blick."
+            },
+            {
+              "_type": "fragen",
+              "_version": 1,
+              "_key": "fragen",
+              "titel": "Was Metzger vorher wissen wollen.",
+              "fragen": [
+                {
+                  "frage": "Welcher Umsatz zählt für den Preis?",
+                  "antwort": "Dein Gesamtumsatz aus dem Vorjahr. Weil ByteWurst deine Umsatzdaten ohnehin für Prognosen und Reports verarbeitet, rechnet sie den Betrag selbst aus. Du musst nichts melden."
+                },
+                {
+                  "frage": "Kann ich später wechseln?",
+                  "antwort": "Ja. Von Kostenlos auf Early Adopter geht jederzeit. Ein Wechsel zurück gilt zum Ende deines Abrechnungszeitraums."
+                },
+                {
+                  "frage": "Wie bezahle ich?",
+                  "antwort": "Per Banküberweisung (SEPA) oder auf Rechnung. Kreditkarte kommt bald."
+                },
+                {
+                  "frage": "Wie lange bin ich gebunden?",
+                  "antwort": "Early Adopter wird jährlich abgerechnet, du kannst aber jederzeit kündigen. Deine Daten bleiben bis zum Ende des bezahlten Zeitraums zugänglich."
+                }
+              ]
+            },
+            {
+              "_type": "schluss",
+              "_version": 1,
+              "_key": "schluss",
+              "titel": "Erst mal anschauen? Gern.",
               "text": "Wir zeigen dir ByteWurst gern bei dir in der Metzgerei, per Video oder am Telefon. Eingerichtet ist sie in etwa zehn Minuten, deine ersten Umsatzdiagramme mit deinen eigenen Zahlen siehst du noch am selben Tag.",
               "nachsatz": "Wir sprechen Metzger, nicht IT. Versprochen."
             }

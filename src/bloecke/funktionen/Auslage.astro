@@ -1,0 +1,25 @@
+---
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/* Weitere Funktionen als Preisschilder in der Auslage */
+type Props = BlockProps<'auslage'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="f-auslage" class="fliesen py-20 md:py-28">
+  <div class="rahmen">
+    <h2 id="f-auslage" class="titel max-w-3xl text-[clamp(2.3rem,4.8vw,3.9rem)]">{value.titel}</h2>
+    <ul class="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        value.eintraege.map((a, i) => (
+          <li data-einblenden style={`--verzug: ${(i % 3) * 80}ms`}>
+            <span class="preisschild inline-block -rotate-2 px-3.5 py-2 text-[0.9375rem] font-bold">{a.name}</span>
+            <p class="mt-4 leading-relaxed text-tinte/85">{einsetzen(a.text)}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+---
+/** Dunkles Anwendungsfenster wie in der ByteWurst-App: Titelleiste, Inhalt, Fußnote */
+interface Props {
+  titel: string
+  fuss?: string
+  class?: string
+  [daten: `data-${string}`]: string
+}
+
+const { titel, fuss, class: klasse, ...rest } = Astro.props
+---
+
+<figure
+  class:list={['overflow-hidden rounded-2xl bg-nacht text-kreide shadow-[0_30px_60px_-30px_rgb(0_0_0/0.7)] ring-1 ring-white/5', klasse]}
+  {...rest}
+>
+  <div class="flex items-center gap-2 border-b border-nacht-linie bg-nacht-hell px-4 py-2.5">
+    <span aria-hidden="true" class="flex gap-1.5">
+      <span class="h-2.5 w-2.5 rounded-full bg-nacht-linie"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-nacht-linie"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-nacht-linie"></span>
+    </span>
+    <span class="etikett ml-2 text-nebel">{titel}</span>
+  </div>
+  <div class="p-4 md:p-5"><slot /></div>
+  {fuss && <figcaption class="etikett border-t border-nacht-linie px-4 py-2.5 text-[0.6875rem] text-nebel normal-case">{fuss}</figcaption>}
+</figure>

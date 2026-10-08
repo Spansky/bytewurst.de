@@ -1,0 +1,32 @@
+---
+import Bild from '../../components/Bild.astro'
+import { GROESSEN } from '../../data/seiten'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+type Props = BlockProps<'preise_kopf'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="preise-titel" class="fliesen">
+  <div class="rahmen pt-10 pb-8 md:pt-16">
+    <div class="grid items-end gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <h1 id="preise-titel" class="titel text-[clamp(2.8rem,7vw,5.4rem)]">{einsetzen(value.titel)}</h1>
+        {value.text && <p class="mt-7 max-w-xl text-lg leading-relaxed text-tinte/85 md:text-xl">{einsetzen(value.text)}</p>}
+      </div>
+      <div class="hidden lg:col-span-4 lg:col-start-9 lg:block">
+        <div class="rotate-2 overflow-hidden rounded-[1.5rem] border-8 border-papier shadow-[0_30px_50px_-30px_rgb(0_0_0/0.55)]">
+          <Bild
+            name="wurst-senf"
+            vorne
+            sizes={GROESSEN.wurstSenf}
+            alt="Zwei gegrillte Bratwürste auf einem grauen Teller, eine davon angeschnitten, daneben Senf in einem Papierförmchen und eine Gurkenscheibe."
+            class="aspect-[4/3] h-auto w-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

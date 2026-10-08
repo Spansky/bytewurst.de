@@ -1,0 +1,70 @@
+---
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
+import Icon from '../../components/Icon.astro'
+import { tarife } from '../../data/preise'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/*
+  Die Tarife als Preisschilder an Fleischerhaken. Sie pendeln leicht, wenn
+  man drüberfährt (.haken-schild in index.css). Preise und Leistungen
+  stehen in src/data/preise.ts, im CMS nur der Hinweis darunter.
+
+  Hängt optisch am Kopf der Seite (gleicher Fliesengrund), deshalb ohne
+  eigenen Abstand nach oben.
+*/
+type Props = BlockProps<'tarife'>
+
+const { value } = Astro.props
+---
+
+<section aria-label="Tarife" class="fliesen">
+  <!-- Die Stange, an der die Schilder hängen -->
+  <div class="rahmen pb-20 md:pb-28">
+    <div aria-hidden="true" class="mt-10 h-3 rounded-full bg-gradient-to-b from-[#c9c4bc] to-[#8f8a83] shadow-[0_4px_8px_rgb(0_0_0/0.2)]"></div>
+    <ul class="grid gap-x-6 gap-y-4 md:grid-cols-3">
+      {
+        tarife.map((t) => (
+          <li class="haken-schild flex flex-col">
+            {/* S-Haken, an dem das Preisschild hängt */}
+            <svg viewBox="0 0 40 70" class="mx-auto -mb-2 h-16 w-9" aria-hidden="true">
+              <path d="M20 2 C8 2 6 18 18 20 L20 20 L20 50 C20 64 34 64 34 52" fill="none" stroke="#8f8a83" stroke-width="4.5" stroke-linecap="round" />
+              <path d="M20 20 L20 50" stroke="#c9c4bc" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <div
+              class:list={[
+                'flex flex-1 flex-col rounded-2xl p-6 md:p-7',
+                t.empfohlen
+                  ? 'bg-tinte text-kreide shadow-[0_30px_50px_-25px_rgb(0_0_0/0.6)] ring-4 ring-senf'
+                  : 'bg-papier shadow-[0_24px_40px_-26px_rgb(0_0_0/0.45)] ring-1 ring-fuge',
+              ]}
+            >
+              <h2 class="titel text-3xl">{t.name}</h2>
+              <p class:list={['mt-2', t.empfohlen ? 'text-kreide/80' : 'text-tinte/75']}>{t.satz}</p>
+              <p class:list={['titel ziffern mt-6 text-6xl', t.empfohlen ? 'text-senf' : 'text-tinte']}>{t.preis}</p>
+              {t.einheit && <p class:list={['mt-1 text-sm', t.empfohlen ? 'text-kreide/70' : 'text-grau']}>{t.einheit}</p>}
+              <ul class="mt-6 space-y-2.5">
+                {t.leistungen.map((l) => (
+                  <li class="flex gap-3">
+                    <Icon icon={faCheck} class:list={['mt-1.5 h-3.5 w-3.5 shrink-0', t.empfohlen ? 'text-prognose' : 'text-wurst']} />
+                    <span>{l}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-auto pt-8">
+                {t.knopf.ziel ? (
+                  <a href={t.knopf.ziel} class:list={['knopf w-full', t.empfohlen ? 'knopf-senf' : 'knopf-wurst']}>
+                    {t.knopf.text}
+                  </a>
+                ) : (
+                  <span class="knopf w-full cursor-default border-2 border-dashed border-fuge text-grau">{t.knopf.text}</span>
+                )}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    {value.hinweis && <p class="mt-6 text-sm text-grau">{einsetzen(value.hinweis)}</p>}
+  </div>
+</section>

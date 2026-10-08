@@ -16,6 +16,6 @@ const [breite, hoehe, , , pfad] = icon.icon
 const pfade = Array.isArray(pfad) ? pfad : [pfad]
 ---
 
-<svg viewBox={`0 0 ${breite} ${hoehe}`} class={klasse} fill="currentColor" aria-hidden="true" focusable="false">
+<svg viewBox={`0 0 ${breite} ${hoehe}`} class:list={["fa-symbol", klasse]} fill="currentColor" aria-hidden="true" focusable="false">
   {pfade.map((d) => <path d={d} />)}
 </svg>

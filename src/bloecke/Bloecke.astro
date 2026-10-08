@@ -1,6 +1,15 @@
 ---
 import { Blocks, defineBlockComponents } from 'emdash/ui'
 import type { PageInhaltBlock } from '../../emdash-env'
+import Abschnitt from './funktionen/Abschnitt.astro'
+import Auslage from './funktionen/Auslage.astro'
+import FunktionenKopf from './funktionen/Kopf.astro'
+import Weg from './funktionen/Weg.astro'
+import Fragen from './preise/Fragen.astro'
+import PreiseKopf from './preise/Kopf.astro'
+import Rechner from './preise/Rechner.astro'
+import Tarife from './preise/Tarife.astro'
+import Vergleich from './preise/Vergleich.astro'
 import Schluss from './Schluss.astro'
 import Einstieg from './start/Einstieg.astro'
 import Einwaende from './start/Einwaende.astro'
@@ -33,6 +42,15 @@ const komponenten = defineBlockComponents<PageInhaltBlock>({
   frueher: Frueher,
   kassenzettel: Kassenzettel,
   preis_teaser: PreisTeaser,
+  funktionen_kopf: FunktionenKopf,
+  abschnitt: Abschnitt,
+  auslage: Auslage,
+  weg: Weg,
+  preise_kopf: PreiseKopf,
+  tarife: Tarife,
+  rechner: Rechner,
+  vergleich: Vergleich,
+  fragen: Fragen,
   schluss: Schluss,
 })
 ---

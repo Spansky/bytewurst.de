@@ -103,6 +103,98 @@ export interface PageInhaltPreisTeaserV1Block {
 
 export type PageInhaltPreisTeaserBlock = PageInhaltPreisTeaserV1Block;
 
+export interface PageInhaltFunktionenKopfV1Block {
+  _type: "funktionen_kopf";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "text"?: string | null;
+}
+
+export type PageInhaltFunktionenKopfBlock = PageInhaltFunktionenKopfV1Block;
+
+export interface PageInhaltAbschnittV1Block {
+  _type: "abschnitt";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "text"?: string | null;
+  "diagramm": "prognose" | "wochenvergleich" | "aktionswoche" | "wetter" | "tagesreport";
+  "gespiegelt"?: boolean | null;
+  "dunkel"?: boolean | null;
+}
+
+export type PageInhaltAbschnittBlock = PageInhaltAbschnittV1Block;
+
+export interface PageInhaltAuslageV1Block {
+  _type: "auslage";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "eintraege": { "name": string; "text": string }[];
+}
+
+export type PageInhaltAuslageBlock = PageInhaltAuslageV1Block;
+
+export interface PageInhaltWegV1Block {
+  _type: "weg";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "text"?: string | null;
+  "schritte": { "wann": string; "was": string; "text"?: string | null }[];
+}
+
+export type PageInhaltWegBlock = PageInhaltWegV1Block;
+
+export interface PageInhaltPreiseKopfV1Block {
+  _type: "preise_kopf";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "text"?: string | null;
+}
+
+export type PageInhaltPreiseKopfBlock = PageInhaltPreiseKopfV1Block;
+
+export interface PageInhaltTarifeV1Block {
+  _type: "tarife";
+  _version: 1;
+  _key: string;
+  "hinweis"?: string | null;
+}
+
+export type PageInhaltTarifeBlock = PageInhaltTarifeV1Block;
+
+export interface PageInhaltRechnerV1Block {
+  _type: "rechner";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "text"?: string | null;
+}
+
+export type PageInhaltRechnerBlock = PageInhaltRechnerV1Block;
+
+export interface PageInhaltVergleichV1Block {
+  _type: "vergleich";
+  _version: 1;
+  _key: string;
+  "titel": string;
+}
+
+export type PageInhaltVergleichBlock = PageInhaltVergleichV1Block;
+
+export interface PageInhaltFragenV1Block {
+  _type: "fragen";
+  _version: 1;
+  _key: string;
+  "titel": string;
+  "fragen": { "frage": string; "antwort": string }[];
+}
+
+export type PageInhaltFragenBlock = PageInhaltFragenV1Block;
+
 export interface PageInhaltSchlussV1Block {
   _type: "schluss";
   _version: 1;
@@ -114,7 +206,7 @@ export interface PageInhaltSchlussV1Block {
 
 export type PageInhaltSchlussBlock = PageInhaltSchlussV1Block;
 
-export type PageInhaltBlock = PageInhaltEinstiegBlock | PageInhaltPinnwandBlock | PageInhaltPlanspielBlock | PageInhaltWahrheitstestBlock | PageInhaltNachtBlock | PageInhaltEinwaendeBlock | PageInhaltFrueherBlock | PageInhaltKassenzettelBlock | PageInhaltPreisTeaserBlock | PageInhaltSchlussBlock;
+export type PageInhaltBlock = PageInhaltEinstiegBlock | PageInhaltPinnwandBlock | PageInhaltPlanspielBlock | PageInhaltWahrheitstestBlock | PageInhaltNachtBlock | PageInhaltEinwaendeBlock | PageInhaltFrueherBlock | PageInhaltKassenzettelBlock | PageInhaltPreisTeaserBlock | PageInhaltFunktionenKopfBlock | PageInhaltAbschnittBlock | PageInhaltAuslageBlock | PageInhaltWegBlock | PageInhaltPreiseKopfBlock | PageInhaltTarifeBlock | PageInhaltRechnerBlock | PageInhaltVergleichBlock | PageInhaltFragenBlock | PageInhaltSchlussBlock;
 
 export interface Page {
   id: string;

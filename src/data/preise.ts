@@ -1,6 +1,7 @@
 /**
- * Tarife und Fragen von bytewurst.de/de/pricing, Stand 2026-10-03.
- * Preise nie ins Markup schreiben, nur hier.
+ * Tarife von bytewurst.de/de/pricing, Stand 2026-10-03.
+ * Preise nie ins Markup und nie ins CMS schreiben, nur hier. Texte im CMS
+ * holen sie über Platzhalter (lib/text.ts). Die Fragen stehen in EmDash.
  */
 import { firma } from './betrieb'
 
@@ -86,26 +87,4 @@ export const vergleich: { was: string; werte: [string, string, string] }[] = [
   { was: 'Eigene Anbindungen', werte: ['nein', 'nein', 'ja'] },
   { was: 'Auf eigenen Servern', werte: ['nein', 'nein', 'ja'] },
   { was: 'Zugesicherte Verfügbarkeit', werte: ['nein', 'nein', '99,9 %'] },
-]
-
-export const fragen = [
-  {
-    frage: 'Welcher Umsatz zählt für den Preis?',
-    antwort:
-      'Dein Gesamtumsatz aus dem Vorjahr. Weil ByteWurst deine Umsatzdaten ohnehin für Prognosen und Reports verarbeitet, rechnet sie den Betrag selbst aus. Du musst nichts melden.',
-  },
-  {
-    frage: 'Kann ich später wechseln?',
-    antwort:
-      'Ja. Von Kostenlos auf Early Adopter geht jederzeit. Ein Wechsel zurück gilt zum Ende deines Abrechnungszeitraums.',
-  },
-  {
-    frage: 'Wie bezahle ich?',
-    antwort: 'Per Banküberweisung (SEPA) oder auf Rechnung. Kreditkarte kommt bald.',
-  },
-  {
-    frage: 'Wie lange bin ich gebunden?',
-    antwort:
-      'Early Adopter wird jährlich abgerechnet, du kannst aber jederzeit kündigen. Deine Daten bleiben bis zum Ende des bezahlten Zeitraums zugänglich.',
-  },
 ]

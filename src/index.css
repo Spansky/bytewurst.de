@@ -534,3 +534,18 @@
 .wurstregler-dunkel:focus-visible::-webkit-slider-thumb {
   outline-color: var(--color-senf);
 }
+
+/* ===========================================================================
+   Font-Awesome-Symbole (components/Icon.astro). Bewusst außerhalb jeder
+   Ebene: In der React-Fassung hat das CSS von fontawesome-svg-core die
+   Größen aus Tailwind (h-4, w-4 ...) überstimmt, jedes Symbol war 1em hoch
+   und 1,25em breit. So ist die Seite abgenommen, so bleibt sie. Die Anzeige
+   (hidden, block) regelt weiter Tailwind.
+   =========================================================================== */
+.fa-symbol {
+  box-sizing: content-box;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+  width: 1.25em;
+}

@@ -1,0 +1,35 @@
+---
+import Aktionswoche from '../../components/Aktionswoche.astro'
+import Prognose from '../../components/Prognose.astro'
+import Tagesreport from '../../components/Tagesreport.astro'
+import WetterJahreszeit from '../../components/WetterJahreszeit.astro'
+import Wochenvergleich from '../../components/Wochenvergleich.astro'
+import { absaetze, einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/* Ein Abschnitt: Text auf der einen Seite, Diagramm zum Anfassen auf der anderen. */
+type Props = BlockProps<'abschnitt'>
+
+const { value, blockKey } = Astro.props
+const id = `f-${blockKey}`
+const dunkel = !!value.dunkel
+const gespiegelt = !!value.gespiegelt
+---
+
+<section aria-labelledby={id} class={dunkel ? 'fokus-hell bg-nacht py-20 text-kreide md:py-28' : 'bg-papier py-20 md:py-28'}>
+  <div class="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class:list={['lg:col-span-5', gespiegelt && 'lg:order-2 lg:col-start-8']}>
+      <h2 id={id} class="titel text-[clamp(2.3rem,4.8vw,3.9rem)]">{einsetzen(value.titel)}</h2>
+      <div class:list={['mt-6 space-y-4 text-lg leading-relaxed', dunkel ? 'text-kreide/85' : 'text-tinte/85']}>
+        {absaetze(value.text).map((a) => <p>{a}</p>)}
+      </div>
+    </div>
+    <div class:list={['lg:col-span-7', gespiegelt && 'lg:order-1 lg:col-start-1 lg:row-start-1']}>
+      {value.diagramm === 'prognose' && <Prognose />}
+      {value.diagramm === 'wochenvergleich' && <Wochenvergleich />}
+      {value.diagramm === 'aktionswoche' && <Aktionswoche />}
+      {value.diagramm === 'wetter' && <WetterJahreszeit />}
+      {value.diagramm === 'tagesreport' && <Tagesreport class="mx-auto max-w-lg" />}
+    </div>
+  </div>
+</section>

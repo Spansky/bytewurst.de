@@ -1,0 +1,47 @@
+---
+import { tarife, vergleich } from '../../data/preise'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/* Funktionsvergleich wie auf bytewurst.de. Die Werte stehen in src/data/preise.ts. */
+type Props = BlockProps<'vergleich'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="vergleich-titel" class="bg-papier py-20 md:py-28">
+  <div class="rahmen">
+    <h2 id="vergleich-titel" class="titel text-[clamp(2.3rem,4.8vw,3.9rem)]">{einsetzen(value.titel)}</h2>
+    <div tabindex="0" role="region" aria-label="Funktionsvergleich, seitlich scrollbar" class="mt-10 overflow-x-auto rounded-2xl ring-1 ring-fuge">
+      <table class="w-full min-w-[36rem] border-collapse text-left">
+        <caption class="sr-only">Funktionsvergleich der drei Tarife</caption>
+        <thead>
+          <tr class="bg-fliese">
+            <th scope="col" class="px-4 py-3 font-semibold md:px-6">Funktion</th>
+            {
+              tarife.map((t) => (
+                <th scope="col" class="px-4 py-3 font-bold md:px-6">
+                  {t.name}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            vergleich.map((v) => (
+              <tr class="border-t border-fuge">
+                <th scope="row" class="px-4 py-3 font-semibold md:px-6">
+                  {v.was}
+                </th>
+                {v.werte.map((w) => (
+                  <td class:list={['px-4 py-3 md:px-6', w === 'nein' && 'text-grau']}>{w}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

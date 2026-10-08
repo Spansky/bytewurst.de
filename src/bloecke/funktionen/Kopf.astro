@@ -1,0 +1,34 @@
+---
+import Bild from '../../components/Bild.astro'
+import Knoepfe from '../../components/Knoepfe.astro'
+import Wursti from '../../components/Wursti.astro'
+import { GROESSEN } from '../../data/seiten'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+type Props = BlockProps<'funktionen_kopf'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="funktionen-titel" class="fliesen">
+  <div class="rahmen grid items-center gap-12 pt-10 pb-20 md:pt-16 lg:grid-cols-12 lg:pb-24">
+    <div class="lg:col-span-6">
+      <h1 id="funktionen-titel" class="titel text-[clamp(2.8rem,7vw,5.4rem)]">{einsetzen(value.titel)}</h1>
+      {value.text && <p class="mt-7 max-w-xl text-lg leading-relaxed text-tinte/85 md:text-xl">{einsetzen(value.text)}</p>}
+      <Knoepfe class="mt-9" />
+    </div>
+    <div class="relative lg:col-span-6">
+      <div class="-rotate-1 overflow-hidden rounded-[1.75rem] border-[10px] border-papier bg-papier shadow-[0_40px_70px_-35px_rgb(0_0_0/0.55)]">
+        <Bild
+          name="theke"
+          vorne
+          sizes={GROESSEN.theke}
+          alt="Lange Fleischtheke mit Glasaufsatz vor weißen Wandfliesen. Dahinter steht ein Verkäufer in Jeanshemd und Lederschürze, am rechten Rand ist der Arm eines zweiten zu sehen. In der Auslage stecken kleine schwarze Preisschilder."
+          class="aspect-[4/3] h-auto w-full object-cover"
+        />
+      </div>
+      <Wursti folgen class="absolute -bottom-8 -left-3 h-auto w-28 drop-shadow-[0_12px_10px_rgb(0_0_0/0.25)] sm:-left-8 sm:w-36" />
+    </div>
+  </div>
+</section>

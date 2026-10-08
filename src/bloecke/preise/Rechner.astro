@@ -1,0 +1,23 @@
+---
+import Preisrechner from '../../components/Preisrechner.astro'
+import Wursti from '../../components/Wursti.astro'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+type Props = BlockProps<'rechner'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="rechner-titel" class="fokus-hell bg-nacht py-20 text-kreide md:py-28">
+  <div class="rahmen grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-5">
+      <h2 id="rechner-titel" class="titel text-[clamp(2.3rem,4.8vw,3.9rem)]">{einsetzen(value.titel)}</h2>
+      {value.text && <p class="mt-6 text-lg leading-relaxed text-kreide/85">{einsetzen(value.text)}</p>}
+      <Wursti folgen stimmung="lacht" class="mt-10 hidden h-auto w-44 lg:block" />
+    </div>
+    <div class="lg:col-span-7">
+      <Preisrechner voll />
+    </div>
+  </div>
+</section>

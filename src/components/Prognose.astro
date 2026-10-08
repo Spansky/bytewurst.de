@@ -1,0 +1,109 @@
+---
+import { prognoseGruppen } from '../data/beispiele'
+import { euro } from '../lib/format'
+import { PROGNOSE, prognoseSvg, prognoseTag, prognoseText, prognoseWerte } from '../lib/diagramme'
+import Fenster from './Fenster.astro'
+
+/*
+  Sieben-Tage-Prognose je Warengruppe: durchgezogen was war, gestrichelt was
+  kommt. Warengruppe umschalten, Tag antippen. Zahlen ausgedacht.
+*/
+interface Props {
+  class?: string
+}
+
+const { class: klasse } = Astro.props
+const GRUPPE = 0
+const TAG = 6
+const { g, werte } = prognoseWerte(GRUPPE)
+---
+
+<Fenster titel="Produktion, 7-Tage-Prognose" fuss="Durchgezogen bisher, gestrichelt Prognose. Beispielzahlen." class={klasse} data-prognose="">
+  <div class="flex flex-wrap gap-1.5" role="group" aria-label="Warengruppe wählen">
+    {
+      prognoseGruppen.map((p, i) => (
+        <button
+          type="button"
+          aria-pressed={i === GRUPPE ? 'true' : 'false'}
+          data-gruppe={i}
+          class="min-h-10 rounded-full border border-nacht-linie px-3.5 text-sm font-semibold text-nebel transition-colors hover:text-kreide aria-pressed:border-prognose aria-pressed:bg-prognose aria-pressed:text-nacht"
+        >
+          {p.name}
+        </button>
+      ))
+    }
+  </div>
+
+  <svg
+    viewBox={`0 0 ${PROGNOSE.B} ${PROGNOSE.H}`}
+    class="mt-4 h-auto w-full"
+    role="img"
+    aria-label={`Umsatz ${g.name}: fünf Tage bisher, sieben Tage Prognose`}
+    set:html={prognoseSvg(GRUPPE, TAG)}
+  />
+
+  <label class="mt-2 flex items-center gap-3 text-sm text-nebel">
+    <span class="etikett shrink-0">Tag</span>
+    <input
+      type="range"
+      min="0"
+      max={werte.length - 1}
+      value={TAG}
+      aria-valuetext={`${prognoseTag(TAG)}, ${euro(werte[TAG])}`}
+      class="w-full [accent-color:var(--color-prognose)]"
+    />
+  </label>
+
+  <p
+    class="ziffern mt-3 rounded-lg border border-nacht-linie px-3 py-2.5 text-center font-mono text-sm"
+    aria-live="polite"
+    aria-atomic="true"
+    data-ausgabe
+    set:html={prognoseText(GRUPPE, TAG)}
+  />
+</Fenster>
+
+<script>
+  import { prognoseGruppen } from '../data/beispiele'
+  import { prognoseSvg, prognoseTag, prognoseText, prognoseWerte } from '../lib/diagramme'
+  import { euro } from '../lib/format'
+
+  document.querySelectorAll<HTMLElement>('[data-prognose]').forEach((fenster) => {
+    const svg = fenster.querySelector('svg')!
+    const regler = fenster.querySelector('input')!
+    const ausgabe = fenster.querySelector('[data-ausgabe]')!
+    const knoepfe = fenster.querySelectorAll<HTMLButtonElement>('button[data-gruppe]')
+    let gruppe = 0
+    let tag = Number(regler.value)
+
+    const zeigen = () => {
+      const { werte } = prognoseWerte(gruppe)
+      svg.innerHTML = prognoseSvg(gruppe, tag)
+      svg.setAttribute('aria-label', `Umsatz ${prognoseGruppen[gruppe].name}: fünf Tage bisher, sieben Tage Prognose`)
+      regler.value = String(tag)
+      regler.setAttribute('aria-valuetext', `${prognoseTag(tag)}, ${euro(werte[tag])}`)
+      ausgabe.innerHTML = prognoseText(gruppe, tag)
+      knoepfe.forEach((k) => k.setAttribute('aria-pressed', String(Number(k.dataset.gruppe) === gruppe)))
+    }
+
+    knoepfe.forEach((k) =>
+      k.addEventListener('click', () => {
+        gruppe = Number(k.dataset.gruppe)
+        zeigen()
+      }),
+    )
+    regler.addEventListener('input', () => {
+      tag = Number(regler.value)
+      zeigen()
+    })
+    // Tag im Diagramm antippen oder überfahren. Das SVG wird neu gerendert, deshalb Delegation.
+    const waehlen = (e: Event) => {
+      const g = (e.target as Element).closest('[data-tag]')
+      if (!g || Number(g.getAttribute('data-tag')) === tag) return
+      tag = Number(g.getAttribute('data-tag'))
+      zeigen()
+    }
+    svg.addEventListener('click', waehlen)
+    svg.addEventListener('pointerover', waehlen)
+  })
+</script>

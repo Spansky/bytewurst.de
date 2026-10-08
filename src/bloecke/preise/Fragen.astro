@@ -1,0 +1,30 @@
+---
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
+import Icon from '../../components/Icon.astro'
+import { einsetzen } from '../../lib/text'
+import type { BlockProps } from '../typen'
+
+/* Fragen zum Aufklappen, ohne Skript (details/summary) */
+type Props = BlockProps<'fragen'>
+
+const { value } = Astro.props
+---
+
+<section aria-labelledby="fragen-titel" class="fliesen py-20 md:py-28">
+  <div class="rahmen grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <h2 id="fragen-titel" class="titel text-[clamp(2.3rem,4.8vw,3.9rem)] lg:col-span-4">{einsetzen(value.titel)}</h2>
+    <div class="space-y-3 lg:col-span-8">
+      {
+        value.fragen.map((f) => (
+          <details class="group rounded-2xl bg-papier shadow-[0_1px_0_var(--color-fuge)] ring-1 ring-fuge open:ring-wurst/40">
+            <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-lg font-bold [&::-webkit-details-marker]:hidden">
+              {f.frage}
+              <Icon icon={faPlus} class="h-4 w-4 shrink-0 text-wurst transition-transform group-open:rotate-45" />
+            </summary>
+            <p class="px-5 pb-5 leading-relaxed text-tinte/85">{einsetzen(f.antwort)}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

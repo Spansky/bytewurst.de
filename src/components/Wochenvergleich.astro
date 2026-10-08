@@ -1,0 +1,73 @@
+---
+import { TAGE_KURZ, TAGE_LANG, wochenvergleich as w } from '../data/beispiele'
+import { WOCHE, wochenSvg, wochenText } from '../lib/diagramme'
+import Fenster from './Fenster.astro'
+
+/*
+  Der Wochenvergleich zum Antippen, wie auf bytewurst.de: diese Woche gegen
+  die Vorwoche, ein Tag ist ausgewählt und zeigt beide Werte.
+*/
+interface Props {
+  class?: string
+}
+
+const { class: klasse } = Astro.props
+const TAG = 5
+---
+
+<Fenster
+  titel="Wochenvergleich"
+  fuss={`KW ${w.dieseKw} gegen KW ${w.vorigeKw}, gestrichelt die Vorwoche. Beispielzahlen.`}
+  class={klasse}
+  data-wochenvergleich=""
+>
+  <svg
+    viewBox={`0 0 ${WOCHE.B} ${WOCHE.H}`}
+    class="h-auto w-full"
+    role="img"
+    aria-label={`Umsatz je Wochentag, KW ${w.dieseKw} gegen KW ${w.vorigeKw}`}
+    set:html={wochenSvg(TAG)}
+  />
+
+  <div class="mt-3 grid grid-cols-6 gap-1.5" role="group" aria-label="Wochentag wählen">
+    {
+      TAGE_KURZ.map((t, i) => (
+        <button
+          type="button"
+          aria-pressed={i === TAG ? 'true' : 'false'}
+          aria-label={TAGE_LANG[i]}
+          data-tag={i}
+          class="min-h-11 rounded-lg border border-nacht-linie bg-nacht-hell font-mono text-sm font-semibold text-nebel transition-colors hover:text-kreide aria-pressed:border-prognose aria-pressed:bg-prognose/10 aria-pressed:text-prognose"
+        >
+          {t}
+        </button>
+      ))
+    }
+  </div>
+  <p
+    class="ziffern mt-3 rounded-lg border border-nacht-linie px-3 py-2.5 text-center font-mono text-sm"
+    aria-live="polite"
+    aria-atomic="true"
+    data-ausgabe
+    set:html={wochenText(TAG, TAGE_LANG[TAG])}
+  />
+</Fenster>
+
+<script>
+  import { TAGE_LANG } from '../data/beispiele'
+  import { wochenSvg, wochenText } from '../lib/diagramme'
+
+  document.querySelectorAll<HTMLElement>('[data-wochenvergleich]').forEach((fenster) => {
+    const svg = fenster.querySelector('svg')!
+    const ausgabe = fenster.querySelector('[data-ausgabe]')!
+    const knoepfe = fenster.querySelectorAll<HTMLButtonElement>('button[data-tag]')
+    knoepfe.forEach((k) =>
+      k.addEventListener('click', () => {
+        const tag = Number(k.dataset.tag)
+        svg.innerHTML = wochenSvg(tag)
+        ausgabe.innerHTML = wochenText(tag, TAGE_LANG[tag])
+        knoepfe.forEach((x) => x.setAttribute('aria-pressed', String(x === k)))
+      }),
+    )
+  })
+</script>
